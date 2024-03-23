@@ -68,7 +68,7 @@
  *          ##############################################
  * 
  * 1. Game starts.
- *  a.  Set factory tile number, number of players, and player order. 
+ *  a.  Set factory tile number, number of players, and player order randomly. 
  * 2. Generate game UI and start game state.
  *  b.  Generate first player start board state in player area.
  *    i.  Invisible top limbo area.
@@ -94,8 +94,31 @@
  *    i.  If the 1st player tile is in the middle when you select from the middle,
  *        take the 1st player tile.
  *    ii. The tiles go to the limbo area in the player area.
+ *      ~ If the 1st player tile is one of the tiles taken,
+ *        it automatically goes to the broken tile area.
  *    iii.A dotted red border appears around the eligible rows for the limbo tiles
- *        to be placed. The 
+ *        to be placed. The player will choose which row the limbo tiles will go.
+ *      ~ The player can also choose no row.
+ *      ~ The row chosen must either be empty, or if there are tiles the color of them must 
+ *        match the tiles in limbo.
+ *      ~ The tiles will fill in from the right.
+ *    iv. The tiles move from limbo to a staging row. Any extra tiles, including if the
+ *        player chooses no row, go to the broken tile area, filling in from the left.
+ *      ~ If the broken tile area is full, any extra tiles go to the discard.
+ * 4. Once the middle area is empty, we go into scoring phase.
+ *  a.  For each player, starting from the top row, if that row of the staging area is full,
+ *      one tile from the staging area moves to its space on the same row of the landing area.
+ *    i.  The rest of the tiles go to the discard.
+ *    ii. Players receive points for the tile that goes over. Check if there's consecutive tiles 
+ *        to the left and right of the placed tile. Count the number of consecutive tiles. THen check
+ *        if there's consecutive tiles to the top and bottom of the placed tile. Count the number of
+ *        consecutive tiles and add that number to the number of consecutive horizontal tiles,
+ *        then add that to the player's score.
+ *  b.  Next, subtract the point values from tiles in the broken tile area. 
+ *    i.  Those tiles then go to the discard. 
+ *    ii. A player's score cannot go negative.
+ * 5. Check if the game is over. The game is over if any player has a filled row in the landing area.
+ *  a.  If the game is not over, 
  * 
  */
 
