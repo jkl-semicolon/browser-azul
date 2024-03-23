@@ -1,0 +1,30 @@
+header {
+  border:3px solid black;
+}
+
+main {
+  /* height:800px; */
+}
+
+main > section {
+  min-height:100%;
+}
+
+#opponentSection > section {
+  height: 33%;
+  border:3px solid black;
+}
+
+#opponentSection > div {
+  height:.5%;
+  background-color:black;
+}
+
+[class*="col-"] {
+  float: left;
+  border:3px solid black;
+}
+
+.col-1 {width: 25%;}
+.col-2 {width: 37.5%;}
+.col-3 {width: 37.5%;}

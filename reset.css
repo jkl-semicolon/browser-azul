@@ -3,10 +3,6 @@
   https://www.joshwcomeau.com/css/custom-css-reset/
 */
 
-/*
-  Note from AW: commented out a few attributes that won't be needed.
-*/
-
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -15,7 +11,7 @@
 }
 body {
   line-height: 1.5;
-  /* -webkit-font-smoothing: antialiased; */
+  -webkit-font-smoothing: antialiased;
 }
 img, picture, video, canvas, svg {
   display: block;
@@ -29,4 +25,4 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 /* #root, #__next {
   isolation: isolate;
-} */
+}  */
