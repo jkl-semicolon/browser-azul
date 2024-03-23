@@ -61,8 +61,5 @@
  *   - If game end, add in game end bonuses to player scores and announce winning player. Game state will then reset.
  * 5. If reset button is clicked, warning message will ensue. If ignored, reset game state to how it was upon
  *    webpage's initial loading.
- * 
- *      
- * 
- * 
  */
+
