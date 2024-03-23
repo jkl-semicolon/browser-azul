@@ -2,9 +2,9 @@ header {
   border:3px solid black;
 }
 
-main {
-  /* height:800px; */
-}
+/* main {
+  height:800px;
+} */
 
 main > section {
   min-height:100%;
