@@ -11,6 +11,7 @@
  *   contain a link to the rules and a reset button for the game.
  * 
  * UI Mock-up: https://excalidraw.com/#json=5A1Qs7M1Xwagbi-VdDQzO,4UbnZ3Pjpiu9dvg4_5PQuQ
+ * Playerboard UI Mock-Up: https://excalidraw.com/#json=N80qGXgrPmSGdjNmtWmk8,BZgB_39jdjk9AwewcHqKRA
  * 
  *          ###########       Pseudocode       ###########
  *          ## ---- for header & hotseat play only ---- ## 
@@ -61,5 +62,40 @@
  *   - If game end, add in game end bonuses to player scores and announce winning player. Game state will then reset.
  * 5. If reset button is clicked, warning message will ensue. If ignored, reset game state to how it was upon
  *    webpage's initial loading.
+ * 
+ *          ###########       Pseudocode       ###########
+ *          ## ----- for game and game state flow ----- ## 
+ *          ##############################################
+ * 
+ * 1. Game starts.
+ *  a.  Set factory tile number, number of players, and player order. 
+ * 2. Generate game UI and start game state.
+ *  b.  Generate first player start board state in player area.
+ *    i.  Invisible top limbo area.
+ *      ~ Can hold an indeterminant number of tiles.
+ *    ii. Player board with:
+ *      ~ staging area of 5 rows, 15 empty tile spaces total,
+ *      ~ five arrow emojis stacked vertically,
+ *      ~ landing area with 5 different background colors with light shades.
+ *      ~ broken tile area with 8 spaces, with negative point values printed inside them.
+ *      ~ score area; starts at 0.
+ *  c.  Generate other players start board state in opponents area.
+ *  d.  Fill bag with 100 tiles and draw them for the main area.
+ *  e.  Generate middle area board state.
+ *    i.  Create factory tiles and place 4 random tiles on each factory tile.
+ *    ii. Create middle area which can hold at least 28 tiles.
+ *      ~ Place 1st player tile in middle area.
+ * 3. Players take turns until the middle area is empty of tiles.
+ *  a.  Between each player's turn, re-render the next player in the player area
+ *      and the other players in the opponents area.
+ *    i. On the same note, in between each player input, re-render what is needed.
+ *  b.  On a player's turn, select a group of the same colored tiles on either
+ *      a factory tile or from the middle. Take all of those tiles.
+ *    i.  If the 1st player tile is in the middle when you select from the middle,
+ *        take the 1st player tile.
+ *    ii. The tiles go to the limbo area in the player area.
+ *    iii.A dotted red border appears around the eligible rows for the limbo tiles
+ *        to be placed. The 
+ * 
  */
 
