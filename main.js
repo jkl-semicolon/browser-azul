@@ -5,7 +5,7 @@
  * BoardGameGeek entry: https://boardgamegeek.com/boardgame/230802/azul
  * 
  * - Single webpage play for 2-4 players in a hotseat format.
- * - Multiple webpage play for 2-4 players; requires a player host an API for game state.
+ * - Multiple webpage play for 2-4 players; requires a player to host an API for game state.
  * - Header will contain buttons to start a 2-4 person hotseat game,
  *   or to start a 2-4 person multiple webpage game. Header will also
  *   contain a link to the rules and a reset button for the game.
@@ -32,7 +32,7 @@
  *        point values running from [-1,-1,-2,-2,-2,-3,-3].
  *      - Player state will also keep track of the player score.
  *    - In a new round, the state in the middle of the board will reset and
- *      contain 5, 7, or 9 factory cards, each with 4 tiles of 5 different colors.
+ *      contain 5, 7, or 9 factory tiles, each with 4 tiles of 5 different colors.
  *      - There will also be a 1st player tile in the middle of the factory tiles.
  *    - The game state will have to accurately reflect where all tiles are
  *      while the game is being played.
@@ -52,10 +52,10 @@
  *     to current player's limbo. 1st player tile is also taken if it is in the middle when player chooses middle.
  *    - If player takes 1st player token, they are set to be 1st player next round.
  *   - While in limbo, player chooses which staging row to place tiles. Some tiles may fall into
- *     broken tile area.
+ *     broken tile area at this time.
  *   - Play passes to next player, and tiles continue to be chosen until none are left.
  *   - Play moves to landing phase, and all players see their scores change and potential tiles move
- *     from landing area to staging area. After score calculation, all tiles not on landing area are discarded.
+ *     from staging area to landing area. After score calculation, all tiles not on landing area are discarded.
  *   - Game checks for if game is over (if someone's landing area has a completed row).
  *     If not, start a new round by repopulating factory tiles, and refilling bag with discard pile if needed.
  *   - If game end, add in game end bonuses to player scores and announce winning player. Game state will then reset.
