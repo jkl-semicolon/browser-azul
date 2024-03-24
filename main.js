@@ -215,6 +215,7 @@ const setPlayerOrder = () => {
   state.turnOrder = shuffle([...state.players]);
   for (let i=0; i<state.turnOrder.length; i++) {
     if (state.turnOrder[i].firstNext) {
+      state.players[i].firstNext = false;
       state.turnOrder.unshift(state.turnOrder.splice(i,1)[0]);
     };
   };
@@ -231,4 +232,12 @@ const startGame = (numberPlayers) => {
   setPlayerOrder();
 };
 
-startGame(4);
+// startGame(4); ////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Occurs upon start of game, and anytime a user input in the game happens. 
+ * Creates a player's board html elements depending on their state.
+ */
+const renderPlayerBoard = () => {
+  
+}
