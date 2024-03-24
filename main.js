@@ -14,56 +14,6 @@
  * Playerboard UI Mock-Up: https://excalidraw.com/#json=N80qGXgrPmSGdjNmtWmk8,BZgB_39jdjk9AwewcHqKRA
  * 
  *          ###########       Pseudocode       ###########
- *          ## ---- for header & hotseat play only ---- ## 
- *          ##############################################
- *
- * 1. The header will show a picture of the game box, and have two
- *    sets of buttons, for 2P, 3P, 4P hotseat game and
- *    2P, 3P, 4P multiple browser game. There will also be an 
- *    external link to the rules and a button to reset the game.
- *   - Make sure that refreshing does not wipe the game state.
- * 2. Create a game state object.
- *   - The game state will contain individual player states.
- *      - Individual player boards will need to be stored in the game state.
- *      - The boards contain a 5x5 landing area for tiles that are
- *        already marked with the tiles it will accept.
- *      - The boards contain five row staging area, with the top row 
- *        having one staging tile space and the bottom row five spaces. 
- *      - The boards contain a one row broken tile area, with the negative
- *        point values running from [-1,-1,-2,-2,-2,-3,-3].
- *      - Player state will also keep track of the player score.
- *    - In a new round, the state in the middle of the board will reset and
- *      contain 5, 7, or 9 factory tiles, each with 4 tiles of 5 different colors.
- *      - There will also be a 1st player tile in the middle of the factory tiles.
- *    - The game state will have to accurately reflect where all tiles are
- *      while the game is being played.
- *    - There are 100 tiles, 20 each of 5 different colors. There is also the unique
- *      first player tile. Their locations can either be in the bag, in the middle 
- *      (if in middle, can be on factory tile or not on factory tile), with a player 
- *      (if with player, either in limbo, staging area, landing area, or broken area),
- *      or in the discard. Once bag is empty, discard will repopulate into bag.
- *    - Game state will also keep track of if there is a game going on, the number of players,
- *      who the active player is (for hotseat view purposes), the current player order, and the player
- *      order for next round.
- * 3. Once loaded into the webpage, the user can either choose to start a new game or read the rules.
- *   - User sees placeholder text/art/images in lieu of the other player area, middle area, and player area.
- * 4. After clicking start for 2P, 3P, or 4P, the number of factory discs will be set, and a player order is chosen.
- *   - Main area populates with tiles, and players see their empty play areas and scores.
- *   - Current player will click on a tile in the middle to take, and all colors in that area will go 
- *     to current player's limbo. 1st player tile is also taken if it is in the middle when player chooses middle.
- *    - If player takes 1st player token, they are set to be 1st player next round.
- *   - While in limbo, player chooses which staging row to place tiles. Some tiles may fall into
- *     broken tile area at this time.
- *   - Play passes to next player, and tiles continue to be chosen until none are left.
- *   - Play moves to landing phase, and all players see their scores change and potential tiles move
- *     from staging area to landing area. After score calculation, all tiles not on landing area are discarded.
- *   - Game checks for if game is over (if someone's landing area has a completed row).
- *     If not, start a new round by repopulating factory tiles, and refilling bag with discard pile if needed.
- *   - If game end, add in game end bonuses to player scores and announce winning player. Game state will then reset.
- * 5. If reset button is clicked, warning message will ensue. If ignored, reset game state to how it was upon
- *    webpage's initial loading.
- * 
- *          ###########       Pseudocode       ###########
  *          ## ----- for game and game state flow ----- ## 
  *          ##############################################
  * 
@@ -118,7 +68,47 @@
  *    i.  Those tiles then go to the discard. 
  *    ii. A player's score cannot go negative.
  * 5. Check if the game is over. The game is over if any player has a filled row in the landing area.
- *  a.  If the game is not over, 
+ *  a.  If the game is not over, a new round starts.
+ *    i.  Determine new player order; the player with the 1st player tile will go first, and 
+ *        the rest of the players then clockwise.
+ *    ii. Reset the main area with the factory tiles and four random tiles on each.
+ *      ~ If the bag is empty, move the discarded tiles to the bag and continue filling.
+ *      ~ If both discard and the bag are empty, stop filling factory tiles and play as is.
+ *      ~ Place 1st player token in the middle.
+ *    iii.Render player states again, with 1st player in the player area and other players in opponents area.
+ *    iv. Start the round.
+ *  b.  If the game is over, calculate the end game bonuses for each player.
+ *    i.  Gain 2 points for each full horizontal line in the landing area.
+ *    ii. Gain 7 points for each full vertical line in the landing area.
+ *    iii.Gain 10 points for each color filled in your landing area.
+ *  c. Determine winner and display victory. If tie, most completed horizonal lines is the winner; 
+ *     still tie, share victory.
+ *    i.  Reset game state to before game starts.
+ * 
+ *          ###########       Pseudocode       ###########
+ *          ## -----~ for website start and reset ----- ## 
+ *          ##############################################
+ * 
+ * 1. Upon loading website, the player, opponent, and middle area will contain relevant text/image/art.
+ *  a.  The header will contain box art, buttons for 2P, 3P, 4P hotseat play; 2P, 3P, 4P multiple
+ *      browser play, an external link to the rules .pdf, and a reset button.
+ *    i.  Reset button is greyed out while game state is game not started.
+ *    ii. User can press 2P, 3P, 4P hotseat play buttons to start a game (see game and 
+ *        game state flow pseudocode).
+ *    iii.User can press 2P, 3P, 4P multiple browser play buttons to start a game
+ *        //TODO  implement multiple browser play functionality.
+ *    iv. User can press the rules to open a new tab of the rules .pdf.
+ *  b.  Upon game start, the reset button will become active.
+ *    i.  If a player presses the reset button, a warning message will display. 
+ *        If the player continues, the game state will return to how the website was upon first opening.
+ *    ii. Upon game start, the hotseat play buttons and multiple browser play buttons will be greyed out.
+ *  c.  It is important that the game state does not reset if the website is refreshed.
+ * 
+ *          ###########       Pseudocode       ###########
+ *          ## -- for multiple browser functionality -- ## 
+ *          ##############################################
+ * 
+ *  // TODO
  * 
  */
 
