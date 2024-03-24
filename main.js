@@ -162,10 +162,10 @@ const initializePlayers = (numberPlayers) => {
     state.players.push({
       name: `Player ${i+1}`,
       score: 0,  // number
-      limbo: [], // array of strings or objects for tiles
-      staging: [],  // array of arrays of strings or objects for tiles
-      landing:  [], // array of arrays of strings or objects for tiles
-      broken: [], // array of strings or objects for tiles
+      limbo: [], // array of strings for tiles
+      staging: [],  // array of arrays of strings for tiles
+      landing:  [], // array of arrays of strings for tiles
+      broken: [], // array of strings for tiles
     });
   };
 };
