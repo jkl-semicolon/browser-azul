@@ -129,56 +129,56 @@ const state = {
   discard: [],  // array of strings or objects for tiles
   middle: [],  //  array of arrays, with state.middle[0] being the middle area, and 
                //  state.middle[1] being factory tile 1, and so on
-
-  player1:  {
-    currentPlayer: false, //  boolean
-    score: 0,  // number
-    limbo: [], // array of strings or objects for tiles
-    staging1: [], // array of strings or objects for tiles
-    staging2: [], // array of strings or objects for tiles
-    staging3: [], // array of strings or objects for tiles
-    staging4: [], // array of strings or objects for tiles
-    staging5: [], // array of strings or objects for tiles
-    landing:  [], // array of arrays of strings or objects for tiles
-    broken: [], // array of strings or objects for tiles
-  },
-  player2:  {
-    currentPlayer: false, //  boolean
-    score: 0,  // number
-    limbo: [], // array of strings or objects for tiles
-    staging1: [], // array of strings or objects for tiles
-    staging2: [], // array of strings or objects for tiles
-    staging3: [], // array of strings or objects for tiles
-    staging4: [], // array of strings or objects for tiles
-    staging5: [], // array of strings or objects for tiles
-    landing:  [], // array of arrays of strings or objects for tiles
-    broken: [], // array of strings or objects for tiles
-  },
-  player3:  {
-    currentPlayer: false, //  boolean
-    score: 0,  // number
-    limbo: [], // array of strings or objects for tiles
-    staging1: [], // array of strings or objects for tiles
-    staging2: [], // array of strings or objects for tiles
-    staging3: [], // array of strings or objects for tiles
-    staging4: [], // array of strings or objects for tiles
-    staging5: [], // array of strings or objects for tiles
-    landing:  [], // array of arrays of strings or objects for tiles
-    broken: [], // array of strings or objects for tiles
-  },
-  player4:  {
-    currentPlayer: false, //  boolean
-    score: 0,  // number
-    limbo: [], // array of strings or objects for tiles
-    staging1: [], // array of strings or objects for tiles
-    staging2: [], // array of strings or objects for tiles
-    staging3: [], // array of strings or objects for tiles
-    staging4: [], // array of strings or objects for tiles
-    staging5: [], // array of strings or objects for tiles
-    landing:  [], // array of arrays of strings or objects for tiles
-    broken: [], // array of strings or objects for tiles
-  },
-
+  players: [  // array of 4 player objects
+    player1: {
+      currentPlayer: false, //  boolean
+      score: 0,  // number
+      limbo: [], // array of strings or objects for tiles
+      staging1: [], // array of strings or objects for tiles
+      staging2: [], // array of strings or objects for tiles
+      staging3: [], // array of strings or objects for tiles
+      staging4: [], // array of strings or objects for tiles
+      staging5: [], // array of strings or objects for tiles
+      landing:  [], // array of arrays of strings or objects for tiles
+      broken: [], // array of strings or objects for tiles
+    },
+    player2: {
+      currentPlayer: false, //  boolean
+      score: 0,  // number
+      limbo: [], // array of strings or objects for tiles
+      staging1: [], // array of strings or objects for tiles
+      staging2: [], // array of strings or objects for tiles
+      staging3: [], // array of strings or objects for tiles
+      staging4: [], // array of strings or objects for tiles
+      staging5: [], // array of strings or objects for tiles
+      landing:  [], // array of arrays of strings or objects for tiles
+      broken: [], // array of strings or objects for tiles
+    },
+    player3: {
+      currentPlayer: false, //  boolean
+      score: 0,  // number
+      limbo: [], // array of strings or objects for tiles
+      staging1: [], // array of strings or objects for tiles
+      staging2: [], // array of strings or objects for tiles
+      staging3: [], // array of strings or objects for tiles
+      staging4: [], // array of strings or objects for tiles
+      staging5: [], // array of strings or objects for tiles
+      landing:  [], // array of arrays of strings or objects for tiles
+      broken: [], // array of strings or objects for tiles
+    },
+    player4: {
+      currentPlayer: false, //  boolean
+      score: 0,  // number
+      limbo: [], // array of strings or objects for tiles
+      staging1: [], // array of strings or objects for tiles
+      staging2: [], // array of strings or objects for tiles
+      staging3: [], // array of strings or objects for tiles
+      staging4: [], // array of strings or objects for tiles
+      staging5: [], // array of strings or objects for tiles
+      landing:  [], // array of arrays of strings or objects for tiles
+      broken: [], // array of strings or objects for tiles
+    },
+  ],
   gameEnd: false, // boolean
   winner: '', // string of player
 };
