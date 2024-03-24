@@ -14,6 +14,31 @@
  * Playerboard UI Mock-Up: https://excalidraw.com/#json=N80qGXgrPmSGdjNmtWmk8,BZgB_39jdjk9AwewcHqKRA
  * 
  *          ###########       Pseudocode       ###########
+ *          ## -----~ for website start and reset ----- ## 
+ *          ##############################################
+ * 
+ * 1. Upon loading website, the player, opponent, and middle area will contain relevant text/image/art.
+ *  a.  The header will contain box art, buttons for 2P, 3P, 4P hotseat play; 2P, 3P, 4P multiple
+ *      browser play, an external link to the rules .pdf, and a reset button.
+ *    i.  Reset button is greyed out while game state is game not started.
+ *    ii. User can press 2P, 3P, 4P hotseat play buttons to start a game (see game and 
+ *        game state flow pseudocode).
+ *    iii.User can press 2P, 3P, 4P multiple browser play buttons to start a game
+ *        //TODO  implement multiple browser play functionality.
+ *    iv. User can press the rules to open a new tab of the rules .pdf.
+ *  b.  Upon game start, the reset button will become active.
+ *    i.  If a player presses the reset button, a warning message will display. 
+ *        If the player continues, the game state will return to how the website was upon first opening.
+ *    ii. Upon game start, the hotseat play buttons and multiple browser play buttons will be greyed out.
+ *  c.  It is important that the game state does not reset if the website is refreshed.
+ *
+ *          ###########       Pseudocode       ###########
+ *          ## -- for multiple browser functionality -- ## 
+ *          ##############################################
+ * 
+ *  // TODO
+ * 
+ *          ###########       Pseudocode       ###########
  *          ## ----- for game and game state flow ----- ## 
  *          ##############################################
  * 
@@ -84,31 +109,6 @@
  *  c. Determine winner and display victory. If tie, most completed horizonal lines is the winner; 
  *     still tie, share victory.
  *    i.  Reset game state to before game starts.
- * 
- *          ###########       Pseudocode       ###########
- *          ## -----~ for website start and reset ----- ## 
- *          ##############################################
- * 
- * 1. Upon loading website, the player, opponent, and middle area will contain relevant text/image/art.
- *  a.  The header will contain box art, buttons for 2P, 3P, 4P hotseat play; 2P, 3P, 4P multiple
- *      browser play, an external link to the rules .pdf, and a reset button.
- *    i.  Reset button is greyed out while game state is game not started.
- *    ii. User can press 2P, 3P, 4P hotseat play buttons to start a game (see game and 
- *        game state flow pseudocode).
- *    iii.User can press 2P, 3P, 4P multiple browser play buttons to start a game
- *        //TODO  implement multiple browser play functionality.
- *    iv. User can press the rules to open a new tab of the rules .pdf.
- *  b.  Upon game start, the reset button will become active.
- *    i.  If a player presses the reset button, a warning message will display. 
- *        If the player continues, the game state will return to how the website was upon first opening.
- *    ii. Upon game start, the hotseat play buttons and multiple browser play buttons will be greyed out.
- *  c.  It is important that the game state does not reset if the website is refreshed.
- * 
- *          ###########       Pseudocode       ###########
- *          ## -- for multiple browser functionality -- ## 
- *          ##############################################
- * 
- *  // TODO
  * 
  */
 
