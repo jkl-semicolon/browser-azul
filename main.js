@@ -127,7 +127,7 @@ const state = {
 
   bag: [],  // array of strings for tiles
   discard: [],  // array of strings for tiles
-  middle: [],  //  array of arrays, with state.middle[0] being the middle area, and 
+  middle: [[],],  //  array of arrays, with state.middle[0] being the middle area, and 
                //  state.middle[1] being factory tile 1, and so on
   players: [],  // array of up to 4 player objects; see function initializePlayers
   currentPlayer: 0,  // number of player's index
@@ -149,13 +149,22 @@ const $playerSection = document.querySelector('#playerSection');
 
 /**
  *          #############################################
+ *          ## ----------- Event Listeners ----------- ## 
+ *          #############################################
+ * 
+ * //TODO
+ * 
+ */
+
+/**
+ *          #############################################
  *          ## ----------- Game Functions ------------ ## 
  *          #############################################
  */
 
 /**
  * Initializes empty player objects in state.players.
- * @param {number} numberPlayers, the number of players selected.so lik
+ * @param {number} numberPlayers, the number of players selected
  */
 const initializePlayers = (numberPlayers) => {
   for (let i=0; i<numberPlayers; i++) {
@@ -163,10 +172,63 @@ const initializePlayers = (numberPlayers) => {
       name: `Player ${i+1}`,
       score: 0,  // number
       limbo: [], // array of strings for tiles
-      staging: [],  // array of arrays of strings for tiles
-      landing:  [], // array of arrays of strings for tiles
+      staging: [[],[],[],[],[],],  // array of arrays of strings for tiles
+      landing:  [[],[],[],[],[],], // array of arrays of strings for tiles
       broken: [], // array of strings for tiles
+      firstNext: false, //  boolean for first in turn order next round
     });
   };
 };
 
+/**
+ * Helps set the factory tiles for the number of players.
+ */
+const setFactoryTiles = () => {
+  state.factoryTiles = (state.players.length === 2) ? 5 : (state.players.length === 3) ? 7 : 9;
+};
+
+/**
+ * Fisher-Yates Shuffle, sourced from: https://bost.ocks.org/mike/shuffle/.
+ * To help randomize players for function setTurnOrder.
+ * @param {array}, array of player objects 
+ * @returns {array}, array of shuffled player objects
+ */
+function shuffle(array) {
+  var m = array.length, t, i;
+  // While there remain elements to shuffle…
+  while (m) {
+    // Pick a remaining element…
+    i = Math.floor(Math.random() * m--);
+    // And swap it with the current element.
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  };
+  return array;
+};
+
+/**
+ * Sets player order randomly at the start, then sets player order according to
+ * the 1st player marker at the start of subsequent rounds.
+ */
+const setPlayerOrder = () => {
+  state.turnOrder = shuffle([...state.players]);
+  for (let i=0; i<state.turnOrder.length; i++) {
+    if (state.turnOrder[i].firstNext) {
+      state.turnOrder.unshift(state.turnOrder.splice(i,1)[0]);
+    };
+  };
+};
+
+/**
+ * Occurs upon player selection button press. 
+ * Initialize players, set factory tile number, and player order randomly.
+ * @param {number} numberPlayers, the number of players selected
+ */
+const startGame = (numberPlayers) => {
+  initializePlayers(numberPlayers);
+  setFactoryTiles();
+  setPlayerOrder();
+};
+
+startGame(4);
