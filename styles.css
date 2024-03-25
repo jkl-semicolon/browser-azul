@@ -58,7 +58,7 @@ main > section {
   border:none !important;
 }
 
-.landingArea > div {
+.stagingArea > div {
   display:flex;
   flex-direction:row;
   margin-top:5px;

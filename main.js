@@ -256,21 +256,21 @@ const createLimbo = (player) => {
 
 // player.landing:  [[],[],[],[],[],],
 console.log(state);
-state.players[2].landing[0].push('red');
-state.players[2].landing[1].push('blue','blue');
-state.players[2].landing[2].push('yellow','yellow','yellow');
-state.players[2].landing[3].push('blue','blue','blue');
-state.players[2].landing[4].push('purple','purple','purple','purple');
+state.players[2].staging[0].push('red');
+state.players[2].staging[1].push('blue','blue');
+state.players[2].staging[2].push('yellow','yellow','yellow');
+state.players[2].staging[3].push('blue','blue','blue');
+state.players[2].staging[4].push('purple','purple','purple','purple');
 console.log(state);
 
 /**
- * Creates the landing area with colored tiles on a playerboard.
- * @param {object}, the player to create the landing for
- * @returns {object}, the landingArea html element
+ * Creates the staging area with colored tiles on a playerboard.
+ * @param {object}, the player to create the staging for
+ * @returns {object}, the stagingArea html element
  */
-const createLanding = (player) => {
+const createStaging = (player) => {
   const element = document.createElement('div');
-  element.classList.add('landingArea');
+  element.classList.add('stagingArea');
   let index = -1;
   for (let i=4; i>=0; i--) {
     index++;
@@ -280,24 +280,24 @@ const createLanding = (player) => {
       hiddenTile.classList.add('hiddenTile', 'tile');
       row.appendChild(hiddenTile);
     };
-    const blankSpace = 5 - i - player.landing[index].length;
+    const blankSpace = 5 - i - player.staging[index].length;
     for (let j=blankSpace; j>0; j--) {
       const blankTileSpace = document.createElement('div');
       blankTileSpace.classList.add('blankTileSpace', 'tile');
       row.appendChild(blankTileSpace);
     };
-    player.landing[index].forEach((stateLandingTile) => {
-      const landingTile = document.createElement('div');
-      landingTile.classList.add(`${stateLandingTile}`, 'tile');
-      row.appendChild(landingTile);
+    player.staging[index].forEach((stateStagingTile) => {
+      const stagingTile = document.createElement('div');
+      stagingTile.classList.add(`${stateStagingTile}`, 'tile');
+      row.appendChild(stagingTile);
     });
     element.appendChild(row);
   };
   return element;
 };
 
-console.log(createLanding(state.players[2]));
-$playerSection.appendChild(createLanding(state.players[2]));
+// console.log(createLanding(state.players[2]));
+$playerSection.appendChild(createStaging(state.players[2]));
 
 // createLimbo(state.players[2]);//////////////////////////////////////////////////////////////////////////////
 
@@ -308,5 +308,6 @@ $playerSection.appendChild(createLanding(state.players[2]));
  */
 const renderPlayerBoard = (player) => {
   const limbo = createLimbo(player);
-  const landing = createLanding(player);
+  const landing = createStaging(player);
+  // const 
 };
