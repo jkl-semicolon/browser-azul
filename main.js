@@ -193,13 +193,10 @@ const setFactoryTiles = () => {
  * @param {array}, array of player objects 
  * @returns {array}, array of shuffled player objects
  */
-function shuffle(array) {
-  var m = array.length, t, i;
-  // While there remain elements to shuffle…
+const shuffle = (array) => {
+  let m = array.length, t, i;
   while (m) {
-    // Pick a remaining element…
     i = Math.floor(Math.random() * m--);
-    // And swap it with the current element.
     t = array[m];
     array[m] = array[i];
     array[i] = t;
@@ -232,12 +229,84 @@ const startGame = (numberPlayers) => {
   setPlayerOrder();
 };
 
-// startGame(4); ////////////////////////////////////////////////////////////////////////////////////////////////
+
+startGame(4); ////////////////////////////////////////////////////////////////////////////////////////////////
+// console.log(state);
+// state.players[2].limbo.push('red');
+// state.players[2].limbo.push('blue');
+// state.players[2].limbo.push('blue');
+// state.players[2].limbo.push('purple');
+// console.log(state);
 
 /**
- * Occurs upon start of game, and anytime a user input in the game happens. 
- * Creates a player's board html elements depending on their state.
+ * Creates the limbo area with colored tiles on a playerboard.
+ * @param {object}, the player to create limbo for
+ * @returns {object}, the limboArea html element
  */
-const renderPlayerBoard = () => {
-  
-}
+const createLimbo = (player) => {
+  const element = document.createElement('div');
+  element.classList.add('limboArea');
+  player.limbo.forEach((stateLimboTile) => {
+    const limboTile = document.createElement('div');
+    limboTile.classList.add(`${stateLimboTile}`);
+    element.appendChild(limboTile);
+  });
+  return element;
+};
+
+// player.landing:  [[],[],[],[],[],],
+console.log(state);
+state.players[2].landing[0].push('red');
+state.players[2].landing[1].push('blue','blue');
+state.players[2].landing[2].push('yellow','yellow','yellow');
+state.players[2].landing[3].push('blue','blue','blue');
+state.players[2].landing[4].push('purple','purple','purple','purple');
+console.log(state);
+
+/**
+ * Creates the landing area with colored tiles on a playerboard.
+ * @param {object}, the player to create the landing for
+ * @returns {object}, the landingArea html element
+ */
+const createLanding = (player) => {
+  const element = document.createElement('div');
+  element.classList.add('landingArea');
+  let index = -1;
+  for (let i=4; i>=0; i--) {
+    index++;
+    const row = document.createElement('div');
+    for (let j=i; j>0; j--) {
+      const hiddenTile = document.createElement('div');
+      hiddenTile.classList.add('hiddenTile', 'tile');
+      row.appendChild(hiddenTile);
+    };
+    const blankSpace = 5 - i - player.landing[index].length;
+    for (let j=blankSpace; j>0; j--) {
+      const blankTileSpace = document.createElement('div');
+      blankTileSpace.classList.add('blankTileSpace', 'tile');
+      row.appendChild(blankTileSpace);
+    };
+    player.landing[index].forEach((stateLandingTile) => {
+      const landingTile = document.createElement('div');
+      landingTile.classList.add(`${stateLandingTile}`, 'tile');
+      row.appendChild(landingTile);
+    });
+    element.appendChild(row);
+  };
+  return element;
+};
+
+console.log(createLanding(state.players[2]));
+$playerSection.appendChild(createLanding(state.players[2]));
+
+// createLimbo(state.players[2]);//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Occurs for each player upon start of game, and anytime a user input in the game happens. 
+ * Creates a player's board html elements depending on their state.
+ * @param {object}, the player that is being rendered
+ */
+const renderPlayerBoard = (player) => {
+  const limbo = createLimbo(player);
+  const landing = createLanding(player);
+};

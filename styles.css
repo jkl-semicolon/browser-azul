@@ -28,3 +28,39 @@ main > section {
 .col-1 {width: 25%;}
 .col-2 {width: 37.5%;}
 .col-3 {width: 37.5%;}
+
+
+
+.red {
+  background-color:red;
+}
+.blue{
+  background-color:blue;
+}
+.green{
+  background-color:green;
+}
+.purple{
+  background-color:purple;
+}
+.yellow{
+  background-color:yellow;
+}
+
+.tile {
+  height:20px;
+  width:20px;
+  border:2px solid black;
+  margin-left:3px;
+}
+
+.hiddenTile {
+  border:none !important;
+}
+
+.landingArea > div {
+  display:flex;
+  flex-direction:row;
+  margin-top:5px;
+  margin-left:5px;
+}
