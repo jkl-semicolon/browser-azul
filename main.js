@@ -158,6 +158,21 @@ const $playerSection = document.querySelector('#playerSection');
 
 /**
  *          #############################################
+ *          ## -------- Other Global Variables ------- ## 
+ *          #############################################
+ * 
+ */
+
+const landingPattern = [
+  ['blue','yellow','red','purple','green'],
+  ['green','blue','yellow','red','purple'],
+  ['purple','green','blue','yellow','red'],
+  ['red','purple','green','blue','yellow'],
+  ['yellow','red','purple','green','blue'],
+];
+
+/**
+ *          #############################################
  *          ## ----------- Game Functions ------------ ## 
  *          #############################################
  */
@@ -297,9 +312,17 @@ const createStaging = (player) => {
 };
 
 // console.log(createLanding(state.players[2]));
-$playerSection.appendChild(createStaging(state.players[2]));
-
+// $playerSection.appendChild(createStaging(state.players[2]));
 // createLimbo(state.players[2]);//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Creates the landing area with colored tiles on a playerboard.
+ * @param {object}, the player to create the staging for
+ * @returns {object}, the landingArea html element
+ */
+const createLanding = (player) => {
+  
+}
 
 /**
  * Occurs for each player upon start of game, and anytime a user input in the game happens. 
@@ -308,6 +331,6 @@ $playerSection.appendChild(createStaging(state.players[2]));
  */
 const renderPlayerBoard = (player) => {
   const limbo = createLimbo(player);
-  const landing = createStaging(player);
-  // const 
+  const staging = createStaging(player);
+  const landing = createLanding(player);
 };
