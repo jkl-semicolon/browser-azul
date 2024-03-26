@@ -58,9 +58,19 @@ main > section {
   border:none !important;
 }
 
-.stagingArea > div {
+.stagingArea > div,
+.landingArea > div {
   display:flex;
   flex-direction:row;
   margin-top:5px;
   margin-left:5px;
+}
+
+.landingSpace {
+  opacity: .2;
+}
+
+#playerSection {
+  display:flex;
+  flex-wrap: wrap;
 }

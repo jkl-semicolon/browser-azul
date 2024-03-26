@@ -276,6 +276,11 @@ state.players[2].staging[1].push('blue','blue');
 state.players[2].staging[2].push('yellow','yellow','yellow');
 state.players[2].staging[3].push('blue','blue','blue');
 state.players[2].staging[4].push('purple','purple','purple','purple');
+state.players[2].landing[0].push('red');
+state.players[2].landing[1].push('blue','red');
+state.players[2].landing[2].push('yellow','red','purple');
+state.players[2].landing[3].push('green','blue','purple');
+state.players[2].landing[4].push('green','red','purple','blue');
 console.log(state);
 
 /**
@@ -312,8 +317,30 @@ const createStaging = (player) => {
 };
 
 // console.log(createLanding(state.players[2]));
-// $playerSection.appendChild(createStaging(state.players[2]));
+$playerSection.appendChild(createStaging(state.players[2]));
 // createLimbo(state.players[2]);//////////////////////////////////////////////////////////////////////////////
+
+// const landingPattern = [
+//   ['blue','yellow','red','purple','green'],
+//   ['green','blue','yellow','red','purple'],
+//   ['purple','green','blue','yellow','red'],
+//   ['red','purple','green','blue','yellow'],
+//   ['yellow','red','purple','green','blue'],
+// ];
+
+const createArrows = () => {
+  const element = document.createElement('div');
+  element.innerHTML = `
+    ➡️<br>➡️<br>➡️<br>➡️<br>➡️
+  `;
+  element.style.fontSize = '1.07rem';
+  element.style.marginLeft = '5px';
+  return element;
+};
+
+$playerSection.appendChild(createArrows());
+
+// console.log(');
 
 /**
  * Creates the landing area with colored tiles on a playerboard.
@@ -321,8 +348,27 @@ const createStaging = (player) => {
  * @returns {object}, the landingArea html element
  */
 const createLanding = (player) => {
-  
-}
+  const element = document.createElement('div');
+  element.classList.add('landingArea');
+  for (let i=0; i<landingPattern.length; i++) {
+    const row = document.createElement('div');
+    landingPattern[i].forEach((pattern) => {
+      const landingSpace = document.createElement('div');
+      landingSpace.classList.add(`${pattern}`, 'tile', 'landingSpace');
+      player.landing[i].forEach((tile) => {
+        if (tile === pattern) {
+          landingSpace.classList.remove('landingSpace');
+        };
+      });
+      row.appendChild(landingSpace);
+    });
+    element.appendChild(row);
+  };
+  return element;
+};
+
+console.log(state.players[2]);
+$playerSection.appendChild(createLanding(state.players[2]));
 
 /**
  * Occurs for each player upon start of game, and anytime a user input in the game happens. 
