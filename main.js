@@ -271,16 +271,16 @@ const createLimbo = (player) => {
 
 // player.landing:  [[],[],[],[],[],],
 console.log(state);
-state.players[2].staging[0].push('red');
-state.players[2].staging[1].push('blue','blue');
-state.players[2].staging[2].push('yellow','yellow','yellow');
+state.players[2].staging[0].push('yellow');
+state.players[2].staging[1].push('green','green');
+state.players[2].staging[2].push('red');
 state.players[2].staging[3].push('blue','blue','blue');
-state.players[2].staging[4].push('purple','purple','purple','purple');
-state.players[2].landing[0].push('red');
-state.players[2].landing[1].push('blue','red');
-state.players[2].landing[2].push('yellow','red','purple');
-state.players[2].landing[3].push('green','blue','purple');
-state.players[2].landing[4].push('green','red','purple','blue');
+state.players[2].staging[4].push('red');
+state.players[2].landing[0].push();
+state.players[2].landing[1].push('yellow','red');
+state.players[2].landing[2].push('blue','yellow','purple');
+state.players[2].landing[3].push('green','purple');
+state.players[2].landing[4].push('green','purple','blue');
 console.log(state);
 
 /**
