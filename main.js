@@ -196,10 +196,11 @@ const initializePlayers = (numberPlayers) => {
 };
 
 /**
- * Helps set the factory tiles for the number of players.
+ * Helps set the factory tile number for the number of players, and adds their arrays to state.
  */
 const setFactoryTiles = () => {
   state.factoryTiles = (state.players.length === 2) ? 5 : (state.players.length === 3) ? 7 : 9;
+  for (let i=0; i<state.factoryTiles; i++) state.middle.push([]);
 };
 
 /**
@@ -244,9 +245,6 @@ const startGame = (numberPlayers) => {
   setPlayerOrder();
 };
 
-
-startGame(4); ////////////////////////////////////////////////////////////////////////////////////////////////
-
 /**
  * Creates the limbo area with colored tiles on a playerboard.
  * @param {object}, the player to create limbo for
@@ -262,21 +260,6 @@ const createLimbo = (player) => {
   });
   return element;
 };
-
-console.log(state);
-state.players[2].staging[0].push('yellow');
-state.players[2].staging[1].push('green','green');
-state.players[2].staging[2].push('red');
-state.players[2].staging[3].push('blue','blue','blue');
-state.players[2].staging[4].push('yellow');
-state.players[2].landing[0].push();
-state.players[2].landing[1].push('yellow','red');
-state.players[2].landing[2].push('blue','yellow','purple');
-state.players[2].landing[3].push('green','purple');
-state.players[2].landing[4].push('green','purple','blue');
-state.players[2].broken.push('green','red','purple','purple');
-state.players[2].limbo.push('yellow','yellow','yellow');
-console.log(state);
 
 /**
  * Creates the staging area with colored tiles on a playerboard.
@@ -350,12 +333,17 @@ const createLanding = (player) => {
   return element;
 };
 
+/**
+ * Creates the broken tile area along with player score.
+ * @param {object}, the player to create the staging for
+ * @returns {object}, the brokenArea html element
+ */
 const createBrokenScore = (player) => {
   const element = document.createElement('div');
   element.classList.add('brokenArea');
   for (let i=0; i<8; i++) {
     const brokenSpace = document.createElement('div');
-    brokenSpace.innerHTML = i<3 ? '-1' : i<6 ? '-2' : '-3';
+    brokenSpace.innerHTML = `<p>${i<3 ? '-1' : i<6 ? '-2' : '-3'}</p>`;
     if (player.broken[i]) brokenSpace.classList.add(`${player.broken[i]}`, 'tile');
     else brokenSpace.classList.add('tile');
     element.appendChild(brokenSpace);
@@ -367,16 +355,6 @@ const createBrokenScore = (player) => {
   return element;
 };
 
-
-
-console.log(createLanding(state.players[2]));
-$playerSection.appendChild(createLimbo(state.players[2]));//////////////////////////////////////////////////////////////////////////////
-$playerSection.appendChild(createStaging(state.players[2]));
-$playerSection.appendChild(createArrows());
-console.log(state.players[2]);
-$playerSection.appendChild(createLanding(state.players[2]));
-$playerSection.appendChild(createBrokenScore(state.players[2]));
-
 /**
  * Occurs for each player upon start of game, and anytime a user input in the game happens. 
  * Creates a player's board html elements depending on their state.
@@ -387,4 +365,66 @@ const renderPlayerBoard = (player) => {
   const staging = createStaging(player);
   const arrows = createArrows();
   const landing = createLanding(player);
+  const brokenScore = createBrokenScore(player);
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+startGame(4); ////////////////////////////////////////////////////////////////////////////////////////////////
+console.log(state);
+state.players[2].staging[0].push('yellow');
+state.players[2].staging[1].push('green','green');
+state.players[2].staging[2].push('red');
+state.players[2].staging[3].push('blue','blue','blue');
+state.players[2].staging[4].push('yellow');
+state.players[2].landing[0].push();
+state.players[2].landing[1].push('yellow','red');
+state.players[2].landing[2].push('blue','yellow','purple');
+state.players[2].landing[3].push('green','purple');
+state.players[2].landing[4].push('green','purple','blue');
+state.players[2].broken.push('green','red','purple','purple');
+state.players[2].limbo.push('yellow','yellow','yellow');
+console.log(state);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+console.log(createLanding(state.players[2]));
+$playerSection.appendChild(createLimbo(state.players[2]));//////////////////////////////////////////////////////////////////////////////
+$playerSection.appendChild(createStaging(state.players[2]));
+$playerSection.appendChild(createArrows());
+console.log(state.players[2]);
+$playerSection.appendChild(createLanding(state.players[2]));
+$playerSection.appendChild(createBrokenScore(state.players[2]));
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// const state = {
+
+//   factoryTiles: 0, // enumerated number, either 5, 7, or 9
+
+//   middle: [[],],  //  array of arrays, with state.middle[0] being the middle area, and 
+//                //  state.middle[1] being factory tile 1, and so on
+// }
+
+/**
+ * Occurs at the start of a new round, and also occurs anytime a user input in the game happens. 
+ * Creates the factory tiles and possible tiles on those factory tiles depending on their state.
+ * @param {object}, the factory tiles with possible tiles on them.
+ */
+const createFactoryTiles = () => {
+  for (let i=0; i<state.factoryTiles; i++) {
+    const element = document.createElement('div');
+    element.classList.add('factoryTile');
+
+  };
+};
+
+
+/**
+ * Renders the main area along with its factory tiles, 1st player tile, and colored tiles.
+ */
+const renderMainArea = () => {
+  const factoryTiles = createFactoryTiles();
 };
