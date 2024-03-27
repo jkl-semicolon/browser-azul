@@ -14,7 +14,7 @@
  * Playerboard UI Mock-Up: https://excalidraw.com/#json=N80qGXgrPmSGdjNmtWmk8,BZgB_39jdjk9AwewcHqKRA
  * 
  *          ###########       Pseudocode       ###########
- *          ## ------ for website start and reset ----- ## 
+ *          ## ------ for website start and reset ----- ##
  *          ##############################################
  * 
  * 1. Upon loading website, the player, opponent, and middle area will contain relevant text/image/art.
@@ -33,13 +33,13 @@
  *  c.  It is important that the game state does not reset if the website is refreshed.
  *
  *          ###########       Pseudocode       ###########
- *          ## -- for multiple browser functionality -- ## 
+ *          ## -- for multiple browser functionality -- ##
  *          ##############################################
  * 
  *  // TODO
  * 
  *          ###########       Pseudocode       ###########
- *          ## ----- for game and game state flow ----- ## 
+ *          ## ----- for game and game state flow ----- ##
  *          ##############################################
  * 
  * 1. Game starts.
@@ -114,11 +114,11 @@
 
 /**
  *          #############################################
- *          ## ---------- Game State Object ---------- ## 
+ *          ## ---------- Game State Object ---------- ##
  *          #############################################
  */
 
-const state = {
+export const state = {
 
   gameStart: false, // boolean
   numberPlayers: 0, // enumerated number, either 2, 3, or 4
@@ -128,7 +128,8 @@ const state = {
   bag: [],  // array of strings for tiles
   discard: [],  // array of strings for tiles
   middle: [[],],  //  array of arrays, with state.middle[0] being the middle area, and 
-               //  state.middle[1] being factory tile 1, and so on
+               //  state.middle[1] being factory tile 1, and so on. The other factory
+               // tile empty arrays will be added when the number of players is chosen.
   players: [],  // array of up to 4 player objects; see function initializePlayers
   currentPlayer: 0,  // number of player's index
   gameEnd: false, // boolean
@@ -137,7 +138,7 @@ const state = {
 
 /**
  *          #############################################
- *          ## ----------- DOM Connections ----------- ## 
+ *          ## ----------- DOM Connections ----------- ##
  *          #############################################
  */
 
@@ -149,7 +150,7 @@ const $playerSection = document.querySelector('#playerSection');
 
 /**
  *          #############################################
- *          ## ----------- Event Listeners ----------- ## 
+ *          ## ----------- Event Listeners ----------- ##
  *          #############################################
  * 
  * //TODO
@@ -158,215 +159,19 @@ const $playerSection = document.querySelector('#playerSection');
 
 /**
  *          #############################################
- *          ## -------- Other Global Variables ------- ## 
+ *          ## --------------- Imports --------------- ##
  *          #############################################
  * 
  */
 
-const landingPattern = [
-  ['blue','yellow','red','purple','green'],
-  ['green','blue','yellow','red','purple'],
-  ['purple','green','blue','yellow','red'],
-  ['red','purple','green','blue','yellow'],
-  ['yellow','red','purple','green','blue'],
-];
+import startGame from './src/startGame.js';
+import renderPlayerBoard from './src/renderPlayerBoard.js';
 
 /**
  *          #############################################
- *          ## ----------- Game Functions ------------ ## 
+ *          ## ----------- Game Functions ------------ ##
  *          #############################################
  */
-
-/**
- * Initializes empty player objects in state.players.
- * @param {number} numberPlayers, the number of players selected
- */
-const initializePlayers = (numberPlayers) => {
-  for (let i=0; i<numberPlayers; i++) {
-    state.players.push({
-      name: `Player ${i+1}`,
-      score: 0,  // number
-      limbo: [], // array of strings for tiles
-      staging: [[],[],[],[],[],],  // array of arrays of strings for tiles
-      landing:  [[],[],[],[],[],], // array of arrays of strings for tiles
-      broken: [], // array of strings for tiles
-      firstNext: false, //  boolean for first in turn order next round
-    });
-  };
-};
-
-/**
- * Helps set the factory tile number for the number of players, and adds their arrays to state.
- */
-const setFactoryTiles = () => {
-  state.factoryTiles = (state.players.length === 2) ? 5 : (state.players.length === 3) ? 7 : 9;
-  for (let i=0; i<state.factoryTiles; i++) state.middle.push([]);
-};
-
-/**
- * Fisher-Yates Shuffle, sourced from: https://bost.ocks.org/mike/shuffle/.
- * To help randomize players for function setTurnOrder.
- * @param {array}, array of player objects 
- * @returns {array}, array of shuffled player objects
- */
-const shuffle = (array) => {
-  let m = array.length, t, i;
-  while (m) {
-    i = Math.floor(Math.random() * m--);
-    t = array[m];
-    array[m] = array[i];
-    array[i] = t;
-  };
-  return array;
-};
-
-/**
- * Sets player order randomly at the start, then sets player order according to
- * the 1st player marker at the start of subsequent rounds.
- */
-const setPlayerOrder = () => {
-  state.turnOrder = shuffle([...state.players]);
-  for (let i=0; i<state.turnOrder.length; i++) {
-    if (state.turnOrder[i].firstNext) {
-      state.players[i].firstNext = false;
-      state.turnOrder.unshift(state.turnOrder.splice(i,1)[0]);
-    };
-  };
-};
-
-/**
- * Occurs upon player selection button press. 
- * Initialize players, set factory tile number, and player order randomly.
- * @param {number} numberPlayers, the number of players selected
- */
-const startGame = (numberPlayers) => {
-  initializePlayers(numberPlayers);
-  setFactoryTiles();
-  setPlayerOrder();
-};
-
-/**
- * Creates the limbo area with colored tiles on a playerboard.
- * @param {object}, the player to create limbo for
- * @returns {object}, the limboArea html element
- */
-const createLimbo = (player) => {
-  const element = document.createElement('div');
-  element.classList.add('limboArea');
-  player.limbo.forEach((tile) => {
-    const limboTile = document.createElement('div');
-    limboTile.classList.add('tile', `${tile}`);
-    element.appendChild(limboTile);
-  });
-  return element;
-};
-
-/**
- * Creates the staging area with colored tiles on a playerboard.
- * @param {object}, the player to create the staging for
- * @returns {object}, the stagingArea html element
- */
-const createStaging = (player) => {
-  const element = document.createElement('div');
-  element.classList.add('stagingArea');
-  let index = -1;
-  for (let i=4; i>=0; i--) {
-    index++;
-    const row = document.createElement('div');
-    for (let j=i; j>0; j--) {
-      const hiddenTile = document.createElement('div');
-      hiddenTile.classList.add('hiddenTile', 'tile');
-      row.appendChild(hiddenTile);
-    };
-    const blankSpace = 5 - i - player.staging[index].length;
-    for (let j=blankSpace; j>0; j--) {
-      const blankTileSpace = document.createElement('div');
-      blankTileSpace.classList.add('blankTileSpace', 'tile');
-      row.appendChild(blankTileSpace);
-    };
-    player.staging[index].forEach((stateStagingTile) => {
-      const stagingTile = document.createElement('div');
-      stagingTile.classList.add(`${stateStagingTile}`, 'tile');
-      row.appendChild(stagingTile);
-    });
-    element.appendChild(row);
-  };
-  return element;
-};
-
-/**
- * Creates the arrows between the staging and landing areas of the player board.
- * @returns {object}, the arrows that go between staging and landing.
- */
-const createArrows = () => {
-  const element = document.createElement('div');
-  element.innerHTML = `
-    ➡️<br>➡️<br>➡️<br>➡️<br>➡️
-  `;
-  element.style.fontSize = '1.07rem';
-  element.style.marginLeft = '5px';
-  return element;
-};
-
-/**
- * Creates the landing area with colored tiles on a playerboard.
- * @param {object}, the player to create the staging for
- * @returns {object}, the landingArea html element
- */
-const createLanding = (player) => {
-  const element = document.createElement('div');
-  element.classList.add('landingArea');
-  for (let i=0; i<landingPattern.length; i++) {
-    const row = document.createElement('div');
-    landingPattern[i].forEach((pattern) => {
-      const landingSpace = document.createElement('div');
-      landingSpace.classList.add(`${pattern}`, 'tile', 'landingSpace');
-      player.landing[i].forEach((tile) => {
-        if (tile === pattern) {
-          landingSpace.classList.remove('landingSpace');
-        };
-      });
-      row.appendChild(landingSpace);
-    });
-    element.appendChild(row);
-  };
-  return element;
-};
-
-/**
- * Creates the broken tile area along with player score.
- * @param {object}, the player to create the staging for
- * @returns {object}, the brokenArea html element
- */
-const createBrokenScore = (player) => {
-  const element = document.createElement('div');
-  element.classList.add('brokenArea');
-  for (let i=0; i<8; i++) {
-    const brokenSpace = document.createElement('div');
-    brokenSpace.innerHTML = `<p>${i<3 ? '-1' : i<6 ? '-2' : '-3'}</p>`;
-    if (player.broken[i]) brokenSpace.classList.add(`${player.broken[i]}`, 'tile');
-    else brokenSpace.classList.add('tile');
-    element.appendChild(brokenSpace);
-  }
-  const score = document.createElement('div');
-  score.classList.add('score');
-  score.innerHTML = `Score: ${player.score}`;
-  element.appendChild(score);
-  return element;
-};
-
-/**
- * Occurs for each player upon start of game, and anytime a user input in the game happens. 
- * Creates a player's board html elements depending on their state.
- * @param {object}, the player that is being rendered
- */
-const renderPlayerBoard = (player) => {
-  const limbo = createLimbo(player);
-  const staging = createStaging(player);
-  const arrows = createArrows();
-  const landing = createLanding(player);
-  const brokenScore = createBrokenScore(player);
-};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -389,13 +194,8 @@ state.players[2].limbo.push('yellow','yellow','yellow');
 console.log(state);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-console.log(createLanding(state.players[2]));
-$playerSection.appendChild(createLimbo(state.players[2]));//////////////////////////////////////////////////////////////////////////////
-$playerSection.appendChild(createStaging(state.players[2]));
-$playerSection.appendChild(createArrows());
+$playerSection.appendChild(renderPlayerBoard(state.players[2]));
 console.log(state.players[2]);
-$playerSection.appendChild(createLanding(state.players[2]));
-$playerSection.appendChild(createBrokenScore(state.players[2]));
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
