@@ -246,12 +246,6 @@ const startGame = (numberPlayers) => {
 
 
 startGame(4); ////////////////////////////////////////////////////////////////////////////////////////////////
-// console.log(state);
-// state.players[2].limbo.push('red');
-// state.players[2].limbo.push('blue');
-// state.players[2].limbo.push('blue');
-// state.players[2].limbo.push('purple');
-// console.log(state);
 
 /**
  * Creates the limbo area with colored tiles on a playerboard.
@@ -261,26 +255,27 @@ startGame(4); //////////////////////////////////////////////////////////////////
 const createLimbo = (player) => {
   const element = document.createElement('div');
   element.classList.add('limboArea');
-  player.limbo.forEach((stateLimboTile) => {
+  player.limbo.forEach((tile) => {
     const limboTile = document.createElement('div');
-    limboTile.classList.add(`${stateLimboTile}`);
+    limboTile.classList.add('tile', `${tile}`);
     element.appendChild(limboTile);
   });
   return element;
 };
 
-// player.landing:  [[],[],[],[],[],],
 console.log(state);
 state.players[2].staging[0].push('yellow');
 state.players[2].staging[1].push('green','green');
 state.players[2].staging[2].push('red');
 state.players[2].staging[3].push('blue','blue','blue');
-state.players[2].staging[4].push('red');
+state.players[2].staging[4].push('yellow');
 state.players[2].landing[0].push();
 state.players[2].landing[1].push('yellow','red');
 state.players[2].landing[2].push('blue','yellow','purple');
 state.players[2].landing[3].push('green','purple');
 state.players[2].landing[4].push('green','purple','blue');
+state.players[2].broken.push('green','red','purple','purple');
+state.players[2].limbo.push('yellow','yellow','yellow');
 console.log(state);
 
 /**
@@ -316,18 +311,10 @@ const createStaging = (player) => {
   return element;
 };
 
-// console.log(createLanding(state.players[2]));
-$playerSection.appendChild(createStaging(state.players[2]));
-// createLimbo(state.players[2]);//////////////////////////////////////////////////////////////////////////////
-
-// const landingPattern = [
-//   ['blue','yellow','red','purple','green'],
-//   ['green','blue','yellow','red','purple'],
-//   ['purple','green','blue','yellow','red'],
-//   ['red','purple','green','blue','yellow'],
-//   ['yellow','red','purple','green','blue'],
-// ];
-
+/**
+ * Creates the arrows between the staging and landing areas of the player board.
+ * @returns {object}, the arrows that go between staging and landing.
+ */
 const createArrows = () => {
   const element = document.createElement('div');
   element.innerHTML = `
@@ -337,10 +324,6 @@ const createArrows = () => {
   element.style.marginLeft = '5px';
   return element;
 };
-
-$playerSection.appendChild(createArrows());
-
-// console.log(');
 
 /**
  * Creates the landing area with colored tiles on a playerboard.
@@ -367,8 +350,32 @@ const createLanding = (player) => {
   return element;
 };
 
+const createBrokenScore = (player) => {
+  const element = document.createElement('div');
+  element.classList.add('brokenArea');
+  for (let i=0; i<8; i++) {
+    const brokenSpace = document.createElement('div');
+    brokenSpace.innerHTML = i<3 ? '-1' : i<6 ? '-2' : '-3';
+    if (player.broken[i]) brokenSpace.classList.add(`${player.broken[i]}`, 'tile');
+    else brokenSpace.classList.add('tile');
+    element.appendChild(brokenSpace);
+  }
+  const score = document.createElement('div');
+  score.classList.add('score');
+  score.innerHTML = `Score: ${player.score}`;
+  element.appendChild(score);
+  return element;
+};
+
+
+
+console.log(createLanding(state.players[2]));
+$playerSection.appendChild(createLimbo(state.players[2]));//////////////////////////////////////////////////////////////////////////////
+$playerSection.appendChild(createStaging(state.players[2]));
+$playerSection.appendChild(createArrows());
 console.log(state.players[2]);
 $playerSection.appendChild(createLanding(state.players[2]));
+$playerSection.appendChild(createBrokenScore(state.players[2]));
 
 /**
  * Occurs for each player upon start of game, and anytime a user input in the game happens. 
@@ -378,5 +385,6 @@ $playerSection.appendChild(createLanding(state.players[2]));
 const renderPlayerBoard = (player) => {
   const limbo = createLimbo(player);
   const staging = createStaging(player);
+  const arrows = createArrows();
   const landing = createLanding(player);
 };

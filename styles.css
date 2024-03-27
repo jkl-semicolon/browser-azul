@@ -59,18 +59,49 @@ main > section {
 }
 
 .stagingArea > div,
-.landingArea > div {
+.landingArea > div,
+.brokenArea,
+.limboArea {
   display:flex;
   flex-direction:row;
   margin-top:5px;
   margin-left:5px;
 }
 
+.stagingArea > div,
+.landingArea > div {
+  align-content: flex-end;
+}
+
+.stagingArea,
+.landingArea {
+  width: 32%;
+}
+
+.limboArea,
+.brokenArea {
+  width: 100%;
+  padding: 20px;
+  height: fit-content;
+  border: 5px solid slategray;
+}
+
+.limboArea {
+  border: 5px dashed slategray;
+}
+
 .landingSpace {
   opacity: .2;
 }
 
+.score {
+  margin-left:80px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
 #playerSection {
   display:flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; 
+  align-content:flex-start;
 }
