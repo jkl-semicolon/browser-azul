@@ -1,4 +1,5 @@
-import {state} from '../main.js';
+import {state} from './../main.js';
+import {landingPattern} from './renderPlayerBoard.js';
 
 /**
  * Initializes empty player objects in state.players.
@@ -32,7 +33,7 @@ const setFactoryTiles = () => {
  * @param {array}, array of player objects 
  * @returns {array}, array of shuffled player objects
  */
-const shuffle = (array) => {
+export const shuffle = (array) => {
   let m = array.length, t, i;
   while (m) {
     i = Math.floor(Math.random() * m--);
@@ -58,6 +59,14 @@ const setPlayerOrder = () => {
 };
 
 /**
+ * Fills 100 tiles of 5 different colors into the grab bag at the start of the game.
+ */
+const fillBag = () => {
+  landingPattern[0].forEach(tile => {for (let i=0; i<20; i++) state.bag.push(tile)});
+  shuffle(state.bag);
+};
+
+/**
  * Occurs upon player selection button press. 
  * Initialize players, set factory tile number, and player order randomly.
  * @param {number} numberPlayers, the number of players selected
@@ -66,6 +75,7 @@ const startGame = (numberPlayers) => {
   initializePlayers(numberPlayers);
   setFactoryTiles();
   setPlayerOrder();
+  fillBag();
 };
 
 export default startGame;

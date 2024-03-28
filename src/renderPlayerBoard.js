@@ -1,7 +1,7 @@
 /**
  * Local variable used for createStaging.
  */
-const landingPattern = [
+export const landingPattern = [
   ['blue','yellow','red','purple','green'],
   ['green','blue','yellow','red','purple'],
   ['purple','green','blue','yellow','red'],
