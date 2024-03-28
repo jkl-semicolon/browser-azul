@@ -123,14 +123,12 @@ const createBrokenScore = (player) => {
  * Occurs for each player upon start of game, and anytime a user input in the game happens. 
  * Creates a player's board html elements depending on their state.
  * @param {object}, the player that is being rendered
+ * @return {object}, the DOM element containing the playerboard and tiles of the player being rendered.
  */
 const renderPlayerBoard = (player) => {
   const element = document.createElement('div');
-  element.appendChild(createLimbo(player));
-  element.appendChild(createStaging(player));
-  element.appendChild(createArrows(player));
-  element.appendChild(createLanding(player));
-  element.appendChild(createBrokenScore(player));
+  [createLimbo, createStaging, createArrows, createLanding, createBrokenScore].forEach(myFunc => 
+    element.appendChild(myFunc(player)));
   return element;
 };
 
