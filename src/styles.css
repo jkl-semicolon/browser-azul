@@ -55,6 +55,7 @@ main > section {
 
 .first {
   background-image: url('./../img/azul-first-tile-resized.jpg');
+  border:none !important;
 }
 
 .limboArea .tile {
@@ -144,7 +145,8 @@ main > section {
   margin: 10%;
 }
 
-#boardSection > div {
+.factoryTileArea,
+.middleArea {
   display:flex;
   flex-wrap: wrap;
 }
