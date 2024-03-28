@@ -67,8 +67,9 @@ const createArrows = () => {
   element.innerHTML = `
     ➡️<br>➡️<br>➡️<br>➡️<br>➡️
   `;
-  element.style.fontSize = '1.07rem';
+  element.style.fontSize = '1.8rem';
   element.style.marginLeft = '5px';
+  element.style.display = 'inline-block';
   return element;
 };
 

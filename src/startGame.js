@@ -64,6 +64,7 @@ const setPlayerOrder = () => {
 const fillBag = () => {
   landingPattern[0].forEach(tile => {for (let i=0; i<20; i++) state.bag.push(tile)});
   shuffle(state.bag);
+  console.log(state.bag);
 };
 
 /**

@@ -70,6 +70,7 @@ const $playerSection = document.querySelector('#playerSection');
 import startGame from './src/startGame.js';
 import renderPlayerBoard from './src/renderPlayerBoard.js';
 import renderMainArea from './src/renderMainArea.js';
+import startRound from './src/startRound.js';
 
 /**
  *          #############################################
@@ -81,37 +82,44 @@ import renderMainArea from './src/renderMainArea.js';
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-startGame(4); ////////////////////////////////////////////////////////////////////////////////////////////////
-console.log(state);
-state.players[2].staging[0].push('yellow');
-state.players[2].staging[1].push('green','green');
-state.players[2].staging[2].push('red');
-state.players[2].staging[3].push('blue','blue','blue');
-state.players[2].staging[4].push('yellow');
-state.players[2].landing[0].push();
-state.players[2].landing[1].push('yellow','red');
-state.players[2].landing[2].push('blue','yellow','purple');
-state.players[2].landing[3].push('green','purple');
-state.players[2].landing[4].push('green','purple','blue');
-state.players[2].broken.push('green','red','purple','purple');
-state.players[2].limbo.push('yellow','yellow','yellow');
-console.log(state);
-state.middle[1].push('green','yellow','yellow','red');
-state.middle[2].push('green','yellow','blue','blue');
-state.middle[3].push('blue','blue','blue','green');
-state.middle[4].push('purple','yellow','yellow','red');
-state.middle[6].push('purple','green','red','blue');
-state.middle[8].push('green','red','green','red');
-state.middle[9].push('purple','blue');
-state.middle[0].push('first','green','yellow','yellow','red','blue','blue','blue','green','yellow','yellow','yellow');
-console.log(state.middle);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-$playerSection.appendChild(renderPlayerBoard(state.players[2]));
-console.log(state.players[2]);
+// startGame(4); ////////////////////////////////////////////////////////////////////////////////////////////////
+// console.log(state);
+// state.players[2].staging[0].push('yellow');
+// state.players[2].staging[1].push('green','green');
+// state.players[2].staging[2].push('red');
+// state.players[2].staging[3].push('blue','blue','blue');
+// state.players[2].staging[4].push('yellow');
+// state.players[2].landing[0].push();
+// state.players[2].landing[1].push('yellow','red');
+// state.players[2].landing[2].push('blue','yellow','purple');
+// state.players[2].landing[3].push('green','purple');
+// state.players[2].landing[4].push('green','purple','blue');
+// state.players[2].broken.push('green','red','purple','purple');
+// state.players[2].limbo.push('yellow','yellow','yellow');
+// console.log(state);
+// state.middle[1].push('green','yellow','yellow','red');
+// state.middle[2].push('green','yellow','blue','blue');
+// state.middle[3].push('blue','blue','blue','green');
+// state.middle[4].push('purple','yellow','yellow','red');
+// state.middle[6].push('purple','green','red','blue');
+// state.middle[8].push('green','red','green','red');
+// state.middle[9].push('purple','blue');
+// state.middle[0].push('first','green','yellow','yellow','red','blue','blue','blue','green','yellow','yellow','yellow');
+// console.log(state.middle);
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// $playerSection.appendChild(renderPlayerBoard(state.players[2]));
+// console.log(state.players[2]);
 
-// console.log(createMiddleArea());
+// // console.log(createMiddleArea());
 
-$boardSection.appendChild(renderMainArea());
+// $boardSection.appendChild(renderMainArea());
 // $boardSection.appendChild(createMiddleArea());
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+startGame(4);
+startRound();
+$playerSection.appendChild(renderPlayerBoard(state.players[2]));
+$boardSection.appendChild(renderMainArea());
+
+console.log(state.bag);

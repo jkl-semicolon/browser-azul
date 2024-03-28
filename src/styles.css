@@ -150,3 +150,13 @@ main > section {
   display:flex;
   flex-wrap: wrap;
 }
+
+#playerSection > div {
+
+}
+
+.stagingArea,
+.landingArea {
+  display: inline-block;
+  width: 30%;
+}
