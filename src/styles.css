@@ -2,10 +2,6 @@ header {
   border:3px solid black;
 }
 
-/* main {
-  height:800px;
-} */
-
 main > section {
   min-height:100%;
 }
@@ -57,6 +53,10 @@ main > section {
   line-height: 1;
 }
 
+.first {
+  background-image: url('./../img/azul-first-tile-resized.jpg');
+}
+
 .limboArea .tile {
   height:40px;
   width:40px;
@@ -86,11 +86,6 @@ main > section {
   align-content: flex-end;
 }
 
-/* .stagingArea,
-.landingArea {
-  width: 32%;
-} */
-
 .limboArea,
 .brokenArea {
   width: 100%;
@@ -113,10 +108,22 @@ main > section {
   font-weight: 600;
 }
 
-#playerSection {
-  /* display:flex; */
-  /* flex-wrap: wrap; */
-  /* align-content:flex-start; */
+.middleArea {
+  border: 5px dashed slategray;
+  margin-left: 5px;
+  margin-right: 40px;
+}
+
+.middleArea > div {
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.middleArea > img {
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 
 .factoryTile {

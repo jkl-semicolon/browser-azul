@@ -128,7 +128,8 @@ const createBrokenScore = (player) => {
 const renderPlayerBoard = (player) => {
   const element = document.createElement('div');
   [createLimbo, createStaging, createArrows, createLanding, createBrokenScore].forEach(myFunc => 
-    element.appendChild(myFunc(player)));
+    element.appendChild(myFunc(player))
+  );
   return element;
 };
 

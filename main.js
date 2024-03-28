@@ -102,6 +102,8 @@ state.middle[4].push('purple','yellow','yellow','red');
 state.middle[6].push('purple','green','red','blue');
 state.middle[8].push('green','red','green','red');
 state.middle[9].push('purple','blue');
+state.middle[0].push('first','green','yellow','yellow','red','blue','blue','blue','green','yellow','yellow','yellow');
+console.log(state.middle);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $playerSection.appendChild(renderPlayerBoard(state.players[2]));
@@ -145,7 +147,27 @@ const createFactoryTiles = () => {
   return element;
 };
 
+const createMiddleArea = () => {
+  const element = document.createElement('div');
+  element.classList.add('middleArea');
+  for (const tile of state.middle[0]) {
+    if (tile !== 'first') {
+      const midTile = document.createElement('div');
+      midTile.classList.add(`${tile}`, 'tile');
+      element.appendChild(midTile);
+    } else {
+      const midTile = document.createElement('img');
+      midTile.classList.add(`${tile}`, 'tile');
+      element.appendChild(midTile);
+    }
+  }
+  return element;
+}
+
+// console.log(createMiddleArea());
+
 $boardSection.appendChild(createFactoryTiles());
+$boardSection.appendChild(createMiddleArea());
 console.log(createFactoryTiles());
 
 
@@ -154,4 +176,5 @@ console.log(createFactoryTiles());
  */
 const renderMainArea = () => {
   const factoryTiles = createFactoryTiles();
+  const middleArea = createMiddleArea();
 };
