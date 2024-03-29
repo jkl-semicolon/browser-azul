@@ -1,4 +1,5 @@
-import {state} from './../main.js';
+import {state, $boardSection, $playerSection} from './../main.js';
+import renderPlayerBoard from './renderPlayerBoard.js';
 
 /**
  * Occurs at the start of a new round, and also occurs anytime a user input in the game happens. 
@@ -19,7 +20,9 @@ const createFactoryTiles = () => {
     };
     for (let j=0; j<state.middle[i].length; j++) {
       const tile = document.createElement('div');
-      tile.classList.add('tile',`${state.middle[i][j]}`);
+      tile.classList.add(`${state.middle[i][j]}`,'tile');
+      tile.id = i;
+      tile.addEventListener('click', () => {grabMiddle(event, tile.id, tile.classList[0])});
       factoryTile.appendChild(tile);
     };
     element.appendChild(factoryTile);
@@ -39,6 +42,8 @@ const createMiddleArea = () => {
     if (tile !== 'first') {
       const midTile = document.createElement('div');
       midTile.classList.add(`${tile}`, 'tile');
+      midTile.id = 0;
+      midTile.addEventListener('click', () => {grabMiddle(event, midTile.id, midTile.classList[0])});
       element.appendChild(midTile);
     } else {
       const midTile = document.createElement('img');
@@ -53,9 +58,38 @@ const createMiddleArea = () => {
  * Renders the main area along with its factory tiles, 1st player tile, and colored tiles.
  */
 const renderMainArea = () => {
+  console.log('main area rendering')
+  console.log('state.middle:', state.middle);
+  $boardSection.innerHTML = '';
   const element = document.createElement('div');
   [createFactoryTiles, createMiddleArea].forEach(myFunc => element.appendChild(myFunc()));
   return element;
+};
+
+const grabMiddle = (event, tileId, tileColor) => {
+  if (state.activeGrab) return;
+  console.log(event.target);
+  console.log(tileId);
+  console.log(tileColor);
+
+  for (let i=0; i<state.middle[tileId].length; i++) {
+    // console.log(state.middle[tileId][i])
+    if (state.middle[tileId][i] === tileColor) {
+      state.players[state.currentPlayer].limbo.push(...state.middle[tileId].splice(i,1));
+      i--;
+    } else if (state.middle[tileId][i] === 'first') {
+      state.players[state.currentPlayer].limbo.push(...state.middle[tileId].splice(i,1));
+      i--;
+    } else if (tileId !== 0) {
+      state.middle[0].push(...state.middle[tileId].splice(i,1));
+      i--;
+    }
+  };
+  console.log(state.players[state.currentPlayer].limbo);
+  console.log(state.players[state.currentPlayer])
+  console.log(state.middle[tileId])
+  $boardSection.appendChild(renderMainArea());
+  $playerSection.appendChild(renderPlayerBoard(state.players[2]));
 };
 
 export default renderMainArea;

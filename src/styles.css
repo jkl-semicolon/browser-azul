@@ -160,3 +160,8 @@ main > section {
   display: inline-block;
   width: 30%;
 }
+
+.shrink{
+  transform:scale(0.9, 0.6);
+  margin-bottom: 20px;
+}

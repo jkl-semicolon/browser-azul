@@ -27,6 +27,7 @@ export const state = {
   numberPlayers: 0, // enumerated number, either 2, 3, or 4
   factoryTiles: 0, // enumerated number, either 5, 7, or 9
   turnOrder: [],  // array of numbers for players' indexes
+  activeGrab: false, // boolean of whether or not middle tile event listeners are active or not.
 
   bag: [],  // array of strings for tiles
   discard: [],  // array of strings for tiles
@@ -48,12 +49,12 @@ export const state = {
 const $player2Section = document.querySelector('#player2Section');
 const $player3Section = document.querySelector('#player3Section');
 const $player4Section = document.querySelector('#player4Section');
-const $boardSection = document.querySelector('#boardSection');
-const $playerSection = document.querySelector('#playerSection');
+export const $boardSection = document.querySelector('#boardSection');
+export const $playerSection = document.querySelector('#playerSection');
 
 /**
  *          #############################################
- *          ## ----------- Event Listeners ----------- ##
+ *          ## -------- Global Event Listeners ------- ##
  *          #############################################
  * 
  * //TODO
@@ -71,6 +72,8 @@ import startGame from './src/startGame.js';
 import renderPlayerBoard from './src/renderPlayerBoard.js';
 import renderMainArea from './src/renderMainArea.js';
 import startRound from './src/startRound.js';
+import { landingPattern } from './src/renderPlayerBoard.js';
+// import {takeTurn} from './src/takeTurns.js';
 
 /**
  *          #############################################
@@ -118,8 +121,30 @@ import startRound from './src/startRound.js';
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 startGame(4);
+state.currentPlayer = 2;
 startRound();
+$player2Section.appendChild(renderPlayerBoard(state.players[1]));
+$player3Section.appendChild(renderPlayerBoard(state.players[0]));
+$player4Section.appendChild(renderPlayerBoard(state.players[3]));
 $playerSection.appendChild(renderPlayerBoard(state.players[2]));
 $boardSection.appendChild(renderMainArea());
 
 console.log(state.bag);
+
+export const takeTurn = (player) => {
+
+  state.middle.map((midArea, i) => {
+
+  })
+
+  // const tileChoices = [
+  //                       ...document.querySelectorAll('#boardSection .red'),
+  //                       ...document.querySelectorAll('#boardSection .blue'),
+  //                       ...document.querySelectorAll('#boardSection .green'),
+  //                       ...document.querySelectorAll('#boardSection .purple'),
+  //                       ...document.querySelectorAll('#boardSection .yellow'),
+  //                     ];
+  // for (const tile of tileChoices)
+};
+
+takeTurn(state.players[2]);

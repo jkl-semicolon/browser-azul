@@ -1,3 +1,5 @@
+import { $playerSection } from "./../main.js";
+
 /**
  * Local variable used for createStaging.
  */
@@ -127,6 +129,7 @@ const createBrokenScore = (player) => {
  * @return {object}, the DOM element containing the playerboard and tiles of the player being rendered.
  */
 const renderPlayerBoard = (player) => {
+  $playerSection.innerHTML = '';
   const element = document.createElement('div');
   [createLimbo, createStaging, createArrows, createLanding, createBrokenScore].forEach(myFunc => 
     element.appendChild(myFunc(player))
