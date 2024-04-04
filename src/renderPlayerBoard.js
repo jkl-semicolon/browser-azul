@@ -1,5 +1,3 @@
-import { $playerSection } from "./../main.js";
-
 /**
  * Local variable used for createStaging.
  */
@@ -10,6 +8,8 @@ export const landingPattern = [
   ['red','purple','green','blue','yellow'],
   ['yellow','red','purple','green','blue'],
 ];
+
+import {$playerSection, state} from './../main.js';
 
 /**
  * Creates the limbo area with colored tiles on a playerboard.
@@ -29,16 +29,20 @@ const createLimbo = (player) => {
 
 /**
  * Creates the staging area with colored tiles on a playerboard.
- * @param {object}, the player to create the staging for
+ * @param {object, DOM object}, the player to create the staging for; and the player area we are creating in
  * @returns {object}, the stagingArea html element
  */
-const createStaging = (player) => {
+const createStaging = (player, section) => {
   const element = document.createElement('div');
   element.classList.add('stagingArea');
   let index = -1;
   for (let i=4; i>=0; i--) {
     index++;
     const row = document.createElement('div');
+    if (section === $playerSection) {
+      row.id = Math.abs(i - 4);
+      row.addEventListener('click', () => {placeStaging(Number(row.id))});
+    };
     for (let j=i; j>0; j--) {
       const hiddenTile = document.createElement('div');
       hiddenTile.classList.add('hiddenTile', 'tile');
@@ -58,6 +62,68 @@ const createStaging = (player) => {
     element.appendChild(row);
   };
   return element;
+};
+
+/**
+ * The event handler for clicking on a row of staging to move your limbo tiles in. This click handler
+ * is only active after the active player has grabbed from the middle, and turns itself off afterwards.
+ * The event handler is automatically created on the rendered active player's playerboard on each of the
+ * five rows in the player's staging area.
+ * @param {number}, the index of the row in the player's staging area being clicked on.
+ */
+const placeStaging = (rowID) => {
+
+  if (!state.activeStaging) return; // activeStaging is set to true at the end of grabMiddle
+
+  // this for loop moves the first player tile to where it needs to go, and sets turn order for next round
+  for (let i=0; i<state.players[state.currentPlayer].limbo.length; i++) {
+    if (state.players[state.currentPlayer].limbo[i] === 'first') {
+      state.nextRoundFirst = state.currentPlayer;
+      if (state.players[state.currentPlayer].broken.length === 8) {
+        state.players[state.currentPlayer].limbo.splice(i,1);
+      } else {
+        state.players[state.currentPlayer].broken.push(state.players[state.currentPlayer].limbo.splice(i,1)[0]);
+      }
+    };
+  };
+
+  // If chosen row in staging has a different color from the limbo tiles, return.
+  if (state.players[state.currentPlayer].staging[rowID].length) {
+    if (state.players[state.currentPlayer].limbo[0] !== state.players[state.currentPlayer].staging[rowID][0]) {
+      return;
+    }
+  }
+
+  // If chosen row's equivalent landing area has the same color tile already, return.
+  for (let i=0; i<5; i++) {
+    if (state.players[state.currentPlayer].limbo[0] === state.players[state.currentPlayer].landing[rowID][i]) {
+      return;
+    }
+  }
+
+  // Otherwise, move limbo tiles in that staging area row one by one.
+  // If full, move limbo tiles to broken area; if that is full, move limbo tiles to discard.
+  for (let i=0; i<state.players[state.currentPlayer].limbo.length; i++) {
+    console.log(state.players[state.currentPlayer].staging[rowID].length)
+    console.log(rowID + 1)
+    console.log(rowID)
+    if (state.players[state.currentPlayer].staging[rowID].length >= rowID + 1) {
+      if (state.players[state.currentPlayer].broken.length === 8) {
+        state.discard.push(state.players[state.currentPlayer].limbo.splice(i, 1)[0]);
+        i--;
+      } else {
+        state.players[state.currentPlayer].broken.push(state.players[state.currentPlayer].limbo.splice(i, 1)[0]);
+        i--;
+      }
+    } else {
+      state.players[state.currentPlayer].staging[rowID].push(state.players[state.currentPlayer].limbo.splice(i, 1)[0])
+      i--;
+    }
+  }
+
+  // Finish moving to staging, and re-render player board.
+  state.activeStaging = false;
+  renderPlayerBoard(state.players[state.currentPlayer], $playerSection);
 };
 
 /**
@@ -125,16 +191,18 @@ const createBrokenScore = (player) => {
 /**
  * Occurs for each player upon start of game, and anytime a user input in the game happens. 
  * Creates a player's board html elements depending on their state.
- * @param {object}, the player that is being rendered
+ * @param {object, DOM object}, the player that is being rendered; and the html element the player board will be appended to.
  * @return {object}, the DOM element containing the playerboard and tiles of the player being rendered.
  */
-const renderPlayerBoard = (player) => {
-  $playerSection.innerHTML = '';
+const renderPlayerBoard = (player, section) => {
+  section.innerHTML = '';
   const element = document.createElement('div');
-  [createLimbo, createStaging, createArrows, createLanding, createBrokenScore].forEach(myFunc => 
+  element.appendChild(createLimbo(player));
+  element.appendChild(createStaging(player, section));
+  [createArrows, createLanding, createBrokenScore].forEach(myFunc => 
     element.appendChild(myFunc(player))
   );
-  return element;
+  section.appendChild(element);
 };
 
 export default renderPlayerBoard;

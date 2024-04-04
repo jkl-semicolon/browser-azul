@@ -12,6 +12,7 @@ const popFacTiles = () => {
       if (state.bag.length === 0) {
         state.discard.forEach(tile => state.bag.push(tile));
         state.discard = [];
+        shuffle(state.bag);
       };
       state.middle[i].push(state.bag.pop());
     };

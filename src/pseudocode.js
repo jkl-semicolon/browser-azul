@@ -57,11 +57,13 @@
 *    ii. The tiles go to the limbo area in the player area.
 *      ~ If the 1st player tile is one of the tiles taken,
 *        it automatically goes to the broken tile area.
-*    iii.A dotted red border appears around the eligible rows for the limbo tiles
+*    iii.A dotted red border appears around the eligible rows in the landing area for the limbo tiles
 *        to be placed. The player will choose which row the limbo tiles will go.
-*      ~ The player can also choose no row.
-*      ~ The row chosen must either be empty, or if there are tiles the color of them must 
+*      ~ The player can also choose no row, in which tiles go to the broken area.
+*      ~ The row chosen must either be empty, or if there are tiles already present, the color of them must 
 *        match the tiles in limbo.
+       ~ Overflow tiles in a row will go to the broken area.
+        ~ If the broken area is filled, tiles go to the discard.
 *      ~ The tiles will fill in from the right.
 *    iv. The tiles move from limbo to a staging row. Any extra tiles, including if the
 *        player chooses no row, go to the broken tile area, filling in from the left.

@@ -27,7 +27,9 @@ export const state = {
   numberPlayers: 0, // enumerated number, either 2, 3, or 4
   factoryTiles: 0, // enumerated number, either 5, 7, or 9
   turnOrder: [],  // array of numbers for players' indexes
+
   activeGrab: false, // boolean of whether or not middle tile event listeners are active or not.
+  activeStaging: false, // boolean of whether it is time to place in staging area or not
 
   bag: [],  // array of strings for tiles
   discard: [],  // array of strings for tiles
@@ -36,6 +38,7 @@ export const state = {
                // tile empty arrays will be added when the number of players is chosen.
   players: [],  // array of up to 4 player objects; see function initializePlayers
   currentPlayer: 0,  // number of player's index
+  nextRoundFirst: 0, // index of starting player next round
   gameEnd: false, // boolean
   winner: 0, // number of player's index
 };
@@ -72,8 +75,6 @@ import startGame from './src/startGame.js';
 import renderPlayerBoard from './src/renderPlayerBoard.js';
 import renderMainArea from './src/renderMainArea.js';
 import startRound from './src/startRound.js';
-import { landingPattern } from './src/renderPlayerBoard.js';
-// import {takeTurn} from './src/takeTurns.js';
 
 /**
  *          #############################################
@@ -122,29 +123,23 @@ import { landingPattern } from './src/renderPlayerBoard.js';
 
 startGame(4);
 state.currentPlayer = 2;
+state.middle[0].push('red')
 startRound();
-$player2Section.appendChild(renderPlayerBoard(state.players[1]));
-$player3Section.appendChild(renderPlayerBoard(state.players[0]));
-$player4Section.appendChild(renderPlayerBoard(state.players[3]));
-$playerSection.appendChild(renderPlayerBoard(state.players[2]));
-$boardSection.appendChild(renderMainArea());
-
+renderPlayerBoard(state.players[2], $playerSection)
+renderPlayerBoard(state.players[0], $player2Section)
+renderPlayerBoard(state.players[1], $player3Section)
+renderPlayerBoard(state.players[3], $player4Section)
+renderMainArea();
+state.activeGrab = true;
 console.log(state.bag);
 
-export const takeTurn = (player) => {
+// const takeTurn = (player) => {
+//   state.activeGrab = true; // allows player to grab from middle
+//   while ("😀") { // waits for player to grab from middle
+//     if (state.activeLanding) { // allows player to place their tiles on board
 
-  state.middle.map((midArea, i) => {
+//     }
+//   }
+// }
 
-  })
-
-  // const tileChoices = [
-  //                       ...document.querySelectorAll('#boardSection .red'),
-  //                       ...document.querySelectorAll('#boardSection .blue'),
-  //                       ...document.querySelectorAll('#boardSection .green'),
-  //                       ...document.querySelectorAll('#boardSection .purple'),
-  //                       ...document.querySelectorAll('#boardSection .yellow'),
-  //                     ];
-  // for (const tile of tileChoices)
-};
-
-takeTurn(state.players[2]);
+// takeTurn(state.players[2]);

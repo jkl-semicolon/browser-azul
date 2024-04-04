@@ -47,7 +47,7 @@ const createMiddleArea = () => {
       const midTile = document.createElement('div');
       midTile.classList.add(`${tile}`, 'tile');
       midTile.id = 0;
-      midTile.addEventListener('click', () => {grabMiddle(event, midTile.id, midTile.classList[0])});
+      midTile.addEventListener('click', (event) => {grabMiddle(event, Number(midTile.id), midTile.classList[0])});
       element.appendChild(midTile);
     } else {
       const midTile = document.createElement('img');
@@ -59,21 +59,12 @@ const createMiddleArea = () => {
 }
 
 /**
- * Renders the main area along with its factory tiles, 1st player tile, and colored tiles.
- */
-const renderMainArea = () => {
-  $boardSection.innerHTML = '';
-  const element = document.createElement('div');
-  [createFactoryTiles, createMiddleArea].forEach(myFunc => element.appendChild(myFunc()));
-  return element;
-};
-
-/**
+ * Occurs during the start of a player's turn.
  * This function allows players to either choose to take all the tiles of a single color from 
  * a factory tile or the middle area. If player chooses from a factory tile, the tiles not of
  * that color go into the middle. If player chooses from the middle, if first player tile is
- * in the middle, player also takes that tile.
- * Occurs during the start of a player's turn.
+ * in the middle, player also takes that tile. At the end of this function, players are 
+ * prompted to place the tiles they have chosen.
  * @param {event}, the event of the tile being clicked; this parameter is not used but 
  * code does not run correctly if this parameter is removed
  * @param {string} tileId, is a string because this is an html attribute; was set on the tile
@@ -83,7 +74,7 @@ const renderMainArea = () => {
  */
 const grabMiddle = (event, tileId, tileColor) => {
 
-  if (state.activeGrab) return; // need to inverse to turn on
+  if (!state.activeGrab) return;
 
   for (let i=0; i<state.middle[tileId].length; i++) {
     if (state.middle[tileId][i] === tileColor) {
@@ -97,8 +88,26 @@ const grabMiddle = (event, tileId, tileColor) => {
       i--;
     }
   };
-  $boardSection.appendChild(renderMainArea());
-  $playerSection.appendChild(renderPlayerBoard(state.players[2]));
+  renderMainArea();
+  renderPlayerBoard(state.players[state.currentPlayer], $playerSection);
+  state.activeGrab = false;
+  state.activeStaging = true;
+};
+
+// const placeTile = () => {
+//   console.log(document.querySelectorAll(`#playerSection > div > #stagingArea > div`));
+// };
+
+// #playerSection > div > #stagingArea > div
+
+/**
+ * Renders the main area along with its factory tiles, 1st player tile, and colored tiles.
+ */
+const renderMainArea = () => {
+  $boardSection.innerHTML = '';
+  const element = document.createElement('div');
+  [createFactoryTiles, createMiddleArea].forEach(myFunc => element.appendChild(myFunc()));
+  $boardSection.appendChild(element);
 };
 
 export default renderMainArea;
