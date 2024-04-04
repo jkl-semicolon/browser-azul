@@ -124,6 +124,10 @@ import startRound from './src/startRound.js';
 startGame(4);
 state.currentPlayer = 2;
 state.middle[0].push('red')
+state.players[2].staging[3].push('red');
+state.players[2].staging[4].push('blue', 'blue')
+state.players[2].landing[3].push('red');
+state.players[2].landing[2].push('red');
 startRound();
 renderPlayerBoard(state.players[2], $playerSection)
 renderPlayerBoard(state.players[0], $player2Section)
@@ -133,13 +137,22 @@ renderMainArea();
 state.activeGrab = true;
 console.log(state.bag);
 
-// const takeTurn = (player) => {
-//   state.activeGrab = true; // allows player to grab from middle
-//   while ("😀") { // waits for player to grab from middle
-//     if (state.activeLanding) { // allows player to place their tiles on board
+const playRound = () => {
+  console.log('start round')
 
-//     }
-//   }
-// }
+  const midHasTiles = true;
+  
+  const checkMid = () => {
+    midHasTiles = false;
+    state.middle.forEach((part) => {
+      if (part.length) midHasTiles = true;
+    })
+  }
 
-// takeTurn(state.players[2]);
+  while (midHasTiles) {
+
+    
+    checkMid();
+  }
+
+}

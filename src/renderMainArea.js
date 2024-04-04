@@ -94,12 +94,6 @@ const grabMiddle = (event, tileId, tileColor) => {
   state.activeStaging = true;
 };
 
-// const placeTile = () => {
-//   console.log(document.querySelectorAll(`#playerSection > div > #stagingArea > div`));
-// };
-
-// #playerSection > div > #stagingArea > div
-
 /**
  * Renders the main area along with its factory tiles, 1st player tile, and colored tiles.
  */

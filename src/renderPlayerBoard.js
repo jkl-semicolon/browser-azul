@@ -87,6 +87,23 @@ const placeStaging = (rowID) => {
     };
   };
 
+  // If broken area is chosen, move tiles there, then close activeStaging, re-render, and escape.
+  if (rowID === 5) {
+    if (!confirm('You have chosen to break all your chosen tiles; press OK to continue.')) return;
+    for (let i=0; i<state.players[state.currentPlayer].limbo.length; i++) {
+      if (state.players[state.currentPlayer].broken.length === 8) {
+        state.discard.push(state.players[state.currentPlayer].limbo.splice(i, 1)[0]);
+        i--;
+      } else {
+        state.players[state.currentPlayer].broken.push(state.players[state.currentPlayer].limbo.splice(i, 1)[0]);
+        i--;
+      }
+    }
+    state.activeStaging = false;
+    renderPlayerBoard(state.players[state.currentPlayer], $playerSection);
+    return;
+  }
+
   // If chosen row in staging has a different color from the limbo tiles, return.
   if (state.players[state.currentPlayer].staging[rowID].length) {
     if (state.players[state.currentPlayer].limbo[0] !== state.players[state.currentPlayer].staging[rowID][0]) {
@@ -104,9 +121,6 @@ const placeStaging = (rowID) => {
   // Otherwise, move limbo tiles in that staging area row one by one.
   // If full, move limbo tiles to broken area; if that is full, move limbo tiles to discard.
   for (let i=0; i<state.players[state.currentPlayer].limbo.length; i++) {
-    console.log(state.players[state.currentPlayer].staging[rowID].length)
-    console.log(rowID + 1)
-    console.log(rowID)
     if (state.players[state.currentPlayer].staging[rowID].length >= rowID + 1) {
       if (state.players[state.currentPlayer].broken.length === 8) {
         state.discard.push(state.players[state.currentPlayer].limbo.splice(i, 1)[0]);
@@ -179,6 +193,7 @@ const createBrokenScore = (player) => {
     brokenSpace.innerHTML = `<p>${i<3 ? '-1' : i<6 ? '-2' : '-3'}</p>`;
     if (player.broken[i]) brokenSpace.classList.add(`${player.broken[i]}`, 'tile');
     else brokenSpace.classList.add('tile');
+    brokenSpace.addEventListener('click', () => {placeStaging(5)}) // placeStaging argument set to 5 for broken area.
     element.appendChild(brokenSpace);
   }
   const score = document.createElement('div');
