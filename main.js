@@ -122,8 +122,7 @@ export const endGameScoring = () => {
  *  TODO///
  */
 export const takeTurn = () => {
-  console.log('hello, i am takeTurn');
-  console.log(state.turnOrder)
+
   state.currentPlayer = state.turnCounter % state.turnOrder.length
   state.turnCounter++;
 
@@ -131,8 +130,6 @@ export const takeTurn = () => {
   let p3Empty = true;
   for (const player of state.turnOrder) {
     const index = state.turnOrder.indexOf(player);
-    console.log ('index', index)
-    console.log('state.currentPlayer,', state.currentPlayer)
     if (index === state.currentPlayer) {
       renderPlayerBoard(player, $playerSection);
     } else if (p2Empty) {
@@ -147,7 +144,6 @@ export const takeTurn = () => {
   }
   state.activeGrab = true;
 };
-
 
 /**
  *  TODO///
