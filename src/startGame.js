@@ -77,7 +77,6 @@ const fillBag = () => {
 const startGame = (numberPlayers) => {
   initializePlayers(numberPlayers);
   setFactoryTiles();
-  setPlayerOrder();
   fillBag();
   newRoundOrNawww();
 };

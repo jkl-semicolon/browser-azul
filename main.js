@@ -51,6 +51,7 @@ export const state = {
                // tile empty arrays will be added when the number of players is chosen.
   players: [],  // array of up to 4 player objects; see function initializePlayers
   currentPlayer: 0,  // number of player's index
+  turnCounter: 0, // number of the turn in a given round
   gameEnd: false, // boolean
   winner: 0, // number of player's index
 };
@@ -60,10 +61,10 @@ export const state = {
  *          ## ----------- DOM Connections ----------- ##
  *          #############################################
  */
-
 const $player2Section = document.querySelector('#player2Section');
 const $player3Section = document.querySelector('#player3Section');
 const $player4Section = document.querySelector('#player4Section');
+const $otherPlayerSections = [$player2Section, $player3Section, $player4Section]
 export const $boardSection = document.querySelector('#boardSection');
 export const $playerSection = document.querySelector('#playerSection');
 
@@ -83,42 +84,13 @@ export const $playerSection = document.querySelector('#playerSection');
  */
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// startGame(4); ////////////////////////////////////////////////////////////////////////////////////////////////
-// console.log(state);
-// state.players[2].staging[0].push('yellow');
-// state.players[2].staging[1].push('green','green');
-// state.players[2].staging[2].push('red');
-// state.players[2].staging[3].push('blue','blue','blue');
-// state.players[2].staging[4].push('yellow');
+
 // state.players[2].landing[0].push();
 // state.players[2].landing[1].push('yellow','red');
 // state.players[2].landing[2].push('blue','yellow','purple');
 // state.players[2].landing[3].push('green','purple');
 // state.players[2].landing[4].push('green','purple','blue');
-// state.players[2].broken.push('green','red','purple','purple');
-// state.players[2].limbo.push('yellow','yellow','yellow');
-// console.log(state);
-// state.middle[1].push('green','yellow','yellow','red');
-// state.middle[2].push('green','yellow','blue','blue');
-// state.middle[3].push('blue','blue','blue','green');
-// state.middle[4].push('purple','yellow','yellow','red');
-// state.middle[6].push('purple','green','red','blue');
-// state.middle[8].push('green','red','green','red');
-// state.middle[9].push('purple','blue');
-// state.middle[0].push('first','green','yellow','yellow','red','blue','blue','blue','green','yellow','yellow','yellow');
-// console.log(state.middle);
-// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// $playerSection.appendChild(renderPlayerBoard(state.players[2]));
-// console.log(state.players[2]);
 
-// // console.log(createMiddleArea());
-
-// $boardSection.appendChild(renderMainArea());
-// $boardSection.appendChild(createMiddleArea());
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -139,57 +111,64 @@ export const newRoundOrNawww = () => {
 
 /**
  * 
- * 
+ *  TODO///
  */
 export const endGameScoring = () => {
   console.log('hello, i am end game scoring');
 };
 
+/**
+ * Occurs either at the end of a round start, or at the end of another player's turn. 
+ *  TODO///
+ */
 export const takeTurn = () => {
   console.log('hello, i am takeTurn');
+  console.log(state.turnOrder)
+  state.currentPlayer = state.turnCounter % state.turnOrder.length
+  state.turnCounter++;
+
+  let p2Empty = true;
+  let p3Empty = true;
+  for (const player of state.turnOrder) {
+    const index = state.turnOrder.indexOf(player);
+    console.log ('index', index)
+    console.log('state.currentPlayer,', state.currentPlayer)
+    if (index === state.currentPlayer) {
+      renderPlayerBoard(player, $playerSection);
+    } else if (p2Empty) {
+      renderPlayerBoard(player, $player2Section);
+      p2Empty = false;
+    } else if (p3Empty) {
+      renderPlayerBoard(player, $player3Section);
+      p3Empty = false;
+    } else {
+      renderPlayerBoard(player, $player4Section);
+    }
+  }
+  state.activeGrab = true;
 };
 
 
+/**
+ *  TODO///
+ * 
+ */
+const endRoundScoring = () => {
+  console.log('you have reached end of round scoring, congrats!')
+};
 
-const playRound = () => {
-  console.log('start round')
-
-  let midHasTiles = true;
-  
-  const checkMid = () => {
-    midHasTiles = false;
-    state.middle.forEach((part) => {
-      if (part.length) midHasTiles = true;
-    })
-  }
-
-  
-}
-
-// const playGame = (numPlayers) => {
-//   startGame(numPlayers);
-//   // if end game condition: go to end game scoring
-//   // else:
-//   startRound();
-//   setPlayerOrder();
-//   playRound();
-//   endRoundScoring();
-// };
-
+/**
+ *  TODO///
+ * 
+ */
+export const newTurnOrNawww = () => {
+  let midHasTiles;
+  state.middle.forEach((part) => {
+    if (part.length) midHasTiles = true;
+  })
+  if (midHasTiles) takeTurn();
+  else endRoundScoring();
+};
 
 startGame(4);
-state.currentPlayer = 2;
-// state.middle[0].push('red')
-state.players[2].staging[3].push('red');
-state.players[2].staging[4].push('blue', 'blue')
-state.players[2].landing[3].push('red');
-state.players[2].landing[2].push('red');
-startRound();
-renderPlayerBoard(state.players[2], $playerSection)
-renderPlayerBoard(state.players[0], $player2Section)
-renderPlayerBoard(state.players[1], $player3Section)
-renderPlayerBoard(state.players[3], $player4Section)
-renderMainArea();
-state.activeGrab = true;
 console.log(state.bag);
-// playRound()

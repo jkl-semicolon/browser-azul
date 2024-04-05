@@ -9,7 +9,7 @@ export const landingPattern = [
   ['yellow','red','purple','green','blue'],
 ];
 
-import {$playerSection, state} from './../main.js';
+import {$playerSection, state, newTurnOrNawww } from './../main.js';
 
 /**
  * Creates the limbo area with colored tiles on a playerboard.
@@ -76,13 +76,13 @@ const placeStaging = (rowID) => {
   if (!state.activeStaging) return; // activeStaging is set to true at the end of grabMiddle
 
   // this for loop moves the first player tile to where it needs to go, and sets turn order for next round
-  for (let i=0; i<state.players[state.currentPlayer].limbo.length; i++) {
-    if (state.players[state.currentPlayer].limbo[i] === 'first') {
-      state.players[state.currentPlayer].firstNext = true;
-      if (state.players[state.currentPlayer].broken.length === 8) {
-        state.players[state.currentPlayer].limbo.splice(i,1);
+  for (let i=0; i<state.turnOrder[state.currentPlayer].limbo.length; i++) {
+    if (state.turnOrder[state.currentPlayer].limbo[i] === 'first') {
+      state.turnOrder[state.currentPlayer].firstNext = true;
+      if (state.turnOrder[state.currentPlayer].broken.length === 8) {
+        state.turnOrder[state.currentPlayer].limbo.splice(i,1);
       } else {
-        state.players[state.currentPlayer].broken.push(state.players[state.currentPlayer].limbo.splice(i,1)[0]);
+        state.turnOrder[state.currentPlayer].broken.push(state.turnOrder[state.currentPlayer].limbo.splice(i,1)[0]);
       }
     };
   };
@@ -90,53 +90,55 @@ const placeStaging = (rowID) => {
   // If broken area is chosen, move tiles there, then close activeStaging, re-render, and escape.
   if (rowID === 5) {
     if (!confirm('You have chosen to break all your chosen tiles; press OK to continue.')) return;
-    for (let i=0; i<state.players[state.currentPlayer].limbo.length; i++) {
-      if (state.players[state.currentPlayer].broken.length === 8) {
-        state.discard.push(state.players[state.currentPlayer].limbo.splice(i, 1)[0]);
+    for (let i=0; i<state.turnOrder[state.currentPlayer].limbo.length; i++) {
+      if (state.turnOrder[state.currentPlayer].broken.length === 8) {
+        state.discard.push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0]);
         i--;
       } else {
-        state.players[state.currentPlayer].broken.push(state.players[state.currentPlayer].limbo.splice(i, 1)[0]);
+        state.turnOrder[state.currentPlayer].broken.push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0]);
         i--;
       }
     }
     state.activeStaging = false;
-    renderPlayerBoard(state.players[state.currentPlayer], $playerSection);
+    renderPlayerBoard(state.turnOrder[state.currentPlayer], $playerSection);
+    newTurnOrNawww();
     return;
   }
   // If chosen row in staging has a different color from the limbo tiles, return.
-  if (state.players[state.currentPlayer].staging[rowID].length) {
-    if (state.players[state.currentPlayer].limbo[0] !== state.players[state.currentPlayer].staging[rowID][0]) {
+  if (state.turnOrder[state.currentPlayer].staging[rowID].length) {
+    if (state.turnOrder[state.currentPlayer].limbo[0] !== state.turnOrder[state.currentPlayer].staging[rowID][0]) {
       return;
     }
   }
 
   // If chosen row's equivalent landing area has the same color tile already, return.
   for (let i=0; i<5; i++) {
-    if (state.players[state.currentPlayer].limbo[0] === state.players[state.currentPlayer].landing[rowID][i]) {
+    if (state.turnOrder[state.currentPlayer].limbo[0] === state.turnOrder[state.currentPlayer].landing[rowID][i]) {
       return;
     }
   }
 
   // Otherwise, move limbo tiles in that staging area row one by one.
   // If full, move limbo tiles to broken area; if that is full, move limbo tiles to discard.
-  for (let i=0; i<state.players[state.currentPlayer].limbo.length; i++) {
-    if (state.players[state.currentPlayer].staging[rowID].length >= rowID + 1) {
-      if (state.players[state.currentPlayer].broken.length === 8) {
-        state.discard.push(state.players[state.currentPlayer].limbo.splice(i, 1)[0]);
+  for (let i=0; i<state.turnOrder[state.currentPlayer].limbo.length; i++) {
+    if (state.turnOrder[state.currentPlayer].staging[rowID].length >= rowID + 1) {
+      if (state.turnOrder[state.currentPlayer].broken.length === 8) {
+        state.discard.push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0]);
         i--;
       } else {
-        state.players[state.currentPlayer].broken.push(state.players[state.currentPlayer].limbo.splice(i, 1)[0]);
+        state.turnOrder[state.currentPlayer].broken.push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0]);
         i--;
       }
     } else {
-      state.players[state.currentPlayer].staging[rowID].push(state.players[state.currentPlayer].limbo.splice(i, 1)[0])
+      state.turnOrder[state.currentPlayer].staging[rowID].push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0])
       i--;
     }
   }
 
   // Finish moving to staging, and re-render player board.
   state.activeStaging = false;
-  renderPlayerBoard(state.players[state.currentPlayer], $playerSection);
+  renderPlayerBoard(state.turnOrder[state.currentPlayer], $playerSection);
+  newTurnOrNawww();
 };
 
 /**

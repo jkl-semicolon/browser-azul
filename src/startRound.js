@@ -1,6 +1,7 @@
 import {state, takeTurn} from './../main.js';
 import {shuffle} from './startGame.js';
 import renderMainArea from './renderMainArea.js';
+import { setPlayerOrder } from './startGame.js';
 
 /**
  * Occurs at the start of a new round; adds four tiles from the bag to
@@ -35,6 +36,8 @@ const startRound = () => {
   popFacTiles();
   placeFirstTile();
   renderMainArea();
+  setPlayerOrder();
+  state.turnCounter = 0;
   takeTurn();
 };
 

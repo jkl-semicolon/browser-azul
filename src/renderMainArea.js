@@ -24,7 +24,7 @@ const createFactoryTiles = () => {
       const tile = document.createElement('div');
       tile.classList.add(`${state.middle[i][j]}`,'tile');
       tile.id = i;
-      tile.addEventListener('click', () => {grabMiddle(event, Number(tile.id), tile.classList[0])});
+      tile.addEventListener('click', () => {grabMiddle(Number(tile.id), tile.classList[0])});
       factoryTile.appendChild(tile);
     };
     element.appendChild(factoryTile);
@@ -47,7 +47,7 @@ const createMiddleArea = () => {
       const midTile = document.createElement('div');
       midTile.classList.add(`${tile}`, 'tile');
       midTile.id = 0;
-      midTile.addEventListener('click', (event) => {grabMiddle(event, Number(midTile.id), midTile.classList[0])});
+      midTile.addEventListener('click', () => {grabMiddle(Number(midTile.id), midTile.classList[0])});
       element.appendChild(midTile);
     } else {
       const midTile = document.createElement('img');
@@ -72,16 +72,18 @@ const createMiddleArea = () => {
  * @param {string} tileColor, the color of the tile and its html class
  * @returns 
  */
-const grabMiddle = (event, tileId, tileColor) => {
+const grabMiddle = (tileId, tileColor) => {
 
   if (!state.activeGrab) return;
-
+  console.log(state.middle[tileId])
+  console.log(state.middle[tileId].length)
+  console.log(state.middle[0].length)
   for (let i=0; i<state.middle[tileId].length; i++) {
     if (state.middle[tileId][i] === tileColor) {
-      state.players[state.currentPlayer].limbo.push(...state.middle[tileId].splice(i,1));
+      state.turnOrder[state.currentPlayer].limbo.push(...state.middle[tileId].splice(i,1));
       i--;
     } else if (state.middle[tileId][i] === 'first') {
-      state.players[state.currentPlayer].limbo.push(...state.middle[tileId].splice(i,1));
+      state.turnOrder[state.currentPlayer].limbo.push(...state.middle[tileId].splice(i,1));
       i--;
     } else if (tileId !== 0) {
       state.middle[0].push(...state.middle[tileId].splice(i,1));
@@ -89,7 +91,7 @@ const grabMiddle = (event, tileId, tileColor) => {
     }
   };
   renderMainArea();
-  renderPlayerBoard(state.players[state.currentPlayer], $playerSection);
+  renderPlayerBoard(state.turnOrder[state.currentPlayer], $playerSection);
   state.activeGrab = false;
   state.activeStaging = true;
 };
