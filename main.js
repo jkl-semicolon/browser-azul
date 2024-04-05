@@ -145,6 +145,10 @@ export const endGameScoring = () => {
   console.log('hello, i am end game scoring');
 };
 
+export const takeTurn = () => {
+  console.log('hello, i am takeTurn');
+};
+
 
 
 const playRound = () => {
@@ -162,15 +166,15 @@ const playRound = () => {
   
 }
 
-const playGame = (numPlayers) => {
-  startGame(numPlayers);
-  // if end game condition: go to end game scoring
-  // else:
-  startRound();
-  setPlayerOrder();
-  playRound();
-  endRoundScoring();
-};
+// const playGame = (numPlayers) => {
+//   startGame(numPlayers);
+//   // if end game condition: go to end game scoring
+//   // else:
+//   startRound();
+//   setPlayerOrder();
+//   playRound();
+//   endRoundScoring();
+// };
 
 
 startGame(4);
