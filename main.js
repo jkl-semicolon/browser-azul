@@ -38,7 +38,6 @@ export const state = {
                // tile empty arrays will be added when the number of players is chosen.
   players: [],  // array of up to 4 player objects; see function initializePlayers
   currentPlayer: 0,  // number of player's index
-  nextRoundFirst: 0, // index of starting player next round
   gameEnd: false, // boolean
   winner: 0, // number of player's index
 };
@@ -75,6 +74,7 @@ import startGame from './src/startGame.js';
 import renderPlayerBoard from './src/renderPlayerBoard.js';
 import renderMainArea from './src/renderMainArea.js';
 import startRound from './src/startRound.js';
+import { setPlayerOrder } from './src/startGame.js';
 
 /**
  *          #############################################
@@ -121,9 +121,55 @@ import startRound from './src/startRound.js';
 // $boardSection.appendChild(createMiddleArea());
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Checks if the end game condition of a player finishing a row in their landing area.
+ * If so, game proceeds to end game scoring. Otherwise, start another round.
+ */
+export const newRoundOrNawww = () => {
+  for (const player of state.players) {
+    for (const playerLandingRow of player.landing) {
+      if (playerLandingRow.length === 5) {
+        endGameScoring();
+        return;
+      }
+    }
+  }
+  startRound();
+}
+
+export const endGameScoring = () => {
+  console.log('hello, i am end game scoring');
+};
+
+const playRound = () => {
+  console.log('start round')
+
+  let midHasTiles = true;
+  
+  const checkMid = () => {
+    midHasTiles = false;
+    state.middle.forEach((part) => {
+      if (part.length) midHasTiles = true;
+    })
+  }
+
+  
+}
+
+const playGame = (numPlayers) => {
+  startGame(numPlayers);
+  // if end game condition: go to end game scoring
+  // else:
+  startRound();
+  setPlayerOrder();
+  playRound();
+  endRoundScoring();
+};
+
+
 startGame(4);
 state.currentPlayer = 2;
-state.middle[0].push('red')
+// state.middle[0].push('red')
 state.players[2].staging[3].push('red');
 state.players[2].staging[4].push('blue', 'blue')
 state.players[2].landing[3].push('red');
@@ -136,23 +182,4 @@ renderPlayerBoard(state.players[3], $player4Section)
 renderMainArea();
 state.activeGrab = true;
 console.log(state.bag);
-
-const playRound = () => {
-  console.log('start round')
-
-  const midHasTiles = true;
-  
-  const checkMid = () => {
-    midHasTiles = false;
-    state.middle.forEach((part) => {
-      if (part.length) midHasTiles = true;
-    })
-  }
-
-  while (midHasTiles) {
-
-    
-    checkMid();
-  }
-
-}
+// playRound()

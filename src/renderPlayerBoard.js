@@ -78,7 +78,7 @@ const placeStaging = (rowID) => {
   // this for loop moves the first player tile to where it needs to go, and sets turn order for next round
   for (let i=0; i<state.players[state.currentPlayer].limbo.length; i++) {
     if (state.players[state.currentPlayer].limbo[i] === 'first') {
-      state.nextRoundFirst = state.currentPlayer;
+      state.players[state.currentPlayer].firstNext = true;
       if (state.players[state.currentPlayer].broken.length === 8) {
         state.players[state.currentPlayer].limbo.splice(i,1);
       } else {
@@ -103,7 +103,6 @@ const placeStaging = (rowID) => {
     renderPlayerBoard(state.players[state.currentPlayer], $playerSection);
     return;
   }
-
   // If chosen row in staging has a different color from the limbo tiles, return.
   if (state.players[state.currentPlayer].staging[rowID].length) {
     if (state.players[state.currentPlayer].limbo[0] !== state.players[state.currentPlayer].staging[rowID][0]) {

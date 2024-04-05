@@ -1,9 +1,11 @@
-import {state} from './../main.js';
+import {state, takeTurn} from './../main.js';
 import {shuffle} from './startGame.js';
+import renderMainArea from './renderMainArea.js';
 
 /**
- * 
- * 
+ * Occurs at the start of a new round; adds four tiles from the bag to
+ * each factory tile in the middle. Shuffles discard into bag if 
+ * there are not enough tiles in the bag. If still not enough, leave rest empty.
  */
 const popFacTiles = () => {
   for (let i=1; i<=state.factoryTiles; i++) {
@@ -32,6 +34,8 @@ const placeFirstTile = () => state.middle[0].push('first');
 const startRound = () => {
   popFacTiles();
   placeFirstTile();
+  renderMainArea();
+  takeTurn();
 };
 
 export default startRound;

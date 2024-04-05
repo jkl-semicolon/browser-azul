@@ -1,5 +1,7 @@
 import {state} from './../main.js';
 import {landingPattern} from './renderPlayerBoard.js';
+import startRound from './startRound.js';
+import { newRoundOrNawww } from './../main.js';
 
 /**
  * Initializes empty player objects in state.players.
@@ -48,12 +50,12 @@ export const shuffle = (array) => {
  * Sets player order randomly at the start, then sets player order according to
  * the 1st player marker at the start of subsequent rounds.
  */
-const setPlayerOrder = () => {
+export const setPlayerOrder = () => {
   state.turnOrder = shuffle([...state.players]);
   for (let i=0; i<state.turnOrder.length; i++) {
     if (state.turnOrder[i].firstNext) {
-      state.players[i].firstNext = false;
       state.turnOrder.unshift(state.turnOrder.splice(i,1)[0]);
+      for (const player of state.players) player.firstNext = false;
     };
   };
 };
@@ -64,7 +66,7 @@ const setPlayerOrder = () => {
 const fillBag = () => {
   landingPattern[0].forEach(tile => {for (let i=0; i<20; i++) state.bag.push(tile)});
   shuffle(state.bag);
-  console.log(state.bag);
+  console.log(state.bag); //////////////////////////////////////////////////////////////////////////////////////
 };
 
 /**
@@ -77,6 +79,7 @@ const startGame = (numberPlayers) => {
   setFactoryTiles();
   setPlayerOrder();
   fillBag();
+  newRoundOrNawww();
 };
 
 export default startGame;
