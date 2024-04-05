@@ -17,6 +17,19 @@
 
 /**
  *          #############################################
+ *          ## --------------- Imports --------------- ##
+ *          #############################################
+ * 
+ */
+
+import startGame from './src/startGame.js';
+import renderPlayerBoard from './src/renderPlayerBoard.js';
+import renderMainArea from './src/renderMainArea.js';
+import startRound from './src/startRound.js';
+import { setPlayerOrder } from './src/startGame.js';
+
+/**
+ *          #############################################
  *          ## ---------- Game State Object ---------- ##
  *          #############################################
  */
@@ -62,19 +75,6 @@ export const $playerSection = document.querySelector('#playerSection');
  * //TODO
  * 
  */
-
-/**
- *          #############################################
- *          ## --------------- Imports --------------- ##
- *          #############################################
- * 
- */
-
-import startGame from './src/startGame.js';
-import renderPlayerBoard from './src/renderPlayerBoard.js';
-import renderMainArea from './src/renderMainArea.js';
-import startRound from './src/startRound.js';
-import { setPlayerOrder } from './src/startGame.js';
 
 /**
  *          #############################################
@@ -137,9 +137,15 @@ export const newRoundOrNawww = () => {
   startRound();
 }
 
+/**
+ * 
+ * 
+ */
 export const endGameScoring = () => {
   console.log('hello, i am end game scoring');
 };
+
+
 
 const playRound = () => {
   console.log('start round')
