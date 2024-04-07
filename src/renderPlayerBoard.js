@@ -79,7 +79,7 @@ const placeStaging = (rowID) => {
   for (let i=0; i<state.turnOrder[state.currentPlayer].limbo.length; i++) {
     if (state.turnOrder[state.currentPlayer].limbo[i] === 'first') {
       state.turnOrder[state.currentPlayer].firstNext = true;
-      if (state.turnOrder[state.currentPlayer].broken.length === 8) {
+      if (state.turnOrder[state.currentPlayer].broken.length === 7) {
         state.turnOrder[state.currentPlayer].limbo.splice(i,1);
       } else {
         state.turnOrder[state.currentPlayer].broken.push(state.turnOrder[state.currentPlayer].limbo.splice(i,1)[0]);
@@ -91,7 +91,7 @@ const placeStaging = (rowID) => {
   if (rowID === 5) {
     if (!confirm('You have chosen to break all your chosen tiles; press OK to continue.')) return;
     for (let i=0; i<state.turnOrder[state.currentPlayer].limbo.length; i++) {
-      if (state.turnOrder[state.currentPlayer].broken.length === 8) {
+      if (state.turnOrder[state.currentPlayer].broken.length === 7) {
         state.discard.push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0]);
         i--;
       } else {
@@ -122,7 +122,7 @@ const placeStaging = (rowID) => {
   // If full, move limbo tiles to broken area; if that is full, move limbo tiles to discard.
   for (let i=0; i<state.turnOrder[state.currentPlayer].limbo.length; i++) {
     if (state.turnOrder[state.currentPlayer].staging[rowID].length >= rowID + 1) {
-      if (state.turnOrder[state.currentPlayer].broken.length === 8) {
+      if (state.turnOrder[state.currentPlayer].broken.length === 7) {
         state.discard.push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0]);
         i--;
       } else {
@@ -189,9 +189,9 @@ const createLanding = (player) => {
 const createBrokenScore = (player) => {
   const element = document.createElement('div');
   element.classList.add('brokenArea');
-  for (let i=0; i<8; i++) {
+  for (let i=0; i<7; i++) {
     const brokenSpace = document.createElement('div');
-    brokenSpace.innerHTML = `<p>${i<3 ? '-1' : i<6 ? '-2' : '-3'}</p>`;
+    brokenSpace.innerHTML = `<p>${i<2 ? '-1' : i<5 ? '-2' : '-3'}</p>`;
     if (player.broken[i]) brokenSpace.classList.add(`${player.broken[i]}`, 'tile');
     else brokenSpace.classList.add('tile');
     brokenSpace.addEventListener('click', () => {placeStaging(5)}) // placeStaging argument set to 5 for broken area.

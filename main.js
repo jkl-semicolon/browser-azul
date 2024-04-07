@@ -115,7 +115,44 @@ export const newRoundOrNawww = () => {
  *  TODO///
  */
 export const endGameScoring = () => {
-  console.log('hello, i am end game scoring');
+  state.players.forEach((player) => {
+
+    player.landing.forEach((row) => {
+      if (row.length === 5) player.score += 2;
+    });
+
+    for (let i=0; i<5; i++) {
+      let col = true;
+      for (let j=0; j<5; j++) {
+        if (player.landing[j].indexOf(landingPattern[j][i] === -1)) col = false;
+      };
+      if (col) player.score += 7;
+    };
+
+    for (const tile of landingPattern[0]) {
+      let color = true;
+      player.landing.forEach((row) => {
+        if (row.indexOf(tile) === -1) color = false;
+      });
+      if (color) player.score += 10;
+    }
+  });
+  gameEnd();
+};
+
+/**
+ * //TODO
+ */
+const gameEnd = () => {
+  let winningScore = 0;
+  let winningPlayer;
+  state.players.forEach((player) => {
+    if (player.score > winningScore) {
+      winningScore = player.score;
+      winningPlayer = player.name;
+    }
+  })
+  alert(`Congratulations!!! ${winningPlayer} has won with a score of ${winningScore}!!!`);
 };
 
 /**
@@ -149,30 +186,9 @@ export const takeTurn = () => {
 };
 
 /**
- *  TODO///
- * 
+ * Occurs at the end of each round. Completes scoring and sets up playerboard
+ * for each player for the next round.
  */
-
-
-
-// state.players.push({
-//   name: `Player ${i+1}`,
-//   score: 0,  // number
-//   limbo: [], // array of strings for tiles
-//   staging: [[],[],[],[],[],],  // array of arrays of strings for tiles
-//   landing:  [[],[],[],[],[],], // array of arrays of strings for tiles
-//   broken: [], // array of strings for tiles
-//   firstNext: false, //  boolean for first in turn order next round
-// });
-
-// export const landingPattern = [
-//   ['blue','yellow','red','purple','green'],
-//   ['green','blue','yellow','red','purple'],
-//   ['purple','green','blue','yellow','red'],
-//   ['red','purple','green','blue','yellow'],
-//   ['yellow','red','purple','green','blue'],
-// ];
-
 const endRoundScoring = () => {
 
   state.players.forEach((player) => { 
@@ -205,15 +221,21 @@ const endRoundScoring = () => {
           else break;
         }
         if (vScore !== 0) vScore++;
-
         let earnedScore = hScore + vScore;
         if (earnedScore === 0) earnedScore++;
         player.score += earnedScore;
       }
     });
+
+    const negScores = [-1,-2,-4,-6,-8,-11,-14];
+    if (player.broken.length) player.score += negScores[player.broken.length-1];
+    if (player.score < 0) player.score = 0;
+    while (player.broken.length) {
+      if (player.broken[0] === 'first') player.broken.shift();
+      else state.discard.push(player.broken.shift());
+    }
   });
-  renderPlayerBoard(state.players[0],$playerSection);
-  renderPlayerBoard(state.players[1],$player2Section);
+  newRoundOrNawww();
 };
 
 
