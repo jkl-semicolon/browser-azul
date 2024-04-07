@@ -24,9 +24,7 @@
 
 import startGame from './src/startGame.js';
 import renderPlayerBoard from './src/renderPlayerBoard.js';
-import renderMainArea from './src/renderMainArea.js';
 import startRound from './src/startRound.js';
-import { setPlayerOrder } from './src/startGame.js';
 import { landingPattern } from './src/renderPlayerBoard.js';
 
 /**
@@ -54,7 +52,6 @@ export const state = {
   currentPlayer: 0,  // number of player's index
   turnCounter: 0, // number of the turn in a given round
   gameEnd: false, // boolean
-  winner: 0, // number of player's index
 };
 
 /**
@@ -69,30 +66,38 @@ const $otherPlayerSections = [$player2Section, $player3Section, $player4Section]
 export const $boardSection = document.querySelector('#boardSection');
 export const $playerSection = document.querySelector('#playerSection');
 
+
+const $twoPGame = document.querySelector('#twoPGame');
+const $threePGame = document.querySelector('#threePGame');
+const $fourPGame = document.querySelector('#fourPGame');
+
+const startButtons = [$twoPGame, $threePGame, $fourPGame];
+
 /**
  *          #############################################
  *          ## -------- Global Event Listeners ------- ##
  *          #############################################
  * 
- * //TODO
- * 
  */
+
+
+  $twoPGame.addEventListener('click', () => {
+    if (!state.gameStart) startGame(2);
+  })
+
+  $threePGame.addEventListener('click', () => {
+    if (!state.gameStart) startGame(3);
+  })
+
+  $fourPGame.addEventListener('click', () => {
+    if (!state.gameStart) startGame(4);
+  })
 
 /**
  *          #############################################
  *          ## ----------- Game Functions ------------ ##
  *          #############################################
  */
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// state.players[2].landing[0].push();
-// state.players[2].landing[1].push('yellow','red');
-// state.players[2].landing[2].push('blue','yellow','purple');
-// state.players[2].landing[3].push('green','purple');
-// state.players[2].landing[4].push('green','purple','blue');
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Checks if the end game condition of a player finishing a row in their landing area.
@@ -252,5 +257,3 @@ export const newTurnOrNawww = () => {
   if (midHasTiles) takeTurn();
   else endRoundScoring();
 };
-
-startGame(2);

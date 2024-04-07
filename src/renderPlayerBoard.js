@@ -218,6 +218,11 @@ const renderPlayerBoard = (player, section) => {
   [createArrows, createLanding, createBrokenScore].forEach(myFunc => 
     element.appendChild(myFunc(player))
   );
+
+  const name = document.createElement('h2');
+  name.innerHTML = `${player.name}`
+  element.appendChild(name)
+  
   section.appendChild(element);
 };
 

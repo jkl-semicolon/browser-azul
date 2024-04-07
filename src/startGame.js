@@ -75,6 +75,7 @@ const fillBag = () => {
  * @param {number} numberPlayers, the number of players selected
  */
 const startGame = (numberPlayers) => {
+  state.gameStart = true;
   initializePlayers(numberPlayers);
   setFactoryTiles();
   fillBag();
