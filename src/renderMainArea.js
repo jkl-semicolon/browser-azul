@@ -75,9 +75,7 @@ const createMiddleArea = () => {
 const grabMiddle = (tileId, tileColor) => {
 
   if (!state.activeGrab) return;
-  console.log(state.middle[tileId])
-  console.log(state.middle[tileId].length)
-  console.log(state.middle[0].length)
+
   for (let i=0; i<state.middle[tileId].length; i++) {
     if (state.middle[tileId][i] === tileColor) {
       state.turnOrder[state.currentPlayer].limbo.push(...state.middle[tileId].splice(i,1));

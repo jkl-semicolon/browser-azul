@@ -135,7 +135,7 @@ const placeStaging = (rowID) => {
     }
   }
 
-  // Finish moving to staging, and re-render player board.
+  // Finish moving to staging, re-render player board, and check if there should be a new turn or not.
   state.activeStaging = false;
   renderPlayerBoard(state.turnOrder[state.currentPlayer], $playerSection);
   newTurnOrNawww();

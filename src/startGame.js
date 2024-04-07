@@ -31,7 +31,7 @@ const setFactoryTiles = () => {
 
 /**
  * Fisher-Yates Shuffle, sourced from: https://bost.ocks.org/mike/shuffle/.
- * To help randomize players for function setTurnOrder.
+ * To help randomize players for function setTurnOrder, and for shuffling tiles in bag.
  * @param {array}, array of player objects 
  * @returns {array}, array of shuffled player objects
  */
@@ -62,11 +62,11 @@ export const setPlayerOrder = () => {
 
 /**
  * Fills 100 tiles of 5 different colors into the grab bag at the start of the game.
+ * Uses a row of landing pattern to know which tiles to push.
  */
 const fillBag = () => {
   landingPattern[0].forEach(tile => {for (let i=0; i<20; i++) state.bag.push(tile)});
   shuffle(state.bag);
-  console.log(state.bag); //////////////////////////////////////////////////////////////////////////////////////
 };
 
 /**

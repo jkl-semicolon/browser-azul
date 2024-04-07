@@ -27,6 +27,7 @@ import renderPlayerBoard from './src/renderPlayerBoard.js';
 import renderMainArea from './src/renderMainArea.js';
 import startRound from './src/startRound.js';
 import { setPlayerOrder } from './src/startGame.js';
+import { landingPattern } from './src/renderPlayerBoard.js';
 
 /**
  *          #############################################
@@ -118,8 +119,10 @@ export const endGameScoring = () => {
 };
 
 /**
- * Occurs either at the end of a round start, or at the end of another player's turn. 
- *  TODO///
+ * Occurs either at the end of a round start, or if another turn is
+ * determined to be needed. Switches the current player, renders
+ * player boards in correct positions, and turns on first event 
+ * listener for the active player.
  */
 export const takeTurn = () => {
 
@@ -149,22 +152,83 @@ export const takeTurn = () => {
  *  TODO///
  * 
  */
+
+
+
+// state.players.push({
+//   name: `Player ${i+1}`,
+//   score: 0,  // number
+//   limbo: [], // array of strings for tiles
+//   staging: [[],[],[],[],[],],  // array of arrays of strings for tiles
+//   landing:  [[],[],[],[],[],], // array of arrays of strings for tiles
+//   broken: [], // array of strings for tiles
+//   firstNext: false, //  boolean for first in turn order next round
+// });
+
+// export const landingPattern = [
+//   ['blue','yellow','red','purple','green'],
+//   ['green','blue','yellow','red','purple'],
+//   ['purple','green','blue','yellow','red'],
+//   ['red','purple','green','blue','yellow'],
+//   ['yellow','red','purple','green','blue'],
+// ];
+
 const endRoundScoring = () => {
-  console.log('you have reached end of round scoring, congrats!')
+
+  state.players.forEach((player) => { 
+    player.staging.forEach((row, i) => {
+
+      if (row.length === i + 1) {
+        const scoredTile = row[0];
+        player.landing[i].push(row.shift());
+        while (row[0]) state.discard.push(row.pop());
+        const scoredIndex = landingPattern[i].indexOf(scoredTile);
+
+        let hScore = 0;
+        for (let j=scoredIndex; j<4; j++) {
+          if (player.landing[i].indexOf(landingPattern[i][j+1]) !== -1) hScore++;
+          else break;
+        }
+        for (let j=scoredIndex; j>0; j--) {
+          if (player.landing[i].indexOf(landingPattern[i][j-1]) !== -1) hScore++;
+          else break;
+        }
+        if (hScore !== 0) hScore++;
+
+        let vScore = 0;
+        for (let j=i; j<4; j++) {
+          if (player.landing[j+1].indexOf(landingPattern[j+1][scoredIndex]) !== -1) vScore++;
+          else break;
+        }
+        for (let j=i; j>0; j--) {
+          if (player.landing[j-1].indexOf(landingPattern[j-1][scoredIndex]) !== -1) vScore++;
+          else break;
+        }
+        if (vScore !== 0) vScore++;
+
+        let earnedScore = hScore + vScore;
+        if (earnedScore === 0) earnedScore++;
+        player.score += earnedScore;
+      }
+    });
+  });
+  renderPlayerBoard(state.players[0],$playerSection);
+  renderPlayerBoard(state.players[1],$player2Section);
 };
 
+
 /**
- *  TODO///
- * 
+ * Occurs at the end of the second event handler of a player's turn. 
+ * Checks to see if another turn in the round is needed, and either a new
+ * turn occurs or end round scoring occurs.
  */
 export const newTurnOrNawww = () => {
   let midHasTiles;
   state.middle.forEach((part) => {
     if (part.length) midHasTiles = true;
-  })
+  });
   if (midHasTiles) takeTurn();
   else endRoundScoring();
 };
 
-startGame(4);
-console.log(state.bag);
+startGame(2);
