@@ -97,5 +97,4 @@
 *  c. Determine winner and display victory. If tie, most completed horizonal lines is the winner; 
 *     still tie, share victory.
 *    i.  Reset game state to before game starts.
-* 
 */
