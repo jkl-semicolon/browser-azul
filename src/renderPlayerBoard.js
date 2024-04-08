@@ -214,14 +214,16 @@ const renderPlayerBoard = (player, section) => {
   section.innerHTML = '';
   const element = document.createElement('div');
   element.appendChild(createLimbo(player));
+
+  const name = document.createElement('h1');
+  name.innerHTML = `${player.name}`
+  element.appendChild(name)
+  
   element.appendChild(createStaging(player, section));
   [createArrows, createLanding, createBrokenScore].forEach(myFunc => 
     element.appendChild(myFunc(player))
   );
 
-  const name = document.createElement('h1');
-  name.innerHTML = `${player.name}`
-  element.appendChild(name)
   element.style.backgroundColor = player.color;
   
   section.appendChild(element);

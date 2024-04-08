@@ -37,7 +37,9 @@
   border:none 
 }
 
-
+.limboArea {
+  min-height: 90px;
+}
 
 
 
