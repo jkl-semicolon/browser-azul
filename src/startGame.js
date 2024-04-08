@@ -1,4 +1,4 @@
-import {state} from './../main.js';
+import {state, resetState} from './../main.js';
 import {landingPattern} from './renderPlayerBoard.js';
 import { newRoundOrNawww } from './../main.js';
 
@@ -83,6 +83,7 @@ const fillBag = () => {
  * @param {number} numberPlayers, the number of players selected
  */
 const startGame = (numberPlayers) => {
+  resetState();
   state.gameStart = true;
   initializePlayers(numberPlayers);
   setFactoryTiles();

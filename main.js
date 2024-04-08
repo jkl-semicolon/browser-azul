@@ -32,26 +32,13 @@ import { landingPattern } from './src/renderPlayerBoard.js';
  *          ## ---------- Game State Object ---------- ##
  *          #############################################
  */
+export const state = {};
 
-export const state = {
-
-  gameStart: false, // boolean
-  numberPlayers: 0, // enumerated number, either 2, 3, or 4
-  factoryTiles: 0, // enumerated number, either 5, 7, or 9
-  turnOrder: [],  // array of numbers for players' indexes
-
-  activeGrab: false, // boolean of whether or not middle tile event listeners are active or not.
-  activeStaging: false, // boolean of whether it is time to place in staging area or not
-
-  bag: [],  // array of strings for tiles
-  discard: [],  // array of strings for tiles
-  middle: [[],],  //  array of arrays, with state.middle[0] being the middle area, and 
-               //  state.middle[1] being factory tile 1, and so on. The other factory
-               // tile empty arrays will be added when the number of players is chosen.
-  players: [],  // array of up to 4 player objects; see function initializePlayers
-  currentPlayer: 0,  // number of player's index
-  turnCounter: 0, // number of the turn in a given round
-  gameEnd: false, // boolean
+export const resetState = () => {
+  ['gameStart', 'activeGrab', 'activeStaging',].forEach(s => state[s] = false);
+  ['numberPlayers', 'factoryTiles', 'currentPlayer', 'turnCounter',].forEach(s => state[s] = 0);
+  ['turnOrder', 'bag', 'discard', 'players',].forEach(s => state[s] = []);
+  state.middle = [[],];
 };
 
 /**
@@ -62,7 +49,6 @@ export const state = {
 const $player2Section = document.querySelector('#player2Section');
 const $player3Section = document.querySelector('#player3Section');
 const $player4Section = document.querySelector('#player4Section');
-const $otherPlayerSections = [$player2Section, $player3Section, $player4Section]
 export const $boardSection = document.querySelector('#boardSection');
 export const $playerSection = document.querySelector('#playerSection');
 
@@ -70,6 +56,7 @@ export const $playerSection = document.querySelector('#playerSection');
 const $twoPGame = document.querySelector('#twoPGame');
 const $threePGame = document.querySelector('#threePGame');
 const $fourPGame = document.querySelector('#fourPGame');
+const $reset = document.querySelector('#reset');
 
 const startButtons = [$twoPGame, $threePGame, $fourPGame];
 
@@ -83,15 +70,25 @@ const startButtons = [$twoPGame, $threePGame, $fourPGame];
 
   $twoPGame.addEventListener('click', () => {
     if (!state.gameStart) startGame(2);
-  })
+  });
 
   $threePGame.addEventListener('click', () => {
     if (!state.gameStart) startGame(3);
-  })
+  });
 
   $fourPGame.addEventListener('click', () => {
     if (!state.gameStart) startGame(4);
-  })
+  });
+
+  $reset.addEventListener('click', () => {
+    if (state.gameStart) {
+      if (confirm('Are you sure you want to quit the current game?')) {
+        resetState();
+        [$player2Section, $player3Section, $player4Section, $playerSection,].forEach(section => section.innerHTML = '');
+        $boardSection.innerHTML= '<img src="./img/azul-box-cover.jpg">';
+      };
+    };
+  });
 
 /**
  *          #############################################

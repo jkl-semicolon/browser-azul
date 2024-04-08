@@ -1,4 +1,3 @@
-
 /* TILE STYLING SECTION */
 
 .red {
@@ -45,6 +44,7 @@
 
 header {
   border:3px solid black;
+  position: fixed;
 }
 .title {
   font-size: 1.6em;
@@ -57,17 +57,18 @@ header {
   line-height:0;
 }
 
+/* RANDOM MINIMAL STYLING */
 
-
-
-main > section {
-  /* min-height:100%; */
+main {
+  padding-top:50px;
+}
+body {
+  margin: 10px;
 }
 
-#opponentSection > section {
-  /* height: 33%; */
-  border:3px solid black;
-}
+
+
+
 
 .stagingArea > div,
 .landingArea > div,
