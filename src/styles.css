@@ -96,7 +96,6 @@ html {
 .middleArea {
   gap: 10px;
 }
-
 .factoryTile {
   border-radius: 50%;
   background-color: rgb(161, 111, 111);
@@ -111,7 +110,6 @@ html {
 .factoryTile > div {
   margin: 10%;
 }
-
 .factoryTileArea {
   display:flex;
   flex-wrap: wrap;
@@ -124,18 +122,17 @@ html {
 .arrow {
   margin-bottom: 5px;
 }
-
 .brokenArea,
 .limboArea,
 .scoreArea {
   width: 500px;
 }
-
 #playerSection > div,
 #player2Section > div,
 #player3Section > div,
 #player4Section > div {
   padding: 0 148px;
+  border: 2px solid black;
 }
 
 #playerSection,
@@ -144,11 +141,5 @@ html {
 #player4Section {
 display: flex;
 justify-content: center;
-border: 2px solid black;
-}
-
-#playerSection,
-#player2Section,
-#player3Section {
-  margin-bottom: 10px;
+margin-bottom: 10px;
 }
