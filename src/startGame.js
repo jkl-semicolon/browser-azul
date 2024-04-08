@@ -6,7 +6,7 @@ import { newRoundOrNawww } from './../main.js';
  * Local variables used when initializing players.
  */
 const competitors = ['Jerry','Elaine','George','Kramer',];
-const playerColors = ['#FAEDCB', '#C9E4DE', '#C6DEF1', '#F2C6DE'];
+const playerColors = ['#F7D9C4', '#C9E4DE', '#C6DEF1', '#F2C6DE'];
 
 /**
  * Initializes empty player objects in state.players.

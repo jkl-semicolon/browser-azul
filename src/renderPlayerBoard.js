@@ -145,16 +145,17 @@ const placeStaging = (rowID) => {
  * Creates the arrows between the staging and landing areas of the player board.
  * @returns {object}, the arrows that go between staging and landing.
  */
-const createArrows = () => {
+const createArrows2 = () => {
   const element = document.createElement('div');
-  element.innerHTML = `
-    ➡️<br>➡️<br>➡️<br>➡️<br>➡️
-  `;
-  element.style.fontSize = '1.8rem';
-  element.style.marginLeft = '5px';
-  element.style.display = 'inline-block';
+  element.classList.add('arrowArea');
+  for (let i=0; i<5; i++) {
+    const arrow = document.createElement('div');
+    arrow.classList.add('tile', 'arrow');
+    if (i === 4) arrow.style.marginBottom = '0';
+    element.appendChild(arrow);
+  }
   return element;
-};
+}
 
 /**
  * Creates the landing area with colored tiles on a playerboard.
@@ -222,7 +223,7 @@ const createScore = (player) => {
 const renderPlayerBoard = (player, section) => {
   section.innerHTML = '';
   const element = document.createElement('div');
-  [createLimbo, createScore, createStaging, createArrows, createLanding, createBroken].forEach(myFunc => {
+  [createLimbo, createScore, createStaging, createArrows2, createLanding, createBroken].forEach(myFunc => {
     element.appendChild(myFunc(player, section))
   });
   element.style.backgroundColor = player.color;
