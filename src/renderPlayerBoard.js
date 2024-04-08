@@ -182,11 +182,11 @@ const createLanding = (player) => {
 };
 
 /**
- * Creates the broken tile area along with player score.
- * @param {object}, the player to create the staging for
+ * Creates the broken tile area.
+ * @param {object}, the player to create the broken area for
  * @returns {object}, the brokenArea html element
  */
-const createBrokenScore = (player) => {
+const createBroken = (player) => {
   const element = document.createElement('div');
   element.classList.add('brokenArea');
   for (let i=0; i<7; i++) {
@@ -197,12 +197,21 @@ const createBrokenScore = (player) => {
     brokenSpace.addEventListener('click', () => {placeStaging(5)}) // placeStaging argument set to 5 for broken area.
     element.appendChild(brokenSpace);
   }
-  const score = document.createElement('div');
-  score.classList.add('score');
-  score.innerHTML = `Score: ${player.score}`;
-  element.appendChild(score);
   return element;
 };
+
+
+/**
+ * Creates the score area with the player's name.
+ * @param {object}, the player to render the score for 
+ * @returns {object}, the scoreArea html element
+ */
+const createScore = (player) => {
+  const element = document.createElement('div');
+  element.classList.add('scoreArea', 'title');
+  element.innerHTML = `${player.name}'s Score: ${player.score}`;
+  return element;
+}
 
 /**
  * Occurs for each player upon start of game, and anytime a user input in the game happens. 
@@ -213,19 +222,10 @@ const createBrokenScore = (player) => {
 const renderPlayerBoard = (player, section) => {
   section.innerHTML = '';
   const element = document.createElement('div');
-  element.appendChild(createLimbo(player));
-
-  const name = document.createElement('h1');
-  name.innerHTML = `${player.name}`
-  element.appendChild(name)
-  
-  element.appendChild(createStaging(player, section));
-  [createArrows, createLanding, createBrokenScore].forEach(myFunc => 
-    element.appendChild(myFunc(player))
-  );
-
+  [createLimbo, createScore, createStaging, createArrows, createLanding, createBroken].forEach(myFunc => {
+    element.appendChild(myFunc(player, section))
+  });
   element.style.backgroundColor = player.color;
-  
   section.appendChild(element);
 };
 
