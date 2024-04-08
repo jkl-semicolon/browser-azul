@@ -1,16 +1,24 @@
 import {state} from './../main.js';
 import {landingPattern} from './renderPlayerBoard.js';
-import startRound from './startRound.js';
 import { newRoundOrNawww } from './../main.js';
+
+/**
+ * Local variables used when initializing players.
+ */
+const competitors = ['Jerry','Elaine','George','Kramer',];
+const playerColors = ['#FAEDCB', '#C9E4DE', '#C6DEF1', '#F2C6DE'];
 
 /**
  * Initializes empty player objects in state.players.
  * @param {number} numberPlayers, the number of players selected
  */
 const initializePlayers = (numberPlayers) => {
+  const randNames = shuffle(competitors);
+  const randColors = shuffle(playerColors);
   for (let i=0; i<numberPlayers; i++) {
     state.players.push({
-      name: `Player ${i+1}`,
+      name: randNames[i],
+      color: randColors[i],
       score: 0,  // number
       limbo: [], // array of strings for tiles
       staging: [[],[],[],[],[],],  // array of arrays of strings for tiles

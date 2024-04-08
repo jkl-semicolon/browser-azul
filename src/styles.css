@@ -1,31 +1,5 @@
-header {
-  border:3px solid black;
-}
 
-main > section {
-  min-height:100%;
-}
-
-#opponentSection > section {
-  height: 33%;
-  border:3px solid black;
-}
-
-#opponentSection > div {
-  height:.5%;
-  background-color:black;
-}
-
-[class*="col-"] {
-  float: left;
-  border:3px solid black;
-}
-
-.col-1 {width: 20%;}
-.col-2 {width: 42.5%;}
-.col-3 {width: 37.5%;}
-
-
+/* TILE STYLING SECTION */
 
 .red {
   background-color:red;
@@ -42,7 +16,10 @@ main > section {
 .yellow{
   background-color:yellow;
 }
-
+.first {
+  background-image: url('./../img/azul-first-tile-resized.jpg');
+  border:none !important;
+}
 .tile {
   height:40px;
   width:40px;
@@ -52,24 +29,34 @@ main > section {
   vertical-align: middle;
   line-height: 1;
 }
-
-.first {
-  background-image: url('./../img/azul-first-tile-resized.jpg');
-  border:none !important;
-}
-
-.limboArea .tile {
+.limboArea .brokenArea .tile {
   height:40px;
   width:40px;
 }
-
-.brokenArea .tile {
-  height:30px;
-  width:30px;
+.hiddenTile {
+  border:none 
 }
 
-.hiddenTile {
-  border:none !important;
+
+
+
+
+
+
+
+
+
+header {
+  border:3px solid black;
+}
+
+main > section {
+  /* min-height:100%; */
+}
+
+#opponentSection > section {
+  /* height: 33%; */
+  border:3px solid black;
 }
 
 .stagingArea > div,
@@ -161,7 +148,13 @@ main > section {
   width: 30%;
 }
 
-.shrink{
-  transform:scale(0.9, 0.6);
-  margin-bottom: 20px;
+/*/////////////////////////////////////
+[class*="col-"] {
+  float: left;
+  border:3px solid black;
 }
+
+.col-1 {width: 20%;}
+.col-2 {width: 42.5%;}
+.col-3 {width: 37.5%;} 
+/////////////////////////////////////*/

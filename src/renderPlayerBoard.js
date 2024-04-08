@@ -219,9 +219,10 @@ const renderPlayerBoard = (player, section) => {
     element.appendChild(myFunc(player))
   );
 
-  const name = document.createElement('h2');
+  const name = document.createElement('h1');
   name.innerHTML = `${player.name}`
   element.appendChild(name)
+  element.style.backgroundColor = player.color;
   
   section.appendChild(element);
 };
