@@ -9,7 +9,7 @@ export const landingPattern = [
   ['yellow','red','purple','green','blue'],
 ];
 
-import {$playerSection, state, newTurnOrNawww } from './../main.js';
+import {$playerSection, $player2Section, $player3Section, $player4Section, state, newTurnOrNawww, $boardSection } from './../main.js';
 
 /**
  * Creates the limbo area with colored tiles on a playerboard.
@@ -214,6 +214,26 @@ const createScore = (player) => {
   return element;
 }
 
+export const createInstructions = (player) => {
+  const element = document.createElement('div');
+  element.classList.add('floating');
+  if (state.activeGrab) {
+    element.innerHTML = `
+      It is ${player.name}'s turn. Please choose tiles of the same color
+      from either one of factory tiles in the middle, or the middle area
+      next to the factory tiles. Afterwards, choose a row on your playerboard 
+      to place your tiles. If you wish, you may also choose the broken tile area.
+    `;
+  }
+  if (state.activeStaging) {
+    element.innerHTML = `
+    Now, please choose a row to place your tiles. If you wish, you may also
+    choose the broken tile area.
+    `
+  }
+  $boardSection.appendChild(element);
+}
+
 /**
  * Occurs for each player upon start of game, and anytime a user input in the game happens. 
  * Creates a player's board html elements depending on their state.
@@ -229,5 +249,28 @@ const renderPlayerBoard = (player, section) => {
   element.style.backgroundColor = player.color;
   section.appendChild(element);
 };
+
+/**
+ * 
+ * TODO
+ */
+export const renderPlayers = () => {
+  let p2Empty = true;
+  let p3Empty = true;
+  for (const player of state.turnOrder) {
+    const index = state.turnOrder.indexOf(player);
+    if (index === state.currentPlayer) {
+      renderPlayerBoard(player, $playerSection);
+    } else if (p2Empty) {
+      renderPlayerBoard(player, $player2Section);
+      p2Empty = false;
+    } else if (p3Empty) {
+      renderPlayerBoard(player, $player3Section);
+      p3Empty = false;
+    } else {
+      renderPlayerBoard(player, $player4Section);
+    }
+  }
+}
 
 export default renderPlayerBoard;

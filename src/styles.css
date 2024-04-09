@@ -144,3 +144,11 @@ display: flex;
 justify-content: center;
 margin-bottom: 10px;
 }
+.floating {
+  position: absolute;
+  width: 800px;
+  font-size: large;
+  border: 2px solid black;
+  font-weight: 500;
+  padding: 0 10px
+}

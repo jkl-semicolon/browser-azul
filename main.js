@@ -23,9 +23,9 @@
  */
 
 import startGame from './src/startGame.js';
-import renderPlayerBoard from './src/renderPlayerBoard.js';
+import { renderPlayers } from './src/renderPlayerBoard.js';
 import startRound from './src/startRound.js';
-import { landingPattern } from './src/renderPlayerBoard.js';
+import { landingPattern, createInstructions } from './src/renderPlayerBoard.js';
 
 /**
  *          #############################################
@@ -46,9 +46,9 @@ export const resetState = () => {
  *          ## ----------- DOM Connections ----------- ##
  *          #############################################
  */
-const $player2Section = document.querySelector('#player2Section');
-const $player3Section = document.querySelector('#player3Section');
-const $player4Section = document.querySelector('#player4Section');
+export const $player2Section = document.querySelector('#player2Section');
+export const $player3Section = document.querySelector('#player3Section');
+export const $player4Section = document.querySelector('#player4Section');
 export const $boardSection = document.querySelector('#boardSection');
 export const $playerSection = document.querySelector('#playerSection');
 
@@ -57,8 +57,6 @@ const $twoPGame = document.querySelector('#twoPGame');
 const $threePGame = document.querySelector('#threePGame');
 const $fourPGame = document.querySelector('#fourPGame');
 const $reset = document.querySelector('#reset');
-
-const startButtons = [$twoPGame, $threePGame, $fourPGame];
 
 /**
  *          #############################################
@@ -118,27 +116,31 @@ export const newRoundOrNawww = () => {
  */
 export const endGameScoring = () => {
   state.players.forEach((player) => {
-
+    let rowBonus = 0;
     player.landing.forEach((row) => {
-      if (row.length === 5) player.score += 2;
+      if (row.length === 5) rowBonus += 2;
     });
 
+    let columnBonus = 0;
     for (let i=0; i<5; i++) {
       let col = true;
       for (let j=0; j<5; j++) {
         if (player.landing[j].indexOf(landingPattern[j][i] === -1)) col = false;
       };
-      if (col) player.score += 7;
+      if (col) columnBonus += 7;
     };
 
+    let colorBonus = 0;
     for (const tile of landingPattern[0]) {
       let color = true;
       player.landing.forEach((row) => {
         if (row.indexOf(tile) === -1) color = false;
       });
-      if (color) player.score += 10;
+      if (color) colorBonus += 10;
     }
+    player.score = player.score + rowBonus + columnBonus + colorBonus;
   });
+  renderPlayers();
   gameEnd();
 };
 
@@ -167,24 +169,10 @@ export const takeTurn = () => {
 
   state.currentPlayer = state.turnCounter % state.turnOrder.length
   state.turnCounter++;
-
-  let p2Empty = true;
-  let p3Empty = true;
-  for (const player of state.turnOrder) {
-    const index = state.turnOrder.indexOf(player);
-    if (index === state.currentPlayer) {
-      renderPlayerBoard(player, $playerSection);
-    } else if (p2Empty) {
-      renderPlayerBoard(player, $player2Section);
-      p2Empty = false;
-    } else if (p3Empty) {
-      renderPlayerBoard(player, $player3Section);
-      p3Empty = false;
-    } else {
-      renderPlayerBoard(player, $player4Section);
-    }
-  }
+  renderPlayers();
+  
   state.activeGrab = true;
+  createInstructions(state.turnOrder[state.currentPlayer]);
 };
 
 /**
