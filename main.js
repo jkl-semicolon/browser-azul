@@ -15,230 +15,41 @@
  * 
 */
 
-/**
- *          #############################################
- *          ## --------------- Imports --------------- ##
- *          #############################################
- * 
- */
-
-import startGame from './src/startGame.js';
-import { renderPlayers } from './src/renderPlayerBoard.js';
-import startRound from './src/startRound.js';
-import { landingPattern, createInstructions } from './src/renderPlayerBoard.js';
+import {startGame} from './src/gameSetup.js';
+import {resetState} from './src/gameSetup.js';
+import state from './src/state.js';
 
 /**
- *          #############################################
- *          ## ---------- Game State Object ---------- ##
- *          #############################################
+ * Setup for needed DOM connections.
  */
-export const state = {};
-
-export const resetState = () => {
-  ['gameStart', 'activeGrab', 'activeStaging',].forEach(s => state[s] = false);
-  ['numberPlayers', 'factoryTiles', 'currentPlayer', 'turnCounter',].forEach(s => state[s] = 0);
-  ['turnOrder', 'bag', 'discard', 'players',].forEach(s => state[s] = []);
-  state.middle = [[],];
-};
+const $boardSection = document.querySelector('#boardSection');
+const $activePlayerSection = document.querySelector('#playerSection');
+let $otherPlayerSections = [];
+(function otherSections() {
+  for (let i=2; i<5; i++) {
+    const $section = document.querySelector(`#player${i}Section`);
+    $otherPlayerSections.push($section);
+  }
+})();
 
 /**
- *          #############################################
- *          ## ----------- DOM Connections ----------- ##
- *          #############################################
+ * Initialize buttons to start and reset game.
  */
-export const $player2Section = document.querySelector('#player2Section');
-export const $player3Section = document.querySelector('#player3Section');
-export const $player4Section = document.querySelector('#player4Section');
-export const $boardSection = document.querySelector('#boardSection');
-export const $playerSection = document.querySelector('#playerSection');
-
-
-const $twoPGame = document.querySelector('#twoPGame');
-const $threePGame = document.querySelector('#threePGame');
-const $fourPGame = document.querySelector('#fourPGame');
-const $reset = document.querySelector('#reset');
-
-/**
- *          #############################################
- *          ## -------- Global Event Listeners ------- ##
- *          #############################################
- * 
- */
-
-
-  $twoPGame.addEventListener('click', () => {
-    if (!state.gameStart) startGame(2);
-  });
-
-  $threePGame.addEventListener('click', () => {
-    if (!state.gameStart) startGame(3);
-  });
-
-  $fourPGame.addEventListener('click', () => {
-    if (!state.gameStart) startGame(4);
-  });
-
-  $reset.addEventListener('click', () => {
+(function playButtons() {
+  for (let i=2; i<5; i++) {
+    document.querySelector(`#start${i}`).addEventListener('click', () => {
+      if (!state.gameStart) startGame(i);
+    })
+  }
+  document.querySelector('#reset').addEventListener('click', () => {
     if (state.gameStart) {
       if (confirm('Are you sure you want to quit the current game?')) {
         resetState();
-        [$player2Section, $player3Section, $player4Section, $playerSection,].forEach(section => section.innerHTML = '');
+        [...$otherPlayerSections, $activePlayerSection].forEach(section => section.innerHTML = '');
         $boardSection.innerHTML= '<img src="./img/azul-box-cover.jpg">';
-      };
-    };
-  });
-
-/**
- *          #############################################
- *          ## ----------- Game Functions ------------ ##
- *          #############################################
- */
-
-/**
- * Checks if the end game condition of a player finishing a row in their landing area.
- * If so, game proceeds to end game scoring. Otherwise, start another round.
- */
-export const newRoundOrNawww = () => {
-  for (const player of state.players) {
-    for (const playerLandingRow of player.landing) {
-      if (playerLandingRow.length === 5) {
-        endGameScoring();
-        return;
       }
-    }
-  }
-  startRound();
-}
-
-/**
- * 
- *  TODO///
- */
-export const endGameScoring = () => {
-  state.players.forEach((player) => {
-    let rowBonus = 0;
-    player.landing.forEach((row) => {
-      if (row.length === 5) rowBonus += 2;
-    });
-
-    let columnBonus = 0;
-    for (let i=0; i<5; i++) {
-      let col = true;
-      for (let j=0; j<5; j++) {
-        if (player.landing[j].indexOf(landingPattern[j][i] === -1)) col = false;
-      };
-      if (col) columnBonus += 7;
-    };
-
-    let colorBonus = 0;
-    for (const tile of landingPattern[0]) {
-      let color = true;
-      player.landing.forEach((row) => {
-        if (row.indexOf(tile) === -1) color = false;
-      });
-      if (color) colorBonus += 10;
-    }
-    player.score = player.score + rowBonus + columnBonus + colorBonus;
-  });
-  renderPlayers();
-  gameEnd();
-};
-
-/**
- * //TODO
- */
-const gameEnd = () => {
-  let winningScore = 0;
-  let winningPlayer;
-  state.players.forEach((player) => {
-    if (player.score > winningScore) {
-      winningScore = player.score;
-      winningPlayer = player.name;
     }
   })
-  alert(`Congratulations!!! ${winningPlayer} has won with a score of ${winningScore}!!!`);
-};
+})();
 
-/**
- * Occurs either at the end of a round start, or if another turn is
- * determined to be needed. Switches the current player, renders
- * player boards in correct positions, and turns on first event 
- * listener for the active player.
- */
-export const takeTurn = () => {
-
-  state.currentPlayer = state.turnCounter % state.turnOrder.length
-  state.turnCounter++;
-  renderPlayers();
-  
-  state.activeGrab = true;
-  createInstructions(state.turnOrder[state.currentPlayer]);
-};
-
-/**
- * Occurs at the end of each round. Completes scoring and sets up playerboard
- * for each player for the next round.
- */
-const endRoundScoring = () => {
-
-  state.players.forEach((player) => { 
-    player.staging.forEach((row, i) => {
-
-      if (row.length === i + 1) {
-        const scoredTile = row[0];
-        player.landing[i].push(row.shift());
-        while (row[0]) state.discard.push(row.pop());
-        const scoredIndex = landingPattern[i].indexOf(scoredTile);
-
-        let hScore = 0;
-        for (let j=scoredIndex; j<4; j++) {
-          if (player.landing[i].indexOf(landingPattern[i][j+1]) !== -1) hScore++;
-          else break;
-        }
-        for (let j=scoredIndex; j>0; j--) {
-          if (player.landing[i].indexOf(landingPattern[i][j-1]) !== -1) hScore++;
-          else break;
-        }
-        if (hScore !== 0) hScore++;
-
-        let vScore = 0;
-        for (let j=i; j<4; j++) {
-          if (player.landing[j+1].indexOf(landingPattern[j+1][scoredIndex]) !== -1) vScore++;
-          else break;
-        }
-        for (let j=i; j>0; j--) {
-          if (player.landing[j-1].indexOf(landingPattern[j-1][scoredIndex]) !== -1) vScore++;
-          else break;
-        }
-        if (vScore !== 0) vScore++;
-        let earnedScore = hScore + vScore;
-        if (earnedScore === 0) earnedScore++;
-        player.score += earnedScore;
-      }
-    });
-
-    const negScores = [-1,-2,-4,-6,-8,-11,-14];
-    if (player.broken.length) player.score += negScores[player.broken.length-1];
-    if (player.score < 0) player.score = 0;
-    while (player.broken.length) {
-      if (player.broken[0] === 'first') player.broken.shift();
-      else state.discard.push(player.broken.shift());
-    }
-  });
-  newRoundOrNawww();
-};
-
-
-/**
- * Occurs at the end of the second event handler of a player's turn. 
- * Checks to see if another turn in the round is needed, and either a new
- * turn occurs or end round scoring occurs.
- */
-export const newTurnOrNawww = () => {
-  let midHasTiles;
-  state.middle.forEach((part) => {
-    if (part.length) midHasTiles = true;
-  });
-  if (midHasTiles) takeTurn();
-  else endRoundScoring();
-};
+export {$activePlayerSection, $otherPlayerSections, $boardSection}

@@ -1,6 +1,17 @@
-import {state, resetState} from './../main.js';
-import {landingPattern} from './renderPlayerBoard.js';
-import { newRoundOrNawww } from './../main.js';
+import { landingPattern } from './renderPlayerBoard.js';
+import { newRoundOrNawww } from './gameFlow.js';
+import state from './state.js';
+
+/**
+ * Occurs at the start of a game, and when the reset button is pressed. Sets up a
+ * blank state object for the game to utilize.
+ */
+const resetState = () => {
+  ['gameStart', 'activeGrab', 'activeStaging',].forEach(s => state[s] = false);
+  ['numberPlayers', 'factoryTiles', 'currentPlayer', 'turnCounter',].forEach(s => state[s] = 0);
+  ['turnOrder', 'bag', 'discard', 'players',].forEach(s => state[s] = []);
+  state.middle = [[],];
+};
 
 /**
  * Local variables used when initializing players.
@@ -19,12 +30,12 @@ const initializePlayers = (numberPlayers) => {
     state.players.push({
       name: randNames[i],
       color: randColors[i],
-      score: 0,  // number
-      limbo: [], // array of strings for tiles
-      staging: [[],[],[],[],[],],  // array of arrays of strings for tiles
-      landing:  [[],[],[],[],[],], // array of arrays of strings for tiles
-      broken: [], // array of strings for tiles
-      firstNext: false, //  boolean for first in turn order next round
+      score: 0,
+      limbo: [],
+      staging: [[],[],[],[],[],],
+      landing:  [[],[],[],[],[],],
+      broken: [],
+      firstNext: false,
     });
   };
 };
@@ -43,7 +54,7 @@ const setFactoryTiles = () => {
  * @param {array}, array of player objects 
  * @returns {array}, array of shuffled player objects
  */
-export const shuffle = (array) => {
+const shuffle = (array) => {
   let m = array.length, t, i;
   while (m) {
     i = Math.floor(Math.random() * m--);
@@ -52,20 +63,6 @@ export const shuffle = (array) => {
     array[i] = t;
   };
   return array;
-};
-
-/**
- * Sets player order randomly at the start, then sets player order according to
- * the 1st player marker at the start of subsequent rounds.
- */
-export const setPlayerOrder = () => {
-  state.turnOrder = shuffle([...state.players]);
-  for (let i=0; i<state.turnOrder.length; i++) {
-    if (state.turnOrder[i].firstNext) {
-      state.turnOrder.unshift(state.turnOrder.splice(i,1)[0]);
-      for (const player of state.players) player.firstNext = false;
-    };
-  };
 };
 
 /**
@@ -80,6 +77,8 @@ const fillBag = () => {
 /**
  * Occurs upon player selection button press. 
  * Initialize players, set factory tile number, and player order randomly.
+ * Fills bag with tiles, shuffles them, set the gameStart state to true,
+ * and query for the first round of the game to start.
  * @param {number} numberPlayers, the number of players selected
  */
 const startGame = (numberPlayers) => {
@@ -91,4 +90,4 @@ const startGame = (numberPlayers) => {
   newRoundOrNawww();
 };
 
-export default startGame;
+export {state, resetState, shuffle, startGame}

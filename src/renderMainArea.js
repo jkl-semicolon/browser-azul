@@ -1,5 +1,6 @@
-import {state, $boardSection, $playerSection} from './../main.js';
-import renderPlayerBoard from './renderPlayerBoard.js';
+import {$boardSection} from './../main.js';
+import {grabMiddle} from './eventListeners.js';
+import state from './state.js';
 
 /**
  * Occurs at the start of a new round, and also occurs anytime a user input in the game happens. 
@@ -33,6 +34,31 @@ const createFactoryTiles = () => {
 };
 
 /**
+ * Creates a set of cursory instructions for the active player's turn.
+ * Appends to the main area of the board section.
+ * @param {object}, the player to render the instructions for
+ */
+const createInstructions = (player) => {
+  const element = document.createElement('div');
+  element.classList.add('floating');
+  if (state.activeGrab) {
+    element.innerHTML = `
+      It is ${player.name}'s turn. Please choose tiles of the same color
+      from either one of factory tiles in the middle, or the middle area
+      next to the factory tiles. Afterwards, choose a row on your playerboard 
+      to place your tiles. If you wish, you may also choose the broken tile area.
+    `;
+  }
+  if (state.activeStaging) {
+    element.innerHTML = `
+    Now, please choose a row to place your tiles. If you wish, you may also
+    choose the broken tile area.
+    `
+  }
+  $boardSection.appendChild(element);
+}
+
+/**
  * Occurs at the start of a new round, and also occurs anytime a user input in the game happens. 
  * Creates the middle area that can hold an indefinite amount of tiles.
  * Adds an event listener to each tile (except first player tile), which are only active if it is time
@@ -59,42 +85,6 @@ const createMiddleArea = () => {
 }
 
 /**
- * Occurs during the start of a player's turn.
- * This function allows players to either choose to take all the tiles of a single color from 
- * a factory tile or the middle area. If player chooses from a factory tile, the tiles not of
- * that color go into the middle. If player chooses from the middle, if first player tile is
- * in the middle, player also takes that tile. At the end of this function, players are 
- * prompted to place the tiles they have chosen.
- * @param {event}, the event of the tile being clicked; this parameter is not used but 
- * code does not run correctly if this parameter is removed
- * @param {string} tileId, is a string because this is an html attribute; was set on the tile
- * to flag which factory tile the tile is from
- * @param {string} tileColor, the color of the tile and its html class
- * @returns 
- */
-const grabMiddle = (tileId, tileColor) => {
-
-  if (!state.activeGrab) return;
-
-  for (let i=0; i<state.middle[tileId].length; i++) {
-    if (state.middle[tileId][i] === tileColor) {
-      state.turnOrder[state.currentPlayer].limbo.push(...state.middle[tileId].splice(i,1));
-      i--;
-    } else if (state.middle[tileId][i] === 'first') {
-      state.turnOrder[state.currentPlayer].limbo.push(...state.middle[tileId].splice(i,1));
-      i--;
-    } else if (tileId !== 0) {
-      state.middle[0].push(...state.middle[tileId].splice(i,1));
-      i--;
-    }
-  };
-  renderMainArea();
-  renderPlayerBoard(state.turnOrder[state.currentPlayer], $playerSection);
-  state.activeGrab = false;
-  state.activeStaging = true;
-};
-
-/**
  * Renders the main area along with its factory tiles, 1st player tile, and colored tiles.
  */
 const renderMainArea = () => {
@@ -102,6 +92,6 @@ const renderMainArea = () => {
   const element = document.createElement('div');
   [createFactoryTiles, createMiddleArea].forEach(myFunc => element.appendChild(myFunc()));
   $boardSection.appendChild(element);
-};
+}
 
-export default renderMainArea;
+export {renderMainArea, createInstructions};

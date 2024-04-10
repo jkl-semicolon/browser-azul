@@ -1,15 +1,17 @@
+import {$activePlayerSection, $otherPlayerSections, $boardSection } from './../main.js';
+import { placeStaging } from './eventListeners.js';
+import state from './state.js';
+
 /**
  * Local variable used for createStaging.
  */
-export const landingPattern = [
+const landingPattern = [
   ['blue','yellow','red','purple','green'],
   ['green','blue','yellow','red','purple'],
   ['purple','green','blue','yellow','red'],
   ['red','purple','green','blue','yellow'],
   ['yellow','red','purple','green','blue'],
 ];
-
-import {$playerSection, $player2Section, $player3Section, $player4Section, state, newTurnOrNawww, $boardSection } from './../main.js';
 
 /**
  * Creates the limbo area with colored tiles on a playerboard.
@@ -39,7 +41,7 @@ const createStaging = (player, section) => {
   for (let i=4; i>=0; i--) {
     index++;
     const row = document.createElement('div');
-    if (section === $playerSection) {
+    if (section === $activePlayerSection) {
       row.id = Math.abs(i - 4);
       row.addEventListener('click', () => {placeStaging(Number(row.id))});
     };
@@ -62,83 +64,6 @@ const createStaging = (player, section) => {
     element.appendChild(row);
   };
   return element;
-};
-
-/**
- * The event handler for clicking on a row of staging to move your limbo tiles in. This click handler
- * is only active after the active player has grabbed from the middle, and turns itself off afterwards.
- * The event handler is automatically created on the rendered active player's playerboard on each of the
- * five rows in the player's staging area.
- * @param {number}, the index of the row in the player's staging area being clicked on.
- */
-const placeStaging = (rowID) => {
-
-  if (!state.activeStaging) return; // activeStaging is set to true at the end of grabMiddle
-
-  // this for loop moves the first player tile to where it needs to go, and sets turn order for next round
-  for (let i=0; i<state.turnOrder[state.currentPlayer].limbo.length; i++) {
-    if (state.turnOrder[state.currentPlayer].limbo[i] === 'first') {
-      state.turnOrder[state.currentPlayer].firstNext = true;
-      if (state.turnOrder[state.currentPlayer].broken.length === 7) {
-        state.turnOrder[state.currentPlayer].limbo.splice(i,1);
-      } else {
-        state.turnOrder[state.currentPlayer].broken.push(state.turnOrder[state.currentPlayer].limbo.splice(i,1)[0]);
-      }
-    };
-  };
-
-  // If broken area is chosen, move tiles there, then close activeStaging, re-render, and escape.
-  if (rowID === 5) {
-    if (!confirm('You have chosen to break all your chosen tiles; press OK to continue.')) return;
-    for (let i=0; i<state.turnOrder[state.currentPlayer].limbo.length; i++) {
-      if (state.turnOrder[state.currentPlayer].broken.length === 7) {
-        state.discard.push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0]);
-        i--;
-      } else {
-        state.turnOrder[state.currentPlayer].broken.push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0]);
-        i--;
-      }
-    }
-    state.activeStaging = false;
-    renderPlayerBoard(state.turnOrder[state.currentPlayer], $playerSection);
-    newTurnOrNawww();
-    return;
-  }
-  // If chosen row in staging has a different color from the limbo tiles, return.
-  if (state.turnOrder[state.currentPlayer].staging[rowID].length) {
-    if (state.turnOrder[state.currentPlayer].limbo[0] !== state.turnOrder[state.currentPlayer].staging[rowID][0]) {
-      return;
-    }
-  }
-
-  // If chosen row's equivalent landing area has the same color tile already, return.
-  for (let i=0; i<5; i++) {
-    if (state.turnOrder[state.currentPlayer].limbo[0] === state.turnOrder[state.currentPlayer].landing[rowID][i]) {
-      return;
-    }
-  }
-
-  // Otherwise, move limbo tiles in that staging area row one by one.
-  // If full, move limbo tiles to broken area; if that is full, move limbo tiles to discard.
-  for (let i=0; i<state.turnOrder[state.currentPlayer].limbo.length; i++) {
-    if (state.turnOrder[state.currentPlayer].staging[rowID].length >= rowID + 1) {
-      if (state.turnOrder[state.currentPlayer].broken.length === 7) {
-        state.discard.push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0]);
-        i--;
-      } else {
-        state.turnOrder[state.currentPlayer].broken.push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0]);
-        i--;
-      }
-    } else {
-      state.turnOrder[state.currentPlayer].staging[rowID].push(state.turnOrder[state.currentPlayer].limbo.splice(i, 1)[0])
-      i--;
-    }
-  }
-
-  // Finish moving to staging, re-render player board, and check if there should be a new turn or not.
-  state.activeStaging = false;
-  renderPlayerBoard(state.turnOrder[state.currentPlayer], $playerSection);
-  newTurnOrNawww();
 };
 
 /**
@@ -214,26 +139,6 @@ const createScore = (player) => {
   return element;
 }
 
-export const createInstructions = (player) => {
-  const element = document.createElement('div');
-  element.classList.add('floating');
-  if (state.activeGrab) {
-    element.innerHTML = `
-      It is ${player.name}'s turn. Please choose tiles of the same color
-      from either one of factory tiles in the middle, or the middle area
-      next to the factory tiles. Afterwards, choose a row on your playerboard 
-      to place your tiles. If you wish, you may also choose the broken tile area.
-    `;
-  }
-  if (state.activeStaging) {
-    element.innerHTML = `
-    Now, please choose a row to place your tiles. If you wish, you may also
-    choose the broken tile area.
-    `
-  }
-  $boardSection.appendChild(element);
-}
-
 /**
  * Occurs for each player upon start of game, and anytime a user input in the game happens. 
  * Creates a player's board html elements depending on their state.
@@ -251,26 +156,26 @@ const renderPlayerBoard = (player, section) => {
 };
 
 /**
- * 
- * TODO
+ * Renders the playerboards for all the players in the correct positions,
+ * depending on the current active player.
  */
-export const renderPlayers = () => {
+const renderPlayers = () => {
   let p2Empty = true;
   let p3Empty = true;
   for (const player of state.turnOrder) {
     const index = state.turnOrder.indexOf(player);
     if (index === state.currentPlayer) {
-      renderPlayerBoard(player, $playerSection);
+      renderPlayerBoard(player, $activePlayerSection);
     } else if (p2Empty) {
-      renderPlayerBoard(player, $player2Section);
+      renderPlayerBoard(player, $otherPlayerSections[0]);
       p2Empty = false;
     } else if (p3Empty) {
-      renderPlayerBoard(player, $player3Section);
+      renderPlayerBoard(player, $otherPlayerSections[1]);
       p3Empty = false;
     } else {
-      renderPlayerBoard(player, $player4Section);
+      renderPlayerBoard(player, $otherPlayerSections[2]);
     }
   }
 }
 
-export default renderPlayerBoard;
+export {landingPattern, renderPlayerBoard, renderPlayers};
