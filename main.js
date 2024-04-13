@@ -18,8 +18,8 @@
 import {startGame} from './src/gameSetup.js';
 import {resetState} from './src/gameSetup.js';
 import state from './src/state.js';
-import startServer from './server.js';
-// import express from 'express';
+
+import {getToken} from './multiplayer/startMGame.js';
 
 /**
  * Setup for needed DOM connections.
@@ -52,7 +52,8 @@ let $otherPlayerSections = [];
       }
     }
   })
-  document.querySelector('#server').addEventListener('click', () => {startServer()});
 })();
+
+getToken();
 
 export {$activePlayerSection, $otherPlayerSections, $boardSection}

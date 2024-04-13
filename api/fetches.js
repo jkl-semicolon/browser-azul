@@ -1,7 +1,36 @@
-const API_URL = ''; // TODO figure this out
-import { log } from 'console';
+const API_URL = 'http://localhost:8000'; // placeholder
+const log = console.log;
 
 const fetches = {
+
+  testGet: async () => {
+    try {
+      const response = await fetch(API_URL + '/test', {
+        // headers: {'Access-Control-Allow-Origin': '*'}
+      });
+      const json = await response.json();
+      console.log(response);
+      console.log(json);
+      return json;
+    } catch (err) {
+      log('error testing!', err);
+    }
+  },
+
+  getToken: async (name) => {
+    try {
+      const response = await fetch(API_URL + '/getToken', {
+        mode: 'no-cors',
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: {name}
+      });
+      const json = await response.json();
+      return json;
+    } catch (err) {
+      log('error getting token to play!', err);
+    }
+  },
 
   getState: async () => {
     try {
