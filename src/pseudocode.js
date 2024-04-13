@@ -22,8 +22,17 @@
 *          ## -- for multiple browser functionality -- ##
 *          ##############################################
 * 
-*  // TODO
-* 
+* 	1.	A user can press a button to host a room for a game. They would start a server listening for 
+* 			GET and PUT routes to '/'
+* 	2.	Other users can check for a game being hosted, and join that room.
+* 	3.	The host can press a button to start the game with the players in the room; either 2, 3, or 4 people.
+* 	4.	The state object for the game will be stored in server, and be passed to players upon the completion of a player's
+* 			action. The active player makes PUT requests to the server to update state upon the end of a player action.
+* 		a. 	Player's screen will all re-render upon receiving state object.
+* 	5.	Play will continue until the game ends.
+*/
+
+/**
 *          ###########       Pseudocode       ###########
 *          ## ----- for game and game state flow ----- ##
 *          ##############################################
