@@ -18,6 +18,8 @@
 import {startGame} from './src/gameSetup.js';
 import {resetState} from './src/gameSetup.js';
 import state from './src/state.js';
+import startServer from './server.js';
+// import express from 'express';
 
 /**
  * Setup for needed DOM connections.
@@ -50,6 +52,7 @@ let $otherPlayerSections = [];
       }
     }
   })
+  document.querySelector('#server').addEventListener('click', () => {startServer()});
 })();
 
 export {$activePlayerSection, $otherPlayerSections, $boardSection}
