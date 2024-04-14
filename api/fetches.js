@@ -10,10 +10,8 @@ const fetches = {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({room})
       });
-      log(response);
-      const json = await response.json();
-      log(json);
-      return json;
+      const {chosenRoom} = await response.json();
+      return chosenRoom;
     } catch (err) {
       log(err);
     }

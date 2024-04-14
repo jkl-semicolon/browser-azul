@@ -25,14 +25,16 @@ const getToken = async () => {
 
   const currGame = await fetches.testToken(room);
   console.log('currGame:', currGame);
-  if (currGame.players.length >= 4) {
-    alert('four players have already joined! try again later.');
-    return;
-  }
-  for (const player of currGame.players) {
-    if (name === player) {
-      alert('you must enter a unique name from the other players! try again.');
+  if (currGame) {
+    if (currGame.players.length >= 4) {
+      alert('four players have already joined! try again later.');
       return;
+    }
+    for (const player of currGame.players) {
+      if (name === player) {
+        alert('you must enter a unique name from the other players! try again.');
+        return;
+      }
     }
   }
 
