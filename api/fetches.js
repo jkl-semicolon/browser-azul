@@ -3,30 +3,32 @@ const log = console.log;
 
 const fetches = {
 
-  testGet: async () => {
-    try {
-      const response = await fetch(API_URL + '/test', {
-        // headers: {'Access-Control-Allow-Origin': '*'}
-      });
-      const json = await response.json();
-      console.log(response);
-      console.log(json);
-      return json;
-    } catch (err) {
-      log('error testing!', err);
-    }
-  },
+  // testGet: async () => {
+  //   try {
+  //     const response = await fetch(API_URL + '/test', {
+  //       // headers: {'Access-Control-Allow-Origin': '*'}
+  //     });
+  //     const json = await response.json();
+  //     console.log(response);
+  //     console.log(json);
+  //     return json;
+  //   } catch (err) {
+  //     log('error testing!', err);
+  //   }
+  // },
 
   getToken: async (name) => {
     try {
       const response = await fetch(API_URL + '/getToken', {
-        mode: 'no-cors',
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: {name}
+        body: JSON.stringify({name})
       });
-      const json = await response.json();
-      return json;
+      console.log(response);
+      console.log(response.body);
+      const thing = await response.json();
+      console.log(thing)
+      return thing
     } catch (err) {
       log('error getting token to play!', err);
     }

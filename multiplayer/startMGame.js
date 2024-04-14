@@ -11,8 +11,9 @@ const getToken = async () => {
     return;
   }
 
-  const test = await fetches.testGet();
-  console.log(test);
+  token = await fetches.getToken(name);
+  // getToken = test;
+  console.log(token);
 
   // try {
   //   const response = await fetches.getToken(name);
