@@ -1,44 +1,53 @@
-const API_URL = 'http://localhost:8000'; // placeholder
+const API_URL = 'http://localhost:8000';
 const log = console.log;
 
 const fetches = {
 
-  // testGet: async () => {
-  //   try {
-  //     const response = await fetch(API_URL + '/test', {
-  //       // headers: {'Access-Control-Allow-Origin': '*'}
-  //     });
-  //     const json = await response.json();
-  //     console.log(response);
-  //     console.log(json);
-  //     return json;
-  //   } catch (err) {
-  //     log('error testing!', err);
-  //   }
-  // },
-
-  getToken: async (name) => {
+  testToken: async (room) => {
+    try {
+      const response = await fetch(API_URL + '/testToken', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({room})
+      });
+      log(response);
+      const json = await response.json();
+      log(json);
+      return json;
+    } catch (err) {
+      log(err);
+    }
+  },
+  getToken: async (name, room) => {
     try {
       const response = await fetch(API_URL + '/getToken', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({name})
-      });
-      console.log(response);
-      console.log(response.body);
-      const thing = await response.json();
-      console.log(thing)
-      return thing
+        body: JSON.stringify({name, room})
+      })
+      const json = await response.json();
+      return json;
     } catch (err) {
       log('error getting token to play!', err);
+    }
+  },
+  setStart: async (start, token) => {
+    try {
+      await fetch(API_URL + '/setStart', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({start, token})
+      })
+    } catch (err) {
+      log('error starting game!', err);
     }
   },
 
   getState: async () => {
     try {
-    const response = await fetch(API_URL)
-    const json = await response.json();
-    return json;
+      const response = await fetch(API_URL)
+      const json = await response.json();
+      return json;
     } catch (err) {
       log('error getting state!', err);
     }
