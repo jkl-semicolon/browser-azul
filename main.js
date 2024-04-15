@@ -55,6 +55,7 @@ let $otherPlayerSections = [];
 })();
 
 getToken();
+// waitingStart();
 
 
 
