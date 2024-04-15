@@ -29,15 +29,26 @@ const fetches = {
       log('error getting token to play!', err);
     }
   },
-  setStart: async (start, token) => {
+
+  setStart: async (start, token, room) => {
     try {
       await fetch(API_URL + '/setStart', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({start, token})
+        body: JSON.stringify({start, token, room})
       })
     } catch (err) {
       log('error starting game!', err);
+    }
+  },
+
+  waitStart: async (room) => {
+    try {
+      const response = await fetch(API_URL + '/waitStart/' + room);
+      const json = await response.json();
+      return json;
+    } catch (err) {
+      log('error waiting for game start!', err);
     }
   },
 

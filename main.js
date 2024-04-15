@@ -19,7 +19,7 @@ import {startGame} from './src/gameSetup.js';
 import {resetState} from './src/gameSetup.js';
 import state from './src/state.js';
 
-import {getToken, waitingStart} from './multiplayer/startMGame.js';
+import {getToken, waitingStart, nowWaiting } from './multiplayer/startMGame.js';
 
 /**
  * Setup for needed DOM connections.
@@ -55,5 +55,7 @@ let $otherPlayerSections = [];
 })();
 
 getToken();
+
+
 
 export {$activePlayerSection, $otherPlayerSections, $boardSection}
