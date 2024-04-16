@@ -10,9 +10,7 @@ const fetches = {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({room})
       });
-      console.log('response', response);
       const chosenRoom = await response.json();
-      console.log('chosenRoom,', chosenRoom);
       return chosenRoom;
     } catch (err) {
       log(err);
@@ -47,9 +45,8 @@ const fetches = {
   waitStart: async (room) => {
     try {
       const response = await fetch(API_URL + '/waitStart/' + room);
-      log(response);
-      if (!response) return;
       const json = await response.json();
+      if (json === 'egg') return; // don't change without changing server side
       return json;
     } catch (err) {
       log('error waiting for game start!', err);

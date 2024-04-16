@@ -1,6 +1,6 @@
 /**
  * The state object for our game.
  */
-const state = {};
+let state = {};
 
 export default state;
