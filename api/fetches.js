@@ -10,7 +10,9 @@ const fetches = {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({room})
       });
-      const {chosenRoom} = await response.json();
+      console.log('response', response);
+      const chosenRoom = await response.json();
+      console.log('chosenRoom,', chosenRoom);
       return chosenRoom;
     } catch (err) {
       log(err);
@@ -45,6 +47,8 @@ const fetches = {
   waitStart: async (room) => {
     try {
       const response = await fetch(API_URL + '/waitStart/' + room);
+      log(response);
+      if (!response) return;
       const json = await response.json();
       return json;
     } catch (err) {

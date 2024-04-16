@@ -54,7 +54,14 @@ let $otherPlayerSections = [];
   })
 })();
 
-getToken();
+
+const testFunc = async () => {
+  await getToken();
+  await waitingStart();
+}
+
+testFunc();
+
 // waitingStart();
 
 
