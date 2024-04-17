@@ -91,11 +91,11 @@ const renderWebMainArea = (state) => {
   $boardSection.innerHTML = '';
   console.log('STATE IN CREATE WEB FACTORY TILES', state)
   const element = document.createElement('div');
-  const webFac = createWebFactoryTiles(state)
-  const webMid = createWebMiddleArea(state)
-  element.appendChild(webFac);
-  element.appendChild(webMid);
-  // [createWebFactoryTiles, createWebMiddleArea].forEach(myFunc => element.appendChild(myFunc(state)));
+  // const webFac = createWebFactoryTiles(state)
+  // const webMid = createWebMiddleArea(state)
+  // element.appendChild(webFac);
+  // element.appendChild(webMid);
+  [createWebFactoryTiles, createWebMiddleArea].forEach(myFunc => element.appendChild(myFunc(state)));
   $boardSection.appendChild(element);
 }
 

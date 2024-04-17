@@ -75,6 +75,7 @@ const waitingStart = async () => {
       return;
     }
     await fetches.setStart(true, token, room);
+    console.log('waiting start')
     myInter = setInterval(nowWaiting, 500)
   } catch (err) {
     console.log(err);
@@ -88,6 +89,7 @@ const waitingStart = async () => {
 const nowWaiting = async () => {
   try {
     console.log('pinging server')
+    console.log('now waiting')
     const response = await fetches.waitStart(room);
     if (!response) return;
     console.log('successful response:', response);
@@ -114,9 +116,52 @@ const determineIndex = (webState) => {
   }
 }
 
+/**
+ * nowWaiting primarily polls the server to see if the array of booleans for the room all turn to true.
+ * If so, the server will send a set up state object over to the player.
+ */
+const waitingAgain = async () => {
+  try {
+    console.log('pinging server')
+    console.log('waiting again')
+    const response = await fetches.waitStart(room);
+    if (JSON.stringify(response) === JSON.stringify(webState)) return; // if poll shows the state has not changed, keep polling
+    console.log('successful response:', response);
+    clearInterval(myInter);
+    webState = response;
+    console.log(webState);
+    stateUpdated();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const stateUpdated = () => {
   renderWebPlayers(webState);
   renderWebMainArea(webState);
+  console.log('state updated')
+  if (webState.turnOrder[webState.currentPlayer].name !== name) myInter = setInterval(waitingAgain, 500);
+} // if not our turn, poll the server again
+
+/**
+ * Occurs at the end of the second event handler of a player's turn. 
+ * Checks to see if another turn in the round is needed, and either a new
+ * turn occurs or end round scoring occurs.
+ */
+const newWebTurnOrNawww = () => { ///////////////////////////////////////////////////////////////////////////////////////////////
+  let midHasTiles;
+  state.middle.forEach((part) => {
+    if (part.length) midHasTiles = true;
+  });
+  if (midHasTiles) takeTurn();
+  else endRoundScoring();
+};
+
+const nextTurn = async () => {
+  console.log('next turn')
+  await fetches.sendStateAfterTurn(webState, room);
+  myInter = setInterval(waitingAgain, 500);
+
 }
 
-export {getToken, waitingStart, nowWaiting, token, name, room, webState };
+export {getToken, waitingStart, nowWaiting, token, name, room, webState, newWebTurnOrNawww, nextTurn };

@@ -53,6 +53,18 @@ const fetches = {
     }
   },
 
+  sendStateAfterTurn: async (state, room) => {
+    try {
+      await fetch((API_URL + '/setStateAfterTurn/' + room), {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({state})
+      })
+    } catch (err) {
+      log('error sending state after turn!', err);
+    }
+  },
+
   getState: async () => {
     try {
       const response = await fetch(API_URL)

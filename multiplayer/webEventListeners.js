@@ -1,8 +1,8 @@
 import {renderWebMainArea} from "./webGameRender.js";
 import {renderWebPlayerBoard} from "./../src/renderPlayerBoard.js"; ///////////////////////////
 import {$activePlayerSection} from "../main.js";
-import {newTurnOrNawww} from './../src/gameFlow.js'; //////////////////////////////////////////////
-import {webState} from "./startMGame.js"; ////////////////////////////////////////
+import fetches from "../api/fetches.js";
+import {webState, name, newWebTurnOrNawww, nextTurn, room} from "./startMGame.js"; ////////////////////////////////////////
 
 /**
  * Occurs during the start of a player's turn.
@@ -18,9 +18,10 @@ import {webState} from "./startMGame.js"; //////////////////////////////////////
  * @param {string} tileColor, the color of the tile and its html class
  * @returns 
  */
-const grabWebMiddle = (tileId, tileColor) => {
+const grabWebMiddle = async (tileId, tileColor) => {
 
   if (!webState.activeGrab) return;
+  if (webState.turnOrder[webState.currentPlayer].name !== name) return;
 
   for (let i=0; i<webState.middle[tileId].length; i++) {
     if (webState.middle[tileId][i] === tileColor) {
@@ -47,9 +48,10 @@ const grabWebMiddle = (tileId, tileColor) => {
  * five rows in the player's staging area.
  * @param {number}, the index of the row in the player's staging area being clicked on.
  */
-const placeWebStaging = (rowID) => {
+const placeWebStaging = async (rowID) => {
 
   if (!webState.activeStaging) return; // activeStaging is set to true at the end of grabMiddle
+  if (webState.turnOrder[webState.currentPlayer].name !== name) return;
 
   // this for loop moves the first player tile to where it needs to go, and sets turn order for next round
   for (let i=0; i<webState.turnOrder[webState.currentPlayer].limbo.length; i++) {
@@ -77,7 +79,7 @@ const placeWebStaging = (rowID) => {
     }
     webState.activeStaging = false;
     renderWebPlayerBoard(webState.turnOrder[webState.currentPlayer], $activePlayerSection);
-    newTurnOrNawww(); //////////////////////////////////////////////////////////////////////////////////////////
+    await nextTurn(); //////////////////////////////////////////////////////////////////////////////////////////
     return;
   }
   // If chosen row in staging has a different color from the limbo tiles, return.
@@ -114,7 +116,7 @@ const placeWebStaging = (rowID) => {
   // Finish moving to staging, re-render player board, and check if there should be a new turn or not.
   webState.activeStaging = false;
   renderWebPlayerBoard(webState.turnOrder[webState.currentPlayer], $activePlayerSection);
-  newTurnOrNawww();
+  await nextTurn();
 };
 
 export { placeWebStaging, grabWebMiddle} 
