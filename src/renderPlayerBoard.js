@@ -1,5 +1,6 @@
 import {$activePlayerSection, $otherPlayerSections, $boardSection } from './../main.js';
 import { placeStaging } from './eventListeners.js';
+import { placeWebStaging } from '../multiplayer/webEventListeners.js';
 import state from './state.js';
 
 /**
@@ -44,6 +45,43 @@ const createStaging = (player, section) => {
     if (section === $activePlayerSection) {
       row.id = Math.abs(i - 4);
       row.addEventListener('click', () => {placeStaging(Number(row.id))});
+    };
+    for (let j=i; j>0; j--) {
+      const hiddenTile = document.createElement('div');
+      hiddenTile.classList.add('hiddenTile', 'tile');
+      row.appendChild(hiddenTile);
+    };
+    const blankSpace = 5 - i - player.staging[index].length;
+    for (let j=blankSpace; j>0; j--) {
+      const blankTileSpace = document.createElement('div');
+      blankTileSpace.classList.add('blankTileSpace', 'tile');
+      row.appendChild(blankTileSpace);
+    };
+    player.staging[index].forEach((stateStagingTile) => {
+      const stagingTile = document.createElement('div');
+      stagingTile.classList.add(`${stateStagingTile}`, 'tile');
+      row.appendChild(stagingTile);
+    });
+    element.appendChild(row);
+  };
+  return element;
+};
+
+/**
+ * Creates the staging area with colored tiles on a playerboard.
+ * @param {object, DOM object}, the player to create the staging for; and the player area we are creating in
+ * @returns {object}, the stagingArea html element
+ */
+const createWebStaging = (player, section) => {
+  const element = document.createElement('div');
+  element.classList.add('stagingArea');
+  let index = -1;
+  for (let i=4; i>=0; i--) {
+    index++;
+    const row = document.createElement('div');
+    if (section === $activePlayerSection) {
+      row.id = Math.abs(i - 4);
+      row.addEventListener('click', () => {placeWebStaging(Number(row.id))});
     };
     for (let j=i; j>0; j--) {
       const hiddenTile = document.createElement('div');
@@ -156,6 +194,22 @@ const renderPlayerBoard = (player, section) => {
 };
 
 /**
+ * Occurs for each player upon start of game, and anytime a user input in the game happens. 
+ * Creates a player's board html elements depending on their state.
+ * @param {object, DOM object}, the player that is being rendered; and the html element the player board will be appended to.
+ * @return {object}, the DOM element containing the playerboard and tiles of the player being rendered.
+ */
+const renderWebPlayerBoard = (player, section) => {
+  section.innerHTML = '';
+  const element = document.createElement('div');
+  [createLimbo, createScore, createWebStaging, createArrows2, createLanding, createBroken].forEach(myFunc => {
+    element.appendChild(myFunc(player, section))
+  });
+  element.style.backgroundColor = player.color;
+  section.appendChild(element);
+};
+
+/**
  * Renders the playerboards for all the players in the correct positions,
  * depending on the current active player.
  */
@@ -178,4 +232,27 @@ const renderPlayers = () => {
   }
 }
 
-export {landingPattern, renderPlayerBoard, renderPlayers};
+/**
+ * Renders the playerboards for all the players in the correct positions,
+ * depending on the current active player.
+ */
+const renderWebPlayers = (webState) => {
+  let p2Empty = true;
+  let p3Empty = true;
+  for (const player of webState.turnOrder) {
+    const index = webState.turnOrder.indexOf(player);
+    if (index === webState.currentPlayer) {
+      renderWebPlayerBoard(player, $activePlayerSection);
+    } else if (p2Empty) {
+      renderWebPlayerBoard(player, $otherPlayerSections[0]);
+      p2Empty = false;
+    } else if (p3Empty) {
+      renderWebPlayerBoard(player, $otherPlayerSections[1]);
+      p3Empty = false;
+    } else {
+      renderWebPlayerBoard(player, $otherPlayerSections[2]);
+    }
+  }
+}
+
+export {landingPattern, renderPlayerBoard, renderPlayers, renderWebPlayers, renderWebPlayerBoard};

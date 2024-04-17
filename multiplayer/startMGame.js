@@ -1,10 +1,14 @@
 import fetches from './../api/fetches.js';
 import state from './../src/state.js';
+import { renderWebPlayers } from '../src/renderPlayerBoard.js';
+import { renderWebMainArea } from './webGameRender.js';
 
 let token = '';
 let name = '';
 let room = null;
 let myInter = null;
+let webState = {};
+let playerIndex = null;
 
 /**
  * getToken is basically Join a Room, where you enter in a name and a game room.
@@ -83,19 +87,36 @@ const waitingStart = async () => {
  */
 const nowWaiting = async () => {
   try {
+    console.log('pinging server')
     const response = await fetches.waitStart(room);
     if (!response) return;
     console.log('successful response:', response);
     clearInterval(myInter);
-    state = response;
+    webState = response;
+    console.log(webState);
+    playerIndex = determineIndex(webState);
+    console.log('player index:', playerIndex)
     stateUpdated();
   } catch (err) {
     console.log(err);
   }
 }
 
-const stateUpdated = () => {
-  
+/**
+ * Helper function to determine a player's index (may be redundant, but something to fix in the future)
+ * and saves it as a globally scoped variable for easy access.
+ * @param {object}, webState is the current state object of the multiplayer game occurring.
+ * @returns {number}, the index of the player in the webState.players array.
+ */
+const determineIndex = (webState) => {
+  for (let i=0; i<webState.players.length; i++) {
+    if (webState.players[i].name === name) return i;
+  }
 }
 
-export {getToken, waitingStart, nowWaiting };
+const stateUpdated = () => {
+  renderWebPlayers(webState);
+  renderWebMainArea(webState);
+}
+
+export {getToken, waitingStart, nowWaiting, token, name, room, webState };

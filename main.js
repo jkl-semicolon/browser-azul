@@ -19,7 +19,7 @@ import {startGame} from './src/gameSetup.js';
 import {resetState} from './src/gameSetup.js';
 import state from './src/state.js';
 
-import {getToken, waitingStart, nowWaiting } from './multiplayer/startMGame.js';
+import {getToken, waitingStart, nowWaiting, token, name, room } from './multiplayer/startMGame.js';
 
 /**
  * Setup for needed DOM connections.
@@ -52,18 +52,13 @@ let $otherPlayerSections = [];
       }
     }
   })
+  document.querySelector('#startM').addEventListener('click', async () => {
+    await getToken();
+  })
+  document.querySelector('#waitM').addEventListener('click', async () => {
+    if (!token) return;
+    await waitingStart();
+  })
 })();
-
-
-const testFunc = async () => {
-  await getToken();
-  await waitingStart();
-}
-
-testFunc();
-
-// waitingStart();
-
-
 
 export {$activePlayerSection, $otherPlayerSections, $boardSection}
