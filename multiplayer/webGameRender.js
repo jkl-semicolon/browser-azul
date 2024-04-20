@@ -89,7 +89,7 @@ const createWebMiddleArea = (state) => {
  */
 const renderWebMainArea = (state) => {
   $boardSection.innerHTML = '';
-  console.log('STATE IN CREATE WEB FACTORY TILES', state)
+  // console.log('STATE IN CREATE WEB FACTORY TILES', state)
   const element = document.createElement('div');
   // const webFac = createWebFactoryTiles(state)
   // const webMid = createWebMiddleArea(state)

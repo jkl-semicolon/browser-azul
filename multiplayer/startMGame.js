@@ -75,7 +75,7 @@ const waitingStart = async () => {
       return;
     }
     await fetches.setStart(true, token, room);
-    console.log('waiting start')
+    // console.log('waiting start')
     myInter = setInterval(nowWaiting, 500)
   } catch (err) {
     console.log(err);
@@ -88,16 +88,16 @@ const waitingStart = async () => {
  */
 const nowWaiting = async () => {
   try {
-    console.log('pinging server')
-    console.log('now waiting')
+    // console.log('pinging server')
+    // console.log('now waiting')
     const response = await fetches.waitStart(room);
     if (!response) return;
-    console.log('successful response:', response);
+    // console.log('successful response:', response);
     clearInterval(myInter);
     webState = response;
-    console.log(webState);
+    // console.log(webState);
     playerIndex = determineIndex(webState);
-    console.log('player index:', playerIndex)
+    // console.log('player index:', playerIndex)
     stateUpdated();
   } catch (err) {
     console.log(err);
@@ -122,14 +122,14 @@ const determineIndex = (webState) => {
  */
 const waitingAgain = async () => {
   try {
-    console.log('pinging server')
-    console.log('waiting again')
+    // console.log('pinging server')
+    // console.log('waiting again')
     const response = await fetches.waitStart(room);
     if (JSON.stringify(response) === JSON.stringify(webState)) return; // if poll shows the state has not changed, keep polling
-    console.log('successful response:', response);
+    // console.log('successful response:', response);
     clearInterval(myInter);
     webState = response;
-    console.log(webState);
+    // console.log(webState);
     stateUpdated();
   } catch (err) {
     console.log(err);
@@ -139,7 +139,7 @@ const waitingAgain = async () => {
 const stateUpdated = () => {
   renderWebPlayers(webState);
   renderWebMainArea(webState);
-  console.log('state updated')
+  // console.log('state updated')
   if (webState.winner) {
     alert(`🎉🎉🎉 CONGRATULATIONS TO ${webState.winner}, THE WINNER OF OUR GAME! 🎉🎉🎉`);
     token = '';
@@ -168,7 +168,7 @@ const stateUpdated = () => {
 // };
 
 const nextTurn = async () => {
-  console.log('next turn')
+  // console.log('next turn')
   await fetches.sendStateAfterTurn(webState, room);
   myInter = setInterval(waitingAgain, 500);
 
