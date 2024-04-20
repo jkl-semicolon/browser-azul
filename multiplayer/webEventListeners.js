@@ -2,7 +2,7 @@ import {renderWebMainArea} from "./webGameRender.js";
 import {renderWebPlayerBoard} from "./../src/renderPlayerBoard.js"; ///////////////////////////
 import {$activePlayerSection} from "../main.js";
 import fetches from "../api/fetches.js";
-import {webState, name, newWebTurnOrNawww, nextTurn, room} from "./startMGame.js"; ////////////////////////////////////////
+import {webState, name, nextTurn, room} from "./startMGame.js"; ////////////////////////////////////////
 
 /**
  * Occurs during the start of a player's turn.
@@ -68,7 +68,7 @@ const placeWebStaging = async (rowID) => {
   // If broken area is chosen, move tiles there, then close activeStaging, re-render, and escape.
   if (rowID === 5) {
     if (!confirm('You have chosen to break all your chosen tiles; press OK to continue.')) return;
-    for (let i=0; i<webState.turnOrder[state.currentPlayer].limbo.length; i++) {
+    for (let i=0; i<webState.turnOrder[webState.currentPlayer].limbo.length; i++) {
       if (webState.turnOrder[webState.currentPlayer].broken.length === 7) {
         webState.discard.push(webState.turnOrder[webState.currentPlayer].limbo.splice(i, 1)[0]);
         i--;

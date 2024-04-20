@@ -140,6 +140,16 @@ const stateUpdated = () => {
   renderWebPlayers(webState);
   renderWebMainArea(webState);
   console.log('state updated')
+  if (webState.winner) {
+    alert(`🎉🎉🎉 CONGRATULATIONS TO ${webState.winner}, THE WINNER OF OUR GAME! 🎉🎉🎉`);
+    token = '';
+    name = '';
+    room = null;
+    myInter = null;
+    webState = {};
+    playerIndex = null;
+    state.gameStart = true;
+  }
   if (webState.turnOrder[webState.currentPlayer].name !== name) myInter = setInterval(waitingAgain, 500);
 } // if not our turn, poll the server again
 
@@ -148,14 +158,14 @@ const stateUpdated = () => {
  * Checks to see if another turn in the round is needed, and either a new
  * turn occurs or end round scoring occurs.
  */
-const newWebTurnOrNawww = () => { ///////////////////////////////////////////////////////////////////////////////////////////////
-  let midHasTiles;
-  state.middle.forEach((part) => {
-    if (part.length) midHasTiles = true;
-  });
-  if (midHasTiles) takeTurn();
-  else endRoundScoring();
-};
+// const newWebTurnOrNawww = () => { ///////////////////////////////////////////////////////////////////////////////////////////////
+//   let midHasTiles;
+//   state.middle.forEach((part) => {
+//     if (part.length) midHasTiles = true;
+//   });
+//   if (midHasTiles) takeTurn();
+//   else endRoundScoring();
+// };
 
 const nextTurn = async () => {
   console.log('next turn')
@@ -164,4 +174,4 @@ const nextTurn = async () => {
 
 }
 
-export {getToken, waitingStart, nowWaiting, token, name, room, webState, newWebTurnOrNawww, nextTurn };
+export {getToken, waitingStart, nowWaiting, token, name, room, webState, nextTurn };
