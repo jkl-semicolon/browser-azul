@@ -2,6 +2,7 @@ import fetches from './../api/fetches.js';
 import state from './../src/state.js';
 import { renderWebPlayers } from '../src/renderPlayerBoard.js';
 import { renderWebMainArea } from './webGameRender.js';
+import { renderRoomInfo } from './renderMulti.js';
 
 let token = '';
 let name = '';
@@ -9,9 +10,11 @@ let room = null;
 let myInter = null;
 let webState = {};
 let playerIndex = null;
+let preInter = null;
+let currentWebRoom = [];
 
 /**
- * getToken is basically Join a Room, where you enter in a name and a game room.
+ * getToken is basically Join a Room, where you enter in a name and a game room. TODO: change its name.
  * You get back a token containing your player number, name, and room number.
  * The name must be unique in a room, and rooms can have maximum four people.
  * getToken will be available as a button on the main page. name and room will be stored locally as well.
@@ -33,6 +36,8 @@ const getToken = async () => {
   } else if (room < 0) {
     alert('room number must not be negative! try again.');
     return;
+  } else if (room > 10000000) {
+    alert("we don't have more than 10 million rooms! try again.");
   } else if (isNaN(Number(room))) {
     alert('please only enter a number! try again.');
     return;
@@ -51,8 +56,23 @@ const getToken = async () => {
       }
     }
   }
-  // generates token based on name and room
+  // generates token based on name and room // TODO remove
   token = await fetches.getToken(name, room);
+  const {chosenRoomAfter} = await fetches.testToken(room);
+  renderRoomInfo(chosenRoomAfter?.players, room, name, currentWebRoom);
+  preInter = setInterval(preWaiting, 500);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const preWaiting = async () => {
+  try {
+    console.log('prewaiting');
+    const {chosenRoom} = await fetches.testToken(room);
+    if (currentWebRoom.slice(1, currentWebRoom.length) === chosenRoom.players) return;
+    else currentWebRoom = [...chosenRoom.players];
+    renderRoomInfo(chosenRoom?.players, room, name, currentWebRoom);
   } catch (err) {
     console.log(err);
   }
@@ -93,6 +113,7 @@ const nowWaiting = async () => {
     const response = await fetches.waitStart(room);
     if (!response) return;
     // console.log('successful response:', response);
+    clearInterval(preInter);
     clearInterval(myInter);
     webState = response;
     // console.log(webState);
