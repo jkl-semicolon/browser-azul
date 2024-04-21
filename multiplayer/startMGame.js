@@ -21,7 +21,7 @@ const resetWebState = async () => {
   clearInterval(preInter);
   const chatToRemove = document.querySelector('.chatForm');
   // console.log(chatToRemove)
-  chatToRemove.remove();
+  if (chatToRemove) chatToRemove.remove();
   // const header = document.querySelector('header');
   // header.removeChild(chatToRemove);
   console.log(myInter, preInter)
@@ -143,6 +143,9 @@ const nowWaiting = async () => {
     // console.log('successful response:', response);
     clearInterval(preInter);
     clearInterval(myInter);
+    const chatToRemove = document.querySelector('.chatForm');
+    // console.log(chatToRemove)
+    if (chatToRemove) chatToRemove.remove();
     webState = response;
     // console.log(webState);
     playerIndex = determineIndex(webState);

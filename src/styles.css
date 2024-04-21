@@ -161,3 +161,7 @@ margin-bottom: 10px;
   width: 225px;
   margin-left:25px;
 }
+
+.landingMessage > p {
+  font-weight: 600;
+}

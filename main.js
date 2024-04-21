@@ -18,6 +18,7 @@
 import {startGame} from './src/gameSetup.js';
 import {resetState} from './src/gameSetup.js';
 import state from './src/state.js';
+import { createStartMessage } from './src/renderMainArea.js';
 
 import {getToken, waitingStart, nowWaiting, token, name, room } from './multiplayer/startMGame.js';
 
@@ -48,7 +49,8 @@ let $otherPlayerSections = [];
       if (confirm('Are you sure you want to quit the current game?')) {
         resetState();
         [...$otherPlayerSections, $activePlayerSection].forEach(section => section.innerHTML = '');
-        $boardSection.innerHTML= '<img src="./img/azul-box-cover.jpg">';
+        $boardSection.innerHTML= '<img src="./img/azul-box-cover.jpg" style="float:left; margin-right:20px">';
+        createStartMessage();
       }
     }
   })
@@ -57,9 +59,12 @@ let $otherPlayerSections = [];
   })
   document.querySelector('#waitM').addEventListener('click', async () => {
     if (!token) return;
+    console.log(state.waitingStart);
     if (state.waitingStart) return;
     await waitingStart();
   })
 })();
+
+createStartMessage();
 
 export {$activePlayerSection, $otherPlayerSections, $boardSection}

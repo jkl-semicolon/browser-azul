@@ -2,6 +2,7 @@ import { landingPattern } from './renderPlayerBoard.js';
 import { newRoundOrNawww } from './gameFlow.js';
 import state from './state.js';
 import {resetWebState} from './../multiplayer/startMGame.js'
+import { createStartMessage } from './renderMainArea.js';
 
 /**
  * Occurs at the start of a game, and when the reset button is pressed. Sets up a
@@ -13,7 +14,7 @@ const resetState = async () => {
   if (state.webStart) resetWebState();
   if (state.waitingStart) resetWebState();
   if (state.waitingReset) resetWebState();
-  ['gameStart', 'activeGrab', 'activeStaging', 'webStart'].forEach(s => state[s] = false);
+  ['gameStart', 'activeGrab', 'activeStaging', 'webStart', 'waitingStart', 'waitingReset'].forEach(s => state[s] = false);
   ['numberPlayers', 'factoryTiles', 'currentPlayer', 'turnCounter',].forEach(s => state[s] = 0);
   ['turnOrder', 'bag', 'discard', 'players',].forEach(s => state[s] = []);
   state.middle = [[],];

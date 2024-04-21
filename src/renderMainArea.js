@@ -94,4 +94,19 @@ const renderMainArea = () => {
   $boardSection.appendChild(element);
 }
 
-export {renderMainArea, createInstructions};
+const createStartMessage = () => {
+  const message = `Thanks for playing. In order to start single browser play in a hotseat format, 
+  please press the Start 2P, 3P, or 4P Game buttons. In order to start play over separate browsers,
+  please press the Multiplayer button, and then enter a name and room number. It is noted that the server
+  this webapp uses lies dormant when not used, and will need 30 seconds or so to start processing requests.
+  Once joining a multiplayer room, please wait for your room number and player name to appear on the screen
+  before continuing. Please coordinate with your opponents on which room to join. If you see a room already 
+  has unknown players, please leave the room and choose another. Once you have joined a room, you may press 
+  Ready to prompt a game start. Once all players in a room have pressed Ready, the game will start.`
+  const element = document.createElement('div');
+  element.classList.add('landingMessage')
+  element.innerHTML = `<p>${message}</p>`;
+  $boardSection.appendChild(element);
+}
+
+export {renderMainArea, createInstructions, createStartMessage};
