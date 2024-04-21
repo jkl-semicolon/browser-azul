@@ -1,5 +1,5 @@
-// const API_URL = 'https://browser-azul-server.onrender.com';
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://browser-azul-server.onrender.com';
+// const API_URL = 'http://localhost:8000';
 const log = console.log;
 
 const fetches = {
