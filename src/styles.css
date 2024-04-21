@@ -153,3 +153,11 @@ margin-bottom: 10px;
   font-weight: 500;
   padding: 0 10px
 }
+.roomInfo {
+  width: 200px;
+  margin-left:25px;
+}
+.chatInfo {
+  width: 225px;
+  margin-left:25px;
+}

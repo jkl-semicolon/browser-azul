@@ -35,9 +35,9 @@ const grabWebMiddle = async (tileId, tileColor) => {
       i--;
     }
   };
-  renderWebMainArea(webState);
   renderWebPlayerBoard(webState.turnOrder[webState.currentPlayer], $activePlayerSection); //////////////////////////////////////
   webState.activeGrab = false;
+  renderWebMainArea(webState);
   webState.activeStaging = true;
 };
 

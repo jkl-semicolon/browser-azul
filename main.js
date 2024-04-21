@@ -43,7 +43,7 @@ let $otherPlayerSections = [];
       if (!state.gameStart) startGame(i);
     })
   }
-  document.querySelector('#reset').addEventListener('click', () => {
+  document.querySelector('#reset').addEventListener('click', async () => {
     if (state.gameStart) {
       if (confirm('Are you sure you want to quit the current game?')) {
         resetState();
@@ -53,10 +53,11 @@ let $otherPlayerSections = [];
     }
   })
   document.querySelector('#startM').addEventListener('click', async () => {
-    await getToken();
+    if (!state.gameStart) await getToken();
   })
   document.querySelector('#waitM').addEventListener('click', async () => {
     if (!token) return;
+    if (state.waitingStart) return;
     await waitingStart();
   })
 })();

@@ -1,13 +1,19 @@
 import { landingPattern } from './renderPlayerBoard.js';
 import { newRoundOrNawww } from './gameFlow.js';
 import state from './state.js';
+import {resetWebState} from './../multiplayer/startMGame.js'
 
 /**
  * Occurs at the start of a game, and when the reset button is pressed. Sets up a
  * blank state object for the game to utilize.
  */
-const resetState = () => {
-  ['gameStart', 'activeGrab', 'activeStaging',].forEach(s => state[s] = false);
+const resetState = async () => {
+  console.log('state.webStart,',state.webStart);
+  console.log('state.waitingStart,',state.waitingStart);
+  if (state.webStart) resetWebState();
+  if (state.waitingStart) resetWebState();
+  if (state.waitingReset) resetWebState();
+  ['gameStart', 'activeGrab', 'activeStaging', 'webStart'].forEach(s => state[s] = false);
   ['numberPlayers', 'factoryTiles', 'currentPlayer', 'turnCounter',].forEach(s => state[s] = 0);
   ['turnOrder', 'bag', 'discard', 'players',].forEach(s => state[s] = []);
   state.middle = [[],];

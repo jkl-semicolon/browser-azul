@@ -2,7 +2,8 @@ import fetches from './../api/fetches.js';
 import state from './../src/state.js';
 import { renderWebPlayers } from '../src/renderPlayerBoard.js';
 import { renderWebMainArea } from './webGameRender.js';
-import { renderRoomInfo } from './renderMulti.js';
+import { renderRoomInfo, renderChat, renderInput } from './renderMulti.js';
+import { $boardSection } from '../main.js';
 
 let token = '';
 let name = '';
@@ -12,6 +13,28 @@ let webState = {};
 let playerIndex = null;
 let preInter = null;
 let currentWebRoom = [];
+
+const resetWebState = async () => {
+  console.log(myInter, preInter)
+  console.log('webstate cleared')
+  clearInterval(myInter);
+  clearInterval(preInter);
+  const chatToRemove = document.querySelector('.chatForm');
+  // console.log(chatToRemove)
+  chatToRemove.remove();
+  // const header = document.querySelector('header');
+  // header.removeChild(chatToRemove);
+  console.log(myInter, preInter)
+  console.log('webstate cleared')
+  token = '';
+  name = '';
+  room = null;
+  myInter = null;
+  webState = {};
+  playerIndex = null;
+  preInter = null;
+  currentWebRoom = [];
+}
 
 /**
  * getToken is basically Join a Room, where you enter in a name and a game room. TODO: change its name.
@@ -59,8 +82,12 @@ const getToken = async () => {
   // generates token based on name and room // TODO remove
   token = await fetches.getToken(name, room);
   const {chosenRoomAfter} = await fetches.testToken(room);
-  renderRoomInfo(chosenRoomAfter?.players, room, name, currentWebRoom);
+  renderRoomInfo(chosenRoomAfter?.players, room, name, currentWebRoom, chosenRoomAfter?.messages);
+  renderInput();
+  // renderChat();
   preInter = setInterval(preWaiting, 500);
+  state.gameStart = true; /////////////////////////////
+  state.waitingReset = true; //////////////////////////
   } catch (err) {
     console.log(err);
   }
@@ -72,7 +99,7 @@ const preWaiting = async () => {
     const {chosenRoom} = await fetches.testToken(room);
     if (currentWebRoom.slice(1, currentWebRoom.length) === chosenRoom.players) return;
     else currentWebRoom = [...chosenRoom.players];
-    renderRoomInfo(chosenRoom?.players, room, name, currentWebRoom);
+    renderRoomInfo(chosenRoom?.players, room, name, currentWebRoom, chosenRoom.messages);
   } catch (err) {
     console.log(err);
   }
@@ -97,6 +124,7 @@ const waitingStart = async () => {
     await fetches.setStart(true, token, room);
     // console.log('waiting start')
     myInter = setInterval(nowWaiting, 500)
+    state.waitingStart = true;
   } catch (err) {
     console.log(err);
   }
@@ -195,4 +223,4 @@ const nextTurn = async () => {
 
 }
 
-export {getToken, waitingStart, nowWaiting, token, name, room, webState, nextTurn };
+export {getToken, waitingStart, nowWaiting, token, name, room, webState, nextTurn, resetWebState };

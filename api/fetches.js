@@ -1,4 +1,5 @@
-const API_URL = 'https://browser-azul-server.onrender.com';
+// const API_URL = 'https://browser-azul-server.onrender.com';
+const API_URL = 'http://localhost:8000';
 const log = console.log;
 
 const fetches = {
@@ -62,6 +63,18 @@ const fetches = {
       })
     } catch (err) {
       log('error sending state after turn!', err);
+    }
+  },
+
+  sendMessage: async (input, room) => {
+    try {
+      await fetch(API_URL + '/sendMessage/' + room, {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({input})
+      })
+    } catch (err) {
+      log('error sending chat message!', err);
     }
   },
 

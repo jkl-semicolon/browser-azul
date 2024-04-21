@@ -1,6 +1,7 @@
 import {$boardSection} from './../main.js';
 import {grabMiddle} from './../src/eventListeners.js';
 import { grabWebMiddle } from './webEventListeners.js';
+import { name } from './startMGame.js';
 
 /**
  * Occurs at the start of a new round, and also occurs anytime a user input in the game happens. 
@@ -38,12 +39,12 @@ const createWebFactoryTiles = (state) => {
  * Appends to the main area of the board section.
  * @param {object}, the player to render the instructions for
  */
-const createWebInstructions = (player) => { ///////////////////////////////////////////////////////////////////////////////////////////////
+const createWebInstructions = (state) => { ///////////////////////////////////////////////////////////////////////////////////////////////
   const element = document.createElement('div');
   element.classList.add('floating');
   if (state.activeGrab) {
     element.innerHTML = `
-      It is ${player.name}'s turn. Please choose tiles of the same color
+      It is ${name}'s turn. Please choose tiles of the same color
       from either one of factory tiles in the middle, or the middle area
       next to the factory tiles. Afterwards, choose a row on your playerboard 
       to place your tiles. If you wish, you may also choose the broken tile area.
@@ -97,6 +98,9 @@ const renderWebMainArea = (state) => {
   // element.appendChild(webMid);
   [createWebFactoryTiles, createWebMiddleArea].forEach(myFunc => element.appendChild(myFunc(state)));
   $boardSection.appendChild(element);
+  if ((state.turnOrder[state.currentPlayer].name === name) && state.activeGrab) {
+    createWebInstructions(state);
+  }
 }
 
-export { renderWebMainArea };
+export { renderWebMainArea, createWebInstructions };
