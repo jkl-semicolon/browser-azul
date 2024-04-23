@@ -151,6 +151,7 @@ const nowWaiting = async () => {
     playerIndex = determineIndex(webState);
     // console.log('player index:', playerIndex)
     stateUpdated();
+    setTimeout(() => {clearInterval(myInter); stateUpdated()}, 550);
   } catch (err) {
     console.log(err);
   }
@@ -226,4 +227,14 @@ const nextTurn = async () => {
 
 }
 
-export {getToken, waitingStart, nowWaiting, token, name, room, webState, nextTurn, resetWebState };
+const testServerFunc = async () => {
+  const response = await fetches.testServer();
+  if (response === 'hello') {
+    state.serverSuccess = true;
+    const button = document.querySelector('#testServer');
+    button.setAttribute('style', 'background-color:green');
+    setTimeout(() => {button.setAttribute('style','background-color:red'); state.serverSuccess = false}, 900000)
+  }
+}
+
+export {getToken, waitingStart, nowWaiting, token, name, room, webState, nextTurn, resetWebState, testServerFunc };

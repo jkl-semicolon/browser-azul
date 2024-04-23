@@ -1,5 +1,5 @@
-const API_URL = 'https://browser-azul-server.onrender.com';
-// const API_URL = 'http://localhost:8000';
+// const API_URL = 'https://browser-azul-server.onrender.com';
+const API_URL = 'http://localhost:8000';
 const log = console.log;
 
 const fetches = {
@@ -75,6 +75,17 @@ const fetches = {
       })
     } catch (err) {
       log('error sending chat message!', err);
+    }
+  },
+
+  testServer: async () => {
+    try {
+      const response = await fetch(API_URL + '/testServer')
+      console.log('button press')
+      const {hello} = await response.json();
+      return hello;
+    } catch (err) {
+      log('error initializing server contact!', err);
     }
   },
 

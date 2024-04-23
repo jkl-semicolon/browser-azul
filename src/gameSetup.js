@@ -14,7 +14,7 @@ const resetState = async () => {
   if (state.webStart) resetWebState();
   if (state.waitingStart) resetWebState();
   if (state.waitingReset) resetWebState();
-  ['gameStart', 'activeGrab', 'activeStaging', 'webStart', 'waitingStart', 'waitingReset'].forEach(s => state[s] = false);
+  ['gameStart', 'activeGrab', 'activeStaging', 'webStart', 'waitingStart', 'waitingReset', 'serverSuccess'].forEach(s => state[s] = false);
   ['numberPlayers', 'factoryTiles', 'currentPlayer', 'turnCounter',].forEach(s => state[s] = 0);
   ['turnOrder', 'bag', 'discard', 'players',].forEach(s => state[s] = []);
   state.middle = [[],];

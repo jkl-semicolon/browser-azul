@@ -96,11 +96,9 @@ const renderMainArea = () => {
 
 const createStartMessage = () => {
   const message = `Thanks for playing! In order to start a single browser game, press the 
-  Start 2P, 3P, or 4P Game buttons. In order to start a game over separate browsers,
-  press the Multiplayer button, and then enter a name and room number. Quick note, the server
-  this game uses lies dormant when not used, and will need 30 seconds or so to start processing requests.
-  Once joining a multiplayer room, please wait for your room number and player name to appear on the screen
-  before continuing, which may take upwards of 30 seconds. Please coordinate with your opponents on which room to join. If you see a room already 
+  Start 2P, 3P, or 4P buttons. In order to start a game over separate browsers, please first
+  spin-up the server by pressing test server. Once a green light is achieved (which may take upwards of 30 seconds),
+  press the Multiplayer button, and then enter a name and room number. Please coordinate with your opponents on which room to join. If you see a room already 
   has unknown players, please leave the room by pressing Reset and choose another. Once you have joined a room, you may press 
   Ready to prompt a game start. Once all players in a room have pressed Ready, the game will start.`
   const element = document.createElement('div');

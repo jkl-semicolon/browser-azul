@@ -20,7 +20,7 @@ import {resetState} from './src/gameSetup.js';
 import state from './src/state.js';
 import { createStartMessage } from './src/renderMainArea.js';
 
-import {getToken, waitingStart, nowWaiting, token, name, room } from './multiplayer/startMGame.js';
+import {getToken, waitingStart, nowWaiting, token, name, room, testServerFunc } from './multiplayer/startMGame.js';
 
 /**
  * Setup for needed DOM connections.
@@ -45,6 +45,9 @@ let $otherPlayerSections = [];
     })
   }
   document.querySelector('#reset').addEventListener('click', async () => {
+    const button = document.querySelector('#testServer');
+    button.setAttribute('style', 'background-color:red');
+    state.serverSuccess = false;
     if (state.gameStart) {
       if (confirm('Are you sure you want to quit the current game?')) {
         resetState();
@@ -55,6 +58,10 @@ let $otherPlayerSections = [];
     }
   })
   document.querySelector('#startM').addEventListener('click', async () => {
+    if (!state.serverSuccess) {
+      alert('Please get a green light on test server before trying multiplayer.');
+      return;
+    }
     if (!state.gameStart) await getToken();
   })
   document.querySelector('#waitM').addEventListener('click', async () => {
@@ -62,6 +69,10 @@ let $otherPlayerSections = [];
     console.log(state.waitingStart);
     if (state.waitingStart) return;
     await waitingStart();
+  })
+  document.querySelector('#testServer').addEventListener('click', async () => {
+    if (state?.serverSuccess) return;
+    await testServerFunc();
   })
 })();
 
