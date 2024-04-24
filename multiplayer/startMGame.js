@@ -61,6 +61,7 @@ const getToken = async () => {
     return;
   } else if (room > 10000000) {
     alert("we don't have more than 10 million rooms! try again.");
+    return;
   } else if (isNaN(Number(room))) {
     alert('please only enter a number! try again.');
     return;
