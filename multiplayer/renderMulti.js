@@ -31,7 +31,7 @@ const renderRoomInfo = (playerNames, room, name, currentWebRoom, messages) => {
         return total + `<h4>${current}</h4>`
       }, '')}
     `}
-    console.log(chatElement.innerHTML);
+    // console.log(chatElement.innerHTML);
     chatElement.classList.add('chatInfo');
     $boardSection.appendChild(chatElement);
   }

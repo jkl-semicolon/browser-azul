@@ -66,7 +66,7 @@ let $otherPlayerSections = [];
   })
   document.querySelector('#waitM').addEventListener('click', async () => {
     if (!token) return;
-    console.log(state.waitingStart);
+    // console.log(state.waitingStart);
     if (state.waitingStart) return;
     await waitingStart();
   })

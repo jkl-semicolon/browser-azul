@@ -9,8 +9,8 @@ import { createStartMessage } from './renderMainArea.js';
  * blank state object for the game to utilize.
  */
 const resetState = async () => {
-  console.log('state.webStart,',state.webStart);
-  console.log('state.waitingStart,',state.waitingStart);
+  // console.log('state.webStart,',state.webStart);
+  // console.log('state.waitingStart,',state.waitingStart);
   if (state.webStart) resetWebState();
   if (state.waitingStart) resetWebState();
   if (state.waitingReset) resetWebState();

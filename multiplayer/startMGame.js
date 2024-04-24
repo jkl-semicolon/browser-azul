@@ -15,8 +15,8 @@ let preInter = null;
 let currentWebRoom = [];
 
 const resetWebState = async () => {
-  console.log(myInter, preInter)
-  console.log('webstate cleared')
+  // console.log(myInter, preInter)
+  // console.log('webstate cleared')
   clearInterval(myInter);
   clearInterval(preInter);
   const chatToRemove = document.querySelector('.chatForm');
@@ -24,8 +24,8 @@ const resetWebState = async () => {
   if (chatToRemove) chatToRemove.remove();
   // const header = document.querySelector('header');
   // header.removeChild(chatToRemove);
-  console.log(myInter, preInter)
-  console.log('webstate cleared')
+  // console.log(myInter, preInter)
+  // console.log('webstate cleared')
   token = '';
   name = '';
   room = null;
@@ -96,7 +96,7 @@ const getToken = async () => {
 
 const preWaiting = async () => {
   try {
-    console.log('prewaiting');
+    // console.log('prewaiting');
     const {chosenRoom} = await fetches.testToken(room);
     if (currentWebRoom.slice(1, currentWebRoom.length) === chosenRoom.players) return;
     else currentWebRoom = [...chosenRoom.players];

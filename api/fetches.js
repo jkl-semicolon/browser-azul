@@ -81,7 +81,7 @@ const fetches = {
   testServer: async () => {
     try {
       const response = await fetch(API_URL + '/testServer')
-      console.log('button press')
+      // console.log('button press')
       const {hello} = await response.json();
       return hello;
     } catch (err) {
