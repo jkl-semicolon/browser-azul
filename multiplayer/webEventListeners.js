@@ -1,8 +1,9 @@
 import {renderWebMainArea} from "./webGameRender.js";
 import {renderWebPlayerBoard} from "./../src/renderPlayerBoard.js"; ///////////////////////////
-import {$activePlayerSection} from "../main.js";
+import {$activePlayerSection, $boardSection} from "../main.js";
 import fetches from "../api/fetches.js";
 import {webState, name, nextTurn, room} from "./startMGame.js"; ////////////////////////////////////////
+import { createWebInstructions } from "./webGameRender.js";
 
 /**
  * Occurs during the start of a player's turn.
@@ -39,6 +40,7 @@ const grabWebMiddle = async (tileId, tileColor) => {
   webState.activeGrab = false;
   renderWebMainArea(webState);
   webState.activeStaging = true;
+  createWebInstructions(webState);
 };
 
 /**
@@ -78,6 +80,7 @@ const placeWebStaging = async (rowID) => {
       }
     }
     webState.activeStaging = false;
+    $boardSection.removeChild(document.querySelector('.instructions'));
     renderWebPlayerBoard(webState.turnOrder[webState.currentPlayer], $activePlayerSection);
     await nextTurn(); //////////////////////////////////////////////////////////////////////////////////////////
     return;
@@ -115,6 +118,7 @@ const placeWebStaging = async (rowID) => {
 
   // Finish moving to staging, re-render player board, and check if there should be a new turn or not.
   webState.activeStaging = false;
+  $boardSection.removeChild(document.querySelector('.instructions'));
   renderWebPlayerBoard(webState.turnOrder[webState.currentPlayer], $activePlayerSection);
   await nextTurn();
 };

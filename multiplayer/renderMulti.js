@@ -1,18 +1,21 @@
 import fetches from "../api/fetches.js";
 import { $boardSection } from "../main.js";
 import { room } from './startMGame.js';
+import { createRoomMessage } from "./webGameRender.js";
 
 // const chatElement = document.createElement('div');
 // chatElement.classList.add('chat');
+const colors = ['red','blue','purple','green','yellow','orange','indigo', 'brown','teal','pink']
 
 const renderRoomInfo = (playerNames, room, name, currentWebRoom, messages) => {
   $boardSection.innerHTML= '<img src="./img/azul-box-cover.jpg" style="float:right">';
+  createRoomMessage();
   const element = document.createElement('div');
   if (playerNames) {
     element.innerHTML = `
       <h2>Room # ${room} PLAYERS</h2>
       ${playerNames.reduce((total, current) => {
-        return total + `<h3>${current}</h3>`
+        return total + `<h3 style='color:${colors[Math.floor(Math.random() * colors.length)]}'>${current}</h3>`
       }, '')}
     `
     currentWebRoom = [...playerNames];

@@ -1,6 +1,6 @@
-import {renderMainArea} from "./renderMainArea.js";
+import {renderMainArea, createInstructions} from "./renderMainArea.js";
 import {renderPlayerBoard} from "./renderPlayerBoard.js";
-import {$activePlayerSection} from "../main.js";
+import {$activePlayerSection, $boardSection} from "../main.js";
 import {newTurnOrNawww} from './gameFlow.js';
 import state from "./state.js";
 
@@ -38,6 +38,7 @@ const grabMiddle = (tileId, tileColor) => {
   renderPlayerBoard(state.turnOrder[state.currentPlayer], $activePlayerSection);
   state.activeGrab = false;
   state.activeStaging = true;
+  createInstructions(state.turnOrder[state.currentPlayer]);
 };
 
 /**
@@ -76,6 +77,7 @@ const placeStaging = (rowID) => {
       }
     }
     state.activeStaging = false;
+    $boardSection.removeChild(document.querySelector('.instructions'));
     renderPlayerBoard(state.turnOrder[state.currentPlayer], $activePlayerSection);
     newTurnOrNawww();
     return;
@@ -113,6 +115,7 @@ const placeStaging = (rowID) => {
 
   // Finish moving to staging, re-render player board, and check if there should be a new turn or not.
   state.activeStaging = false;
+  $boardSection.removeChild(document.querySelector('.instructions'));
   renderPlayerBoard(state.turnOrder[state.currentPlayer], $activePlayerSection);
   newTurnOrNawww();
 };

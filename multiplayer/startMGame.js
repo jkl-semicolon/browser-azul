@@ -46,13 +46,13 @@ const resetWebState = async () => {
 const getToken = async () => {
   try {
   // name prompt and validation
-  name = prompt('Please Enter a Name:');
+  name = prompt('Please Enter Your Name:');
   if (!name) {
     alert('you must enter a name! try again.');
     return;
   }
   // room prompt and validation
-  room = prompt('Please Enter a Game Room:');
+  room = prompt('Please Enter a Game Room Number:');
   if (!room) {
     alert('you must enter a room number! try again.');
     return;
@@ -75,7 +75,7 @@ const getToken = async () => {
     }
     for (const player of chosenRoom.players) {
       if (name === player) {
-        alert('you must enter a unique name from the other players! try again.');
+        alert('you must enter a unique name from the other players in the room! try again.');
         return;
       }
     }
@@ -152,7 +152,7 @@ const nowWaiting = async () => {
     playerIndex = determineIndex(webState);
     // console.log('player index:', playerIndex)
     stateUpdated();
-    setTimeout(() => {clearInterval(myInter); stateUpdated()}, 550);
+    setTimeout(() => {clearInterval(myInter); stateUpdated()}, 550); // for bug fix
   } catch (err) {
     console.log(err);
   }

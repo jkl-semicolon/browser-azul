@@ -41,12 +41,12 @@ const createWebFactoryTiles = (state) => {
  */
 const createWebInstructions = (state) => { ///////////////////////////////////////////////////////////////////////////////////////////////
   const element = document.createElement('div');
-  element.classList.add('floating');
+  element.classList.add('floating', 'instructions');
   if (state.activeGrab) {
     element.innerHTML = `
       It is ${name}'s turn. Please choose tiles of the same color
       from either one of factory tiles in the middle, or the middle area
-      next to the factory tiles. Afterwards, choose a row on your playerboard 
+      under the factory tiles. Afterwards, choose a row on your playerboard 
       to place your tiles. If you wish, you may also choose the broken tile area.
     `;
   }
@@ -103,4 +103,15 @@ const renderWebMainArea = (state) => {
   }
 }
 
-export { renderWebMainArea, createWebInstructions };
+const createRoomMessage = () => {
+  const message = `If the room already has unknown players, please leave the room by pressing Reset and choose another. 
+  You can press Ready to prompt a game start. Once all players in a room have pressed Ready, the game will start. You can
+  also chat to others in the room while you're waiting.`
+  const element = document.createElement('div');
+  element.classList.add('roomMessage')
+  element.innerHTML = `<p>${message}</p>`;
+  // const attachTo = document.
+  $boardSection.appendChild(element);
+}
+
+export { renderWebMainArea, createWebInstructions, createRoomMessage };

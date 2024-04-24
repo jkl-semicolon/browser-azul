@@ -40,12 +40,12 @@ const createFactoryTiles = () => {
  */
 const createInstructions = (player) => {
   const element = document.createElement('div');
-  element.classList.add('floating');
+  element.classList.add('floating', 'instructions');
   if (state.activeGrab) {
     element.innerHTML = `
       It is ${player.name}'s turn. Please choose tiles of the same color
       from either one of factory tiles in the middle, or the middle area
-      next to the factory tiles. Afterwards, choose a row on your playerboard 
+      under the factory tiles. Afterwards, choose a row on your playerboard 
       to place your tiles. If you wish, you may also choose the broken tile area.
     `;
   }
