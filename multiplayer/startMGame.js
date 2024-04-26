@@ -2,8 +2,7 @@ import fetches from './../api/fetches.js';
 import state from './../src/state.js';
 import { renderWebPlayers } from '../src/renderPlayerBoard.js';
 import { renderWebMainArea } from './webGameRender.js';
-import { renderRoomInfo, renderChat, renderInput } from './renderMulti.js';
-import { $boardSection } from '../main.js';
+import { renderRoomInfo, renderInput } from './renderMulti.js';
 
 let token = '';
 let name = '';
@@ -15,17 +14,10 @@ let preInter = null;
 let currentWebRoom = [];
 
 const resetWebState = async () => {
-  // console.log(myInter, preInter)
-  // console.log('webstate cleared')
   clearInterval(myInter);
   clearInterval(preInter);
   const chatToRemove = document.querySelector('.chatForm');
-  // console.log(chatToRemove)
   if (chatToRemove) chatToRemove.remove();
-  // const header = document.querySelector('header');
-  // header.removeChild(chatToRemove);
-  // console.log(myInter, preInter)
-  // console.log('webstate cleared')
   token = '';
   name = '';
   room = null;
@@ -85,10 +77,9 @@ const getToken = async () => {
   const {chosenRoomAfter} = await fetches.testToken(room);
   renderRoomInfo(chosenRoomAfter?.players, room, name, currentWebRoom, chosenRoomAfter?.messages);
   renderInput();
-  // renderChat();
   preInter = setInterval(preWaiting, 500);
-  state.gameStart = true; /////////////////////////////
-  state.waitingReset = true; //////////////////////////
+  state.gameStart = true;
+  state.waitingReset = true;
   } catch (err) {
     console.log(err);
   }
@@ -96,7 +87,6 @@ const getToken = async () => {
 
 const preWaiting = async () => {
   try {
-    // console.log('prewaiting');
     const {chosenRoom} = await fetches.testToken(room);
     if (currentWebRoom.slice(1, currentWebRoom.length) === chosenRoom.players) return;
     else currentWebRoom = [...chosenRoom.players];
@@ -105,8 +95,6 @@ const preWaiting = async () => {
     console.log(err);
   }
 }
-
-// button for this only appears when player has a token
 
 /**
  * waitingStart will be a button that appears on the main page ONLY if the player
@@ -123,7 +111,6 @@ const waitingStart = async () => {
       return;
     }
     await fetches.setStart(true, token, room);
-    // console.log('waiting start')
     myInter = setInterval(nowWaiting, 500)
     state.waitingStart = true;
   } catch (err) {
@@ -137,20 +124,14 @@ const waitingStart = async () => {
  */
 const nowWaiting = async () => {
   try {
-    // console.log('pinging server')
-    // console.log('now waiting')
     const response = await fetches.waitStart(room);
     if (!response) return;
-    // console.log('successful response:', response);
     clearInterval(preInter);
     clearInterval(myInter);
     const chatToRemove = document.querySelector('.chatForm');
-    // console.log(chatToRemove)
     if (chatToRemove) chatToRemove.remove();
     webState = response;
-    // console.log(webState);
     playerIndex = determineIndex(webState);
-    // console.log('player index:', playerIndex)
     stateUpdated();
     setTimeout(() => {clearInterval(myInter); stateUpdated()}, 550); // for bug fix
   } catch (err) {
@@ -176,14 +157,10 @@ const determineIndex = (webState) => {
  */
 const waitingAgain = async () => {
   try {
-    // console.log('pinging server')
-    // console.log('waiting again')
     const response = await fetches.waitStart(room);
     if (JSON.stringify(response) === JSON.stringify(webState)) return; // if poll shows the state has not changed, keep polling
-    // console.log('successful response:', response);
     clearInterval(myInter);
     webState = response;
-    // console.log(webState);
     stateUpdated();
   } catch (err) {
     console.log(err);
@@ -193,7 +170,6 @@ const waitingAgain = async () => {
 const stateUpdated = () => {
   renderWebPlayers(webState);
   renderWebMainArea(webState);
-  // console.log('state updated')
   if (webState.winner) {
     alert(`🎉🎉🎉 CONGRATULATIONS TO ${webState.winner}, THE WINNER OF OUR GAME! 🎉🎉🎉`);
     token = '';
@@ -207,22 +183,7 @@ const stateUpdated = () => {
   if (webState.turnOrder[webState.currentPlayer].name !== name) myInter = setInterval(waitingAgain, 500);
 } // if not our turn, poll the server again
 
-/**
- * Occurs at the end of the second event handler of a player's turn. 
- * Checks to see if another turn in the round is needed, and either a new
- * turn occurs or end round scoring occurs.
- */
-// const newWebTurnOrNawww = () => { ///////////////////////////////////////////////////////////////////////////////////////////////
-//   let midHasTiles;
-//   state.middle.forEach((part) => {
-//     if (part.length) midHasTiles = true;
-//   });
-//   if (midHasTiles) takeTurn();
-//   else endRoundScoring();
-// };
-
 const nextTurn = async () => {
-  // console.log('next turn')
   await fetches.sendStateAfterTurn(webState, room);
   myInter = setInterval(waitingAgain, 500);
 

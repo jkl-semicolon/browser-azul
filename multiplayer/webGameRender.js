@@ -1,5 +1,4 @@
 import {$boardSection} from './../main.js';
-import {grabMiddle} from './../src/eventListeners.js';
 import { grabWebMiddle } from './webEventListeners.js';
 import { name } from './startMGame.js';
 
@@ -39,7 +38,7 @@ const createWebFactoryTiles = (state) => {
  * Appends to the main area of the board section.
  * @param {object}, the player to render the instructions for
  */
-const createWebInstructions = (state) => { ///////////////////////////////////////////////////////////////////////////////////////////////
+const createWebInstructions = (state) => {
   const element = document.createElement('div');
   element.classList.add('floating', 'instructions');
   if (state.activeGrab) {
@@ -90,12 +89,7 @@ const createWebMiddleArea = (state) => {
  */
 const renderWebMainArea = (state) => {
   $boardSection.innerHTML = '';
-  // console.log('STATE IN CREATE WEB FACTORY TILES', state)
   const element = document.createElement('div');
-  // const webFac = createWebFactoryTiles(state)
-  // const webMid = createWebMiddleArea(state)
-  // element.appendChild(webFac);
-  // element.appendChild(webMid);
   [createWebFactoryTiles, createWebMiddleArea].forEach(myFunc => element.appendChild(myFunc(state)));
   $boardSection.appendChild(element);
   if ((state.turnOrder[state.currentPlayer].name === name) && state.activeGrab) {
@@ -110,7 +104,6 @@ const createRoomMessage = () => {
   const element = document.createElement('div');
   element.classList.add('roomMessage')
   element.innerHTML = `<p>${message}</p>`;
-  // const attachTo = document.
   $boardSection.appendChild(element);
 }
 

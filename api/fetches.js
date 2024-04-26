@@ -17,6 +17,7 @@ const fetches = {
       log(err);
     }
   },
+
   getToken: async (name, room) => {
     try {
       const response = await fetch(API_URL + '/getToken', {
@@ -81,35 +82,10 @@ const fetches = {
   testServer: async () => {
     try {
       const response = await fetch(API_URL + '/testServer')
-      // console.log('button press')
       const {hello} = await response.json();
       return hello;
     } catch (err) {
       log('error initializing server contact!', err);
-    }
-  },
-
-  getState: async () => {
-    try {
-      const response = await fetch(API_URL)
-      const json = await response.json();
-      return json;
-    } catch (err) {
-      log('error getting state!', err);
-    }
-  },
-
-  updateState: async (state) => {
-    try {
-      const response = await fetch(API_URL, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({state})
-      })
-      const json = await response.json();
-      return json;
-    } catch (err) {
-      log('error updating state!', err);
     }
   }
 }

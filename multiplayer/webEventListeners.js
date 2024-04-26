@@ -1,8 +1,7 @@
 import {renderWebMainArea} from "./webGameRender.js";
-import {renderWebPlayerBoard} from "./../src/renderPlayerBoard.js"; ///////////////////////////
+import {renderWebPlayerBoard} from "./../src/renderPlayerBoard.js";
 import {$activePlayerSection, $boardSection} from "../main.js";
-import fetches from "../api/fetches.js";
-import {webState, name, nextTurn, room} from "./startMGame.js"; ////////////////////////////////////////
+import {webState, name, nextTurn} from "./startMGame.js";
 import { createWebInstructions } from "./webGameRender.js";
 
 /**
@@ -36,7 +35,7 @@ const grabWebMiddle = async (tileId, tileColor) => {
       i--;
     }
   };
-  renderWebPlayerBoard(webState.turnOrder[webState.currentPlayer], $activePlayerSection); //////////////////////////////////////
+  renderWebPlayerBoard(webState.turnOrder[webState.currentPlayer], $activePlayerSection);
   webState.activeGrab = false;
   renderWebMainArea(webState);
   webState.activeStaging = true;
@@ -82,7 +81,7 @@ const placeWebStaging = async (rowID) => {
     webState.activeStaging = false;
     $boardSection.removeChild(document.querySelector('.instructions'));
     renderWebPlayerBoard(webState.turnOrder[webState.currentPlayer], $activePlayerSection);
-    await nextTurn(); //////////////////////////////////////////////////////////////////////////////////////////
+    await nextTurn();
     return;
   }
   // If chosen row in staging has a different color from the limbo tiles, return.

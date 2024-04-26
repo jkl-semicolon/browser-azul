@@ -3,8 +3,6 @@ import { $boardSection } from "../main.js";
 import { room } from './startMGame.js';
 import { createRoomMessage } from "./webGameRender.js";
 
-// const chatElement = document.createElement('div');
-// chatElement.classList.add('chat');
 const colors = ['red','blue','purple','green','yellow','orange','indigo', 'brown','teal','pink']
 
 const renderRoomInfo = (playerNames, room, name, currentWebRoom, messages) => {
@@ -31,7 +29,6 @@ const renderRoomInfo = (playerNames, room, name, currentWebRoom, messages) => {
         return total + `<h4>${current}</h4>`
       }, '')}
     `}
-    // console.log(chatElement.innerHTML);
     chatElement.classList.add('chatInfo');
     $boardSection.appendChild(chatElement);
   }
@@ -62,13 +59,10 @@ const sendMessage = async (e, input) => {
   }
   try {
     document.querySelector('#chatinput').value = '';
-    await fetches.sendMessage(input, room); /////
+    await fetches.sendMessage(input, room);
   } catch (err) {
     console.log(err);
   }
 }
-const renderChat = async () => {
 
-}
-
-export { renderRoomInfo, renderChat, renderInput }
+export { renderRoomInfo, renderInput }

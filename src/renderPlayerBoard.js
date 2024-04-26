@@ -1,4 +1,4 @@
-import {$activePlayerSection, $otherPlayerSections, $boardSection } from './../main.js';
+import { $activePlayerSection, $otherPlayerSections } from './../main.js';
 import { placeStaging } from './eventListeners.js';
 import { placeWebStaging } from '../multiplayer/webEventListeners.js';
 import state from './state.js';
@@ -239,7 +239,7 @@ const renderPlayers = () => {
 const renderWebPlayers = (webState) => {
   let p2Empty = true;
   let p3Empty = true;
-  for (const player of webState.turnOrder) { ///////////////////////////////////////////////////////////
+  for (const player of webState.turnOrder) {
     const index = webState.turnOrder.indexOf(player);
     if (index === webState.currentPlayer) {
       renderWebPlayerBoard(player, $activePlayerSection);
