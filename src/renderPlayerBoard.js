@@ -2,6 +2,7 @@ import { $activePlayerSection, $otherPlayerSections } from './../main.js';
 import { placeStaging } from './eventListeners.js';
 import { placeWebStaging } from '../multiplayer/webEventListeners.js';
 import state from './state.js';
+import { webState } from '../multiplayer/startMGame.js';
 
 /**
  * Local variable used for createStaging.
@@ -158,7 +159,10 @@ const createBroken = (player) => {
     brokenSpace.innerHTML = `<p>${i<2 ? '-1' : i<5 ? '-2' : '-3'}</p>`;
     if (player.broken[i]) brokenSpace.classList.add(`${player.broken[i]}`, 'tile');
     else brokenSpace.classList.add('tile');
-    brokenSpace.addEventListener('click', () => {placeWebStaging(5)}) // placeStaging argument set to 5 for broken area.
+    brokenSpace.addEventListener('click', () => {
+      if (Object.keys(webState).length) placeWebStaging(5);
+      else placeStaging(5);
+    }) // placeStaging argument set to 5 for broken area.
     element.appendChild(brokenSpace);
   }
   return element;
@@ -239,6 +243,7 @@ const renderPlayers = () => {
 const renderWebPlayers = (webState) => {
   let p2Empty = true;
   let p3Empty = true;
+  console.log('WEBSTATE HERE', webState)
   for (const player of webState.turnOrder) {
     const index = webState.turnOrder.indexOf(player);
     if (index === webState.currentPlayer) {
